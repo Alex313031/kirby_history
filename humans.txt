@@ -1,0 +1,27 @@
+## Kirby Website humans.txt ##
+
+# Copyright (c) 2026 Alex313031.
+# https://humanstxt.org/
+
+/* TEAM */
+	
+	Developer: Alexander Frick
+	Role: Main Dev
+	Twitter: @alex313031
+	GitHub: @Alex313031
+	Email: alex313031@gmail.com
+	From: Oklahoma, US
+	
+/* THANKS */
+	
+	David Orencyr
+	Role: Fellow collector
+	GitHub: @RobRich999
+	From: Los Angeles, US
+
+/* SITE */
+
+	Last update: 2026/08/24
+	Language: English
+	Doctype: HTML5, CSS
+	IDE: Geany

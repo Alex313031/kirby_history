@@ -1,0 +1,145 @@
+/* Prefer border-box */
+* {
+  box-sizing: border-box;
+}
+html {
+  font-family: "Roboto", sans-serif;
+}
+/* General body settings */
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+h1 {
+  text-shadow: 1px 1px 1px #000;
+}
+h2 {
+  text-shadow: 1px 1px 1px #000;
+}
+
+.center {
+  max-width: 100%;
+  height: auto;
+  align-content: center;
+  text-align: center;
+}
+.bold {
+  font-weight: bold;
+}
+.italic {
+  font-style: italic;
+}
+.underline {
+  text-decoration: underline;
+}
+
+/* Page content column */
+.content {
+  width: 1200px;
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+/* Theme tokens.
+   Light values live on :root; dark values apply either
+   automatically (OS preference, no manual choice made) or
+   explicitly via data-theme="dark" set by the toggle button. */
+:root {
+  color-scheme: light dark;
+  --table-bg: #f8f9fa;
+  --table-fg: #202122;
+  --table-border: #a2a9b1;
+  --table-th-bg: #eaecf0;
+  --table-hover: #eaf3ff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --table-bg: #17191c;
+    --table-fg: #eaecf0;
+    --table-border: #54595d;
+    --table-th-bg: #27292d;
+    --table-hover: #232b33;
+  }
+}
+:root[data-theme="dark"] {
+  --table-bg: #17191c;
+  --table-fg: #eaecf0;
+  --table-border: #54595d;
+  --table-th-bg: #27292d;
+  --table-hover: #232b33;
+}
+/* Explicit choice also flips the browser's default page colors */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+
+/* Dark/light toggle button */
+.theme-toggle {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--table-border);
+  background-color: var(--table-th-bg);
+  color: var(--table-fg);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10;
+}
+.theme-toggle:hover {
+  background-color: var(--table-hover);
+}
+
+/* Wikipedia-style table (matches MediaWiki .wikitable) */
+.table-wrap {
+  overflow-x: auto;
+  margin: 1em 0;
+}
+table.wikitable {
+  background-color: var(--table-bg);
+  color: var(--table-fg);
+  border: 1px solid var(--table-border);
+  border-collapse: collapse;
+  margin: 0 auto;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  width: 100%;
+}
+table.wikitable caption {
+  font-weight: bold;
+  padding: 8px;
+}
+table.wikitable th,
+table.wikitable td {
+  border: 1px solid var(--table-border);
+  padding: 6px 10px;
+}
+table.wikitable th {
+  background-color: var(--table-th-bg);
+  text-align: center;
+}
+table.wikitable td {
+  text-align: center;
+}
+table.wikitable td.notes {
+  text-align: left;
+  min-width: 18em;
+}
+table.wikitable tbody tr:hover {
+  background-color: var(--table-hover);
+}
+table.wikitable .year {
+  white-space: nowrap;
+}
+
+/* Model thumbnails inside the table */
+.model-thumb {
+  height: 96px;
+  width: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 2px;
+}
