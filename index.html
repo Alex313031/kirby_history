@@ -10,19 +10,42 @@
     <meta name="description" content="Chronological table of Kirby vacuum cleaner models.">
     <meta name="keywords" content="kirby, vacuum">
     <meta name="color-scheme" content="light dark">
-    <!-- Apply saved theme before first paint (prevents flash of wrong theme) -->
-    <script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+    <!-- Theme init: OS preference by default, saved choice wins (same pattern as thorium.rocks) -->
+    <script>
+      function toggleDarkMode(useDark) {
+        if (useDark) {
+          document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
+        }
+      }
+      let useDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (!useDark && localStorage.getItem('dark-mode') === 'true') {
+        useDark = true;
+        toggleDarkMode(useDark);
+      } else if (localStorage.getItem('dark-mode') === 'false') {
+        useDark = false;
+        toggleDarkMode(useDark);
+      }
+    </script>
     <link rel="author" href="humans.txt">
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
     <meta itemprop="image" content="thumb.png">
 </head>
 <body>
-  <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">🌙</button>
-
   <div class="center">
-	<img class="banner" src="imgs/gen_after_gen.jpg" height="256" alt="Kirby Banner" title="Generation after Generation">
+	<a href="imgs/gen_after_gen.jpg"><img class="banner" src="imgs/gen_after_gen.jpg" height="256" alt="Kirby Banner" title="Generation after Generation"></a>
 
   <h2 class="underline">Kirby Vacuum Cleaner History</h2>
+
+	<div class="center logo-row">
+		<img src="imgs/Kirby_Logo_1935-1953.svg" height="64" alt="Kirby logo, 1935 to 1953" title="1935&ndash;1953">
+		<img src="imgs/Kirby_Logo_1953-1969.svg" height="64" alt="Kirby logo, 1953 to 1969" title="1953&ndash;1969">
+		<img src="imgs/Kirby_Logo_1969-1993.svg" height="64" alt="Kirby logo, 1969 to 1993" title="1969&ndash;1993">
+		<img src="imgs/Kirby_Logo_1993-2026.svg" height="64" alt="Kirby logo, 1993 to present" title="1993&ndash;present">
+	</div>
   </div>
 
   <div class="content">
@@ -30,6 +53,12 @@
       <p class="italic">Models from 1915&ndash;1934, such as The Vacuette, were marketed under Scott &amp; Fetzer Co.
       <br> James B. Kirby designed machines until the Dual Sanitronic 50. He died in 1971.</p>
     </div>
+
+    <div class="center">
+      <button id="darkbutton" title="Toggle Dark/Light Mode">Toggle Dark/Light Mode</button>
+    </div>
+
+   <hr>
 
     <div class="table-wrap">
       <table class="wikitable">
@@ -307,6 +336,6 @@
   </div>
 
   <script defer src="js/jquery-3.7.0.slim.min.js"></script>
-  <script defer src="js/theme-toggle.js"></script>
+  <script defer src="js/button.js"></script>
 </body>
 </html>

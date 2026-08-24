@@ -8,6 +8,8 @@ html {
 /* General body settings */
 body {
   font-family: "Roboto", sans-serif;
+  color: var(--fontcolor);
+  background-color: var(--bgcolor);
 }
 
 h1 {
@@ -41,12 +43,16 @@ h2 {
   padding: 0 12px;
 }
 
-/* Theme tokens.
-   Light values live on :root; dark values apply either
-   automatically (OS preference, no manual choice made) or
-   explicitly via data-theme="dark" set by the toggle button. */
-:root {
-  color-scheme: light dark;
+/* Set colours (same pattern as thorium.rocks: html.light/html.dark
+   classes set by the toggle, OS preference as the default) */
+:root,
+:root.light {
+  color-scheme: light;
+  --bgcolor: #ffffff;
+  --fontcolor: #000000;
+  --border: #000000;
+  --buttonborder: #222222;
+  --imgshadow: #000000;
   --table-bg: #f8f9fa;
   --table-fg: #202122;
   --table-border: #a2a9b1;
@@ -54,7 +60,13 @@ h2 {
   --table-hover: #eaf3ff;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root {
+    color-scheme: dark;
+    --bgcolor: #24292f;
+    --fontcolor: #ffffff;
+    --border: #ffffff;
+    --buttonborder: #dcdcdc;
+    --imgshadow: #ffffff;
     --table-bg: #17191c;
     --table-fg: #eaecf0;
     --table-border: #54595d;
@@ -62,35 +74,39 @@ h2 {
     --table-hover: #232b33;
   }
 }
-:root[data-theme="dark"] {
+:root.dark {
+  color-scheme: dark;
+  --bgcolor: #24292f;
+  --fontcolor: #ffffff;
+  --border: #ffffff;
+  --buttonborder: #dcdcdc;
+  --imgshadow: #ffffff;
   --table-bg: #17191c;
   --table-fg: #eaecf0;
   --table-border: #54595d;
   --table-th-bg: #27292d;
   --table-hover: #232b33;
 }
-/* Explicit choice also flips the browser's default page colors */
-:root[data-theme="light"] { color-scheme: light; }
-:root[data-theme="dark"] { color-scheme: dark; }
 
-/* Dark/light toggle button */
-.theme-toggle {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid var(--table-border);
-  background-color: var(--table-th-bg);
-  color: var(--table-fg);
-  font-size: 20px;
-  line-height: 1;
+/* Buttons (style matches thorium.rocks) */
+button {
+  font-family: inherit;
+  box-shadow: 1px 1px 1px 0 var(--buttonborder);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background-color: #828282;
+  color: #ffffff;
   cursor: pointer;
-  z-index: 10;
 }
-.theme-toggle:hover {
-  background-color: var(--table-hover);
+button:hover {
+  background-color: #999999;
+}
+button:active {
+  box-shadow: 1px 1px 1px 0 #222222 inset;
+  background-color: #888888;
+}
+#darkbutton {
+  margin: 0.75em auto;
 }
 
 /* Wikipedia-style table (matches MediaWiki .wikitable) */
@@ -142,4 +158,24 @@ table.wikitable .year {
   display: block;
   margin: 0 auto;
   border-radius: 2px;
+}
+
+/* Historical Kirby logos under the banner */
+.logo-row img {
+  height: 64px;
+  width: auto;
+  margin: 0.5em 0.75em;
+  vertical-align: middle;
+}
+
+/* Photo framing: 1px outline (black in light mode, white in dark)
+   and a soft glow on hover */
+.banner,
+.model-thumb {
+  border: 1px solid var(--border);
+  transition: box-shadow 0.15s ease;
+}
+.banner:hover,
+.model-thumb:hover {
+  box-shadow: 0 0 8px 1px var(--imgshadow);
 }
