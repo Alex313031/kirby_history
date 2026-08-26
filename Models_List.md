@@ -50,3 +50,18 @@ James B. Kirby designed machines until the Dual Sanitronic 50. He died in 1971.
 | 2018-2024 |  Avalir 2           | [Avalir2](./imgs/Avalir2.jpg)   | Blue and black color scheme.                              |
 | 2025-2026 |  Avalir Platinum    | [Platinum](./imgs/Platinum.jpg) | Return to black/chrome scheme of 505                      |
 ---------------------------------------------------------------------------------------------------------------------------------
+
+## Comparison of vacuum filter types
+
+Legend: ✅ caught well · ⚠️ partial · ❌ mostly passes
+
+| Filter type | Pollen (15–100 µm) | Mite pellets (10–40 µm) | Mite fragments (1–10 µm) | Mold spores (2–20 µm) | Dander flakes (5–10 µm) | Fine dander / Fel d 1 (1–5 µm) | Smoke/ultrafines (<1 µm) | Notes |
+|-------------|--------------------|--------------------------|---------------------------|------------------------|--------------------------|----------------------------------|---------------------------|-------|
+| Shakeout cloth bag* | ✅ | ⚠️ | ❌ | ❌ | ❌ | ❌ | ❌ | Standard up to Classic III, optional up to Legend II |
+| Disposable paper | ✅ | ✅ | ⚠️ | ⚠️ | ⚠️ | ❌ | ❌ | Style 1 on Tradition, Style 2 on Heritage through Legend II |
+| Synthetic non-HEPA (Micron Magic) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ⚠️ | Introduced on G3, standard G3–G5 |
+| HEPA cloth | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | Introduced on G6, standard since; fits back to G3 |
+
+*Shakeout ratings are strongly cake-dependent: a freshly shaken/washed bag is at its worst (bare weave pores are tens of µm),
+and it filters best right before emptying — the accumulated dust cake does most of the actual filtering.
+Emptying also re-exposes you to everything captured, so shake outdoors.
