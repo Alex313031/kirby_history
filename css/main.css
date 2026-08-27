@@ -1,48 +1,3 @@
-/* Prefer border-box */
-* {
-  box-sizing: border-box;
-}
-html {
-  font-family: "Roboto", sans-serif;
-}
-/* General body settings */
-body {
-  font-family: "Roboto", sans-serif;
-  color: var(--fontcolor);
-  background-color: var(--bgcolor);
-}
-
-h1 {
-  text-shadow: 1px 1px 1px #000;
-}
-h2 {
-  text-shadow: 1px 1px 1px #000;
-}
-
-.center {
-  max-width: 100%;
-  height: auto;
-  align-content: center;
-  text-align: center;
-}
-.bold {
-  font-weight: bold;
-}
-.italic {
-  font-style: italic;
-}
-.underline {
-  text-decoration: underline;
-}
-
-/* Page content column */
-.content {
-  width: 1200px;
-  max-width: 80%;
-  margin: 0 auto;
-  padding: 0 12px;
-}
-
 /* Set colours (same pattern as thorium.rocks: html.light/html.dark
    classes set by the toggle, OS preference as the default) */
 :root,
@@ -89,6 +44,55 @@ h2 {
   --table-th-bg: #29292d;
   --table-hover: #232b44;
   --footer-text: #dddddd;
+}
+
+/* Prefer border-box */
+* {
+  box-sizing: border-box;
+}
+html {
+  font-family: "Roboto", sans-serif;
+}
+/* General body settings */
+body {
+  font-family: "Roboto", sans-serif;
+  color: var(--fontcolor);
+  background-color: var(--bgcolor);
+}
+
+h1 {
+  text-shadow: 1px 1px 1px #000;
+}
+h2 {
+  text-shadow: 1px 1px 1px #000;
+}
+
+.center {
+  max-width: 100%;
+  height: auto;
+  align-content: center;
+  text-align: center;
+}
+.bold {
+  font-weight: bold;
+}
+.italic {
+  font-style: italic;
+}
+.underline {
+  text-decoration: underline;
+}
+
+/* Page content column */
+.content {
+  width: 1200px;
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+/* hr styles */
+.separator {
 }
 
 /* Buttons (style matches thorium.rocks) */
@@ -153,6 +157,10 @@ table.wikitable tbody tr:hover {
 table.wikitable .year {
   white-space: nowrap;
 }
+/* Rowspan-aware service-column hover (class set by js/table-hover.js) */
+table.wikitable td.service.svc-hl {
+  background-color: var(--table-hover);
+}
 
 /* Model thumbnails inside the table */
 .model-thumb {
@@ -183,13 +191,16 @@ table.wikitable .year {
   box-shadow: 0 0 8px 1px var(--imgshadow);
 }
 
-/* Bottom of page */
-.footer {
-  font-size: 12px;
+/* Top of page */
+.header {
+  font-size: 14px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
   color: var(--footer-text);
 }
-
-/* Rowspan-aware service-column hover (class set by js/table-hover.js) */
-table.wikitable td.service.svc-hl {
-  background-color: var(--table-hover);
+/* Bottom of page */
+.footer {
+  font-size: 13px;
+  color: var(--footer-text);
 }
