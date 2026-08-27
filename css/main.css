@@ -48,16 +48,17 @@ h2 {
 :root,
 :root.light {
   color-scheme: light;
-  --bgcolor: #ffffff;
+  --bgcolor: #dfdfdf;
   --fontcolor: #000000;
   --border: #000000;
   --buttonborder: #222222;
-  --imgshadow: #000000;
-  --table-bg: #f8f9fa;
+  --imgshadow: #222222;
+  --table-bg: #ffffff;
   --table-fg: #202122;
   --table-border: #a2a9b1;
-  --table-th-bg: #eaecf0;
-  --table-hover: #eaf3ff;
+  --table-th-bg: #dadce0;
+  --table-hover: #ddddff;
+  --footer-text: #333333;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -70,8 +71,9 @@ h2 {
     --table-bg: #17191c;
     --table-fg: #eaecf0;
     --table-border: #54595d;
-    --table-th-bg: #27292d;
-    --table-hover: #232b33;
+    --table-th-bg: #29292d;
+    --table-hover: #232b44;
+    --footer-text: #dddddd;
   }
 }
 :root.dark {
@@ -84,8 +86,9 @@ h2 {
   --table-bg: #17191c;
   --table-fg: #eaecf0;
   --table-border: #54595d;
-  --table-th-bg: #27292d;
-  --table-hover: #232b33;
+  --table-th-bg: #29292d;
+  --table-hover: #232b44;
+  --footer-text: #dddddd;
 }
 
 /* Buttons (style matches thorium.rocks) */
@@ -178,4 +181,15 @@ table.wikitable .year {
 .banner:hover,
 .model-thumb:hover {
   box-shadow: 0 0 8px 1px var(--imgshadow);
+}
+
+/* Bottom of page */
+.footer {
+  font-size: 12px;
+  color: var(--footer-text);
+}
+
+/* Rowspan-aware service-column hover (class set by js/table-hover.js) */
+table.wikitable td.service.svc-hl {
+  background-color: var(--table-hover);
 }
