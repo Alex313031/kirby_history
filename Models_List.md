@@ -48,7 +48,7 @@ James B. Kirby designed machines until the Dual Sanitronic 50. He died in 1971.
 | 2012-2014 |  Sentria II         | [SentriaII](./imgs/models/original/SentrII.jpg) | Return to brown bag/trim scheme.                          |
 | 2014-2018 |  Avalir             | [Avalir](./imgs/models/original/Avalir.jpg)     | Crappy, do not buy.                                       |
 | 2018-2024 |  Avalir 2           | [Avalir2](./imgs/models/original/Avalir2.jpg)   | Blue and black color scheme.                              |
-| 2025-2026 |  Avalir Platinum    | [Platinum](./imgs/models/original/Platinum.jpg) | Return to black/chrome scheme of 505                      |
+| 2024-2026 |  Avalir Platinum    | [Platinum](./imgs/models/original/Platinum.jpg) | Return to black/chrome scheme of 505                      |
 ---------------------------------------------------------------------------------------------------------------------------------
 
 ## Comparison of vacuum filter types
