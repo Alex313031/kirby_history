@@ -6,8 +6,7 @@
 /* TEAM */
 	
 	Developer: Alexander Frick
-	Role: Main Dev
-	Twitter: @alex313031
+	Role: Site Dev
 	GitHub: @Alex313031
 	Email: alex313031@gmail.com
 	From: Oklahoma, US
@@ -15,13 +14,13 @@
 /* THANKS */
 	
 	David Orencyr
-	Role: Fellow collector
-	GitHub: @RobRich999
+	Role: Fellow collector, hoster of digital scans
+	Website: https://collectingdust.com/
 	From: Los Angeles, US
 
 /* SITE */
 
-	Last update: 2026/08/24
+	Last update: 2026/08/27
 	Language: English
 	Doctype: HTML5, CSS
 	IDE: Geany

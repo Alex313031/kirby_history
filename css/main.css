@@ -199,8 +199,11 @@ table.wikitable td.service.svc-hl {
   right: 10px;
   color: var(--footer-text);
 }
+
 /* Bottom of page */
 .footer {
   font-size: 13px;
   color: var(--footer-text);
+  display: flex;
+  justify-content: space-between;
 }
