@@ -1,0 +1,45 @@
+/* Win 2K style scrollbars */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+::-webkit-scrollbar-track, ::-webkit-scrollbar-track-piece, ::-webkit-scrollbar-corner {
+  background-color: var(--scroll-track);
+}
+::-webkit-resizer {
+  background-color: var(--scroll-track);
+}
+::-webkit-scrollbar-button {
+  background-color: var(--scroll-button);
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+}
+::-webkit-scrollbar-thumb {
+  height: 50px;
+  background-color: var(--scroll-button);
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+}
+::-webkit-scrollbar-thumb:hover, ::-webkit-scrollbar-button:hover {
+  background-color: #999;
+}
+::-webkit-scrollbar-thumb:active, ::-webkit-scrollbar-button:active {
+  border-top: 1px solid #000;
+  border-left: 1px solid #000;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+}
+
+/* Firefox fallback: flat two-color scrollbars (no bevel support).
+   Guarded so Chromium (which supports both syntaxes) keeps the Win2K
+   bevels above -- setting scrollbar-color there would disable them. */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: var(--scroll-button) var(--scroll-track);
+    scrollbar-width: auto;
+  }
+}

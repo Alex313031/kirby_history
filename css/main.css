@@ -1,98 +1,46 @@
-/* Set colours (same pattern as thorium.rocks: html.light/html.dark
-   classes set by the toggle, OS preference as the default) */
-:root,
-:root.light {
-  color-scheme: light;
-  --bgcolor: #dfdfdf;
-  --fontcolor: #000000;
-  --border: #000000;
-  --buttonborder: #222222;
-  --imgshadow: #222222;
-  --table-bg: #ffffff;
-  --table-fg: #202122;
-  --table-border: #a2a9b1;
-  --table-th-bg: #dadce0;
-  --table-hover: #ddddff;
-  --footer-text: #333333;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --bgcolor: #24292f;
-    --fontcolor: #ffffff;
-    --border: #ffffff;
-    --buttonborder: #dcdcdc;
-    --imgshadow: #ffffff;
-    --table-bg: #17191c;
-    --table-fg: #eaecf0;
-    --table-border: #54595d;
-    --table-th-bg: #29292d;
-    --table-hover: #232b44;
-    --footer-text: #dddddd;
-  }
-}
-:root.dark {
-  color-scheme: dark;
-  --bgcolor: #24292f;
-  --fontcolor: #ffffff;
-  --border: #ffffff;
-  --buttonborder: #dcdcdc;
-  --imgshadow: #ffffff;
-  --table-bg: #17191c;
-  --table-fg: #eaecf0;
-  --table-border: #54595d;
-  --table-th-bg: #29292d;
-  --table-hover: #232b44;
-  --footer-text: #dddddd;
-}
-
 /* Prefer border-box */
 * {
   box-sizing: border-box;
 }
-html {
-  font-family: "Roboto", sans-serif;
-}
+
 /* General body settings */
 body {
-  font-family: "Roboto", sans-serif;
   color: var(--fontcolor);
   background-color: var(--bgcolor);
+  background-image: linear-gradient(var(--bgcolor), var(--bgcolor2));
 }
-
 h1 {
-  text-shadow: 1px 1px 1px #000;
+  font-size: 1.5em;
+  text-shadow: 1px 1px 0 var(--font-shadow);
 }
 h2 {
-  text-shadow: 1px 1px 1px #000;
+  font-size: 1.15em;
+  text-shadow: 1px 1px 0 var(--font-shadow);
 }
 
+/* center something */
 .center {
   max-width: 100%;
   height: auto;
   align-content: center;
   text-align: center;
 }
-.bold {
-  font-weight: bold;
-}
-.italic {
-  font-style: italic;
-}
-.underline {
-  text-decoration: underline;
-}
 
 /* Page content column */
 .content {
   width: 1200px;
-  max-width: 80%;
+  max-width: 100%;
   margin: 0 auto;
   padding: 0 12px;
 }
 
 /* hr styles */
 .separator {
+  border: none;
+  border-top: 1px solid var(--footer-text);
+  border-bottom: 1px solid var(--font-shadow);
+  width: 100%;
+  margin: 1em auto;
 }
 
 /* Buttons (style matches thorium.rocks) */
@@ -123,6 +71,7 @@ button:active {
 }
 table.wikitable {
   background-color: var(--table-bg);
+  overflow-y: scroll;
   color: var(--table-fg);
   border: 1px solid var(--table-border);
   border-collapse: collapse;
@@ -175,10 +124,13 @@ table.wikitable td.service.svc-hl {
 }
 
 /* Historical Kirby logos under the banner */
+div.logo-row {
+  padding: 1px;
+}
 .logo-row img {
   height: 64px;
   width: auto;
-  margin: 0.5em 0.75em;
+  margin: 0.5em 0.5em;
   vertical-align: middle;
 }
 
@@ -187,11 +139,11 @@ table.wikitable td.service.svc-hl {
 .banner,
 .model-thumb {
   border: 1px solid var(--border);
-  transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.10s ease;
 }
 .banner:hover,
 .model-thumb:hover {
-  box-shadow: 0 0 8px 1px var(--imgshadow);
+  box-shadow: 0 0 6px 1px var(--imgshadow);
 }
 
 .no-margin {
@@ -224,18 +176,4 @@ table.wikitable td.service.svc-hl {
   color: var(--footer-text);
   display: flex;
   justify-content: space-between;
-}
-
-/* roboto-regular - latin */
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: local('Roboto'),
-       url('./fonts/roboto-v30-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('./fonts/roboto-v30-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-       url('./fonts/roboto-v30-latin-regular.woff') format('woff'), /* Modern Browsers */
-       url('./fonts/roboto-v30-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('./fonts/roboto-v30-latin-regular.svg#Roboto') format('svg'); /* Legacy iOS */
 }

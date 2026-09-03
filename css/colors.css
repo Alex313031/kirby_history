@@ -1,0 +1,59 @@
+/* Set colours (same pattern as thorium.rocks: html.light/html.dark
+   classes set by the toggle, OS preference as the default) */
+:root,
+:root.light {
+  color-scheme: light;
+  --bgcolor: #dfdfdf;
+  --bgcolor2: #dfdfdf;
+  --fontcolor: #000000;
+  --border: #000000;
+  --buttonborder: #222222;
+  --imgshadow: #222222;
+  --table-bg: #ffffff;
+  --table-fg: #202122;
+  --table-border: #a2a9b1;
+  --table-th-bg: #dadce0;
+  --table-hover: #ddddff;
+  --footer-text: #333333;
+  --font-shadow: #ffffff;
+  --scroll-track: #c0c0c0;
+  --scroll-button: #808080;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bgcolor: #13181e;
+    --bgcolor2: #13181e;
+    --fontcolor: #ffffff;
+    --border: #ffffff;
+    --buttonborder: #dcdcdc;
+    --imgshadow: #ffffff;
+    --table-bg: #17191c;
+    --table-fg: #eaecf0;
+    --table-border: #54595d;
+    --table-th-bg: #29292d;
+    --table-hover: #232b44;
+    --footer-text: #dddddd;
+    --font-shadow: #000000;
+    --scroll-track: #c0c0c0;
+    --scroll-button: #808080;
+  }
+}
+:root.dark {
+  color-scheme: dark;
+  --bgcolor: #13181e;
+  --bgcolor2: #13181e;
+  --fontcolor: #ffffff;
+  --border: #ffffff;
+  --buttonborder: #dcdcdc;
+  --imgshadow: #ffffff;
+  --table-bg: #17191c;
+  --table-fg: #eaecf0;
+  --table-border: #54595d;
+  --table-th-bg: #29292d;
+  --table-hover: #232b44;
+  --footer-text: #dddddd;
+  --font-shadow: #000000;
+  --scroll-track: #c0c0c0;
+  --scroll-button: #808080;
+}
