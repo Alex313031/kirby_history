@@ -20,7 +20,7 @@
 
 /* SITE */
 
-	Last update: 2026/09/03
+	Last update: 2026/09/04
 	Language: English
 	Doctype: HTML5, CSS
 	IDE: Geany
