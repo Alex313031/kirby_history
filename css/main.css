@@ -98,7 +98,9 @@ button:active {
 }
 table.wikitable {
   background-color: var(--table-bg);
-  overflow-y: scroll;
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
   color: var(--table-fg);
   border: 1px solid var(--table-border);
   border-collapse: collapse;
@@ -203,4 +205,37 @@ div.logo-row {
   color: var(--footer-text);
   display: flex;
   justify-content: space-between;
+}
+
+/* Mobile layout */
+@media (max-width: 800px) {
+  body {
+    overflow-x: hidden; /* belt-and-suspenders against stray page widening */
+  }
+  /* source-code link flows as a normal centered line instead of
+     floating over whatever happens to be top-right on a phone */
+  .header {
+    position: static;
+    text-align: center;
+    padding-top: 4px;
+  }
+  .banner {
+    height: auto;
+    max-height: 200px;
+    max-width: 96vw;
+  }
+  .logo-row img {
+    height: 40px;
+    margin: 0.25em 0.3em;
+  }
+  .content {
+    padding: 0 6px;
+  }
+  /* smaller gift-wrap tiles so a phone-width margin still shows a motif */
+  body::before {
+    background-size: 100px auto;
+  }
+  table.wikitable {
+    width: 100%;
+  }
 }

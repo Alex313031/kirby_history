@@ -15,6 +15,9 @@
 	var HOLD_MS = 700;  // hold time before cruise engages
 	var CRUISE_MS = 25;  // cruise repeat interval
 	var TURN_MIN = 3;   // px of mouse travel before Kirby turns (jitter guard)
+	var EDGE_MARGIN = SIZE * 2; // viewport edge zone that autoscrolls (mouse mode)
+	var EDGE_SPEED = 12;        // px scrolled per edge tick
+	var EDGE_MS = 25;           // edge autoscroll tick interval
 
 	var ARROWS = {
 		ArrowUp:    [0, -1],
@@ -63,6 +66,9 @@
 	var holdTimer = null;
 	var cruiseTimer = null;
 	var preloaded = null;
+	var edgeTimer = null;
+	var lastClientX = null;
+	var lastClientY = null;
 
 	// warm the cache so the cursor and direction swaps never fall back
 	// to the crosshair (runs at page load, well before first activation)
@@ -142,6 +148,7 @@
 		document.addEventListener('mousedown', stopVroom, true);
 		document.addEventListener('keydown', onKeyDown, true);
 		document.addEventListener('keyup', onKeyUp, true);
+		edgeTimer = setInterval(edgeScrollTick, EDGE_MS);
 	}
 
 	// paint a vacuumed path from the previous position to (x, y),
@@ -172,6 +179,8 @@
 		// from wherever the keyboard left the vacuum
 		var fresh = byKeyboard;
 		byKeyboard = false;
+		lastClientX = e.clientX;
+		lastClientY = e.clientY;
 		if (fresh) canvas.style.cursor = cursorFor(currentDir); // mouse takes the skin back
 		sprite.style.display = 'none';
 		if (!fresh && posX !== null) {
@@ -207,6 +216,26 @@
 		sprite.style.top = (y - SIZE / 2) + 'px';
 		sprite.style.display = 'block';
 		followVacuum(x, y);
+	}
+
+	// mouse-mode edge autoscroll: park the pointer near a viewport edge
+	// and the page scrolls while the vacuum keeps eating the content
+	// sliding under the stationary nozzle (keyboard has followVacuum)
+	function edgeScrollTick() {
+		if (byKeyboard || lastClientX === null || posX === null) return;
+		var sx = 0;
+		var sy = 0;
+		if (lastClientY > window.innerHeight - EDGE_MARGIN) sy = EDGE_SPEED;
+		else if (lastClientY < EDGE_MARGIN) sy = -EDGE_SPEED;
+		if (lastClientX > window.innerWidth - EDGE_MARGIN) sx = EDGE_SPEED;
+		else if (lastClientX < EDGE_MARGIN) sx = -EDGE_SPEED;
+		if (!sx && !sy) return;
+		var beforeX = window.scrollX;
+		var beforeY = window.scrollY;
+		window.scrollBy(sx, sy);
+		if (window.scrollX === beforeX && window.scrollY === beforeY) return; // document end
+		setDir(dirFromDelta(sx, sy));
+		paintTo(lastClientX + window.scrollX, lastClientY + window.scrollY);
 	}
 
 	// keep the vacuum in view, lawnmower style
@@ -262,7 +291,9 @@
 		active = false;
 		clearTimeout(holdTimer);
 		clearInterval(cruiseTimer);
-		holdTimer = cruiseTimer = null;
+		clearInterval(edgeTimer);
+		holdTimer = cruiseTimer = edgeTimer = null;
+		lastClientX = lastClientY = null;
 		heldKeys = {};
 		heldCount = 0;
 		document.removeEventListener('mousemove', onMove);
