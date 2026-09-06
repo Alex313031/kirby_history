@@ -18,6 +18,8 @@
 	var EDGE_MARGIN = SIZE * 2; // viewport edge zone that autoscrolls (mouse mode)
 	var EDGE_SPEED = 12;        // px scrolled per edge tick
 	var EDGE_MS = 25;           // edge autoscroll tick interval
+	var TOUCH_DEADZONE = 10; // px of drag before the joystick engages
+	var TOUCH_LEASH = 48;    // anchor trails the thumb at this radius
 
 	var ARROWS = {
 		ArrowUp:    [0, -1],
@@ -69,6 +71,14 @@
 	var edgeTimer = null;
 	var lastClientX = null;
 	var lastClientY = null;
+	var IS_TOUCH = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
+	var touchId = null;
+	var anchorX = 0;
+	var anchorY = 0;
+	var joyDX = 0;
+	var joyDY = 0;
+	var touchTimer = null;
+	var exitBtn = null;
 
 	// warm the cache so the cursor and direction swaps never fall back
 	// to the crosshair (runs at page load, well before first activation)
@@ -112,6 +122,7 @@
 		canvas.style.left = '0';
 		canvas.style.zIndex = '9999';
 		canvas.style.cursor = cursorFor('idle');
+		canvas.style.touchAction = 'none';
 		document.body.appendChild(canvas);
 		// if the cursor image wasn't decoded yet, the browser shows the
 		// crosshair fallback and never retries -- re-assert once decoded
@@ -142,6 +153,30 @@
 		posY = (seedY !== undefined) ? seedY : null;
 		byKeyboard = false;
 		currentDir = 'idle';
+		if (IS_TOUCH) {
+			// touch: relative joystick controls a visible Kirby, so spawn
+			// him mid-viewport where no thumb hides him
+			posX = window.scrollX + window.innerWidth / 2;
+			posY = window.scrollY + window.innerHeight / 2;
+			byKeyboard = true;
+			canvas.style.cursor = 'none';
+			sprite.style.left = (posX - SIZE / 2) + 'px';
+			sprite.style.top = (posY - SIZE / 2) + 'px';
+			sprite.style.display = 'block';
+			exitBtn = document.createElement('button');
+			exitBtn.textContent = 'Exit Vroom';
+			exitBtn.style.position = 'fixed';
+			exitBtn.style.top = '10px';
+			exitBtn.style.right = '10px';
+			exitBtn.style.zIndex = '10001';
+			exitBtn.onclick = stopVroom;
+			document.body.appendChild(exitBtn);
+			canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+			canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+			canvas.addEventListener('touchend', onTouchEnd);
+			canvas.addEventListener('touchcancel', onTouchEnd);
+			touchTimer = setInterval(touchStep, CRUISE_MS);
+		}
 		document.addEventListener('mousemove', onMove);
 		// the button's own activating click ended before these attach,
 		// so only the NEXT press cancels
@@ -238,6 +273,63 @@
 		paintTo(lastClientX + window.scrollX, lastClientY + window.scrollY);
 	}
 
+	// --- touch joystick (mobile): thumb-relative steering a la Pac-Man 256
+	function onTouchStart(e) {
+		if (touchId !== null) return;
+		var t = e.changedTouches[0];
+		touchId = t.identifier;
+		anchorX = t.clientX;
+		anchorY = t.clientY;
+		joyDX = joyDY = 0;
+		// preventDefault also suppresses synthetic mouse events, so the
+		// desktop click-to-exit path never fires from a touch
+		e.preventDefault();
+	}
+
+	function onTouchMove(e) {
+		for (var i = 0; i < e.changedTouches.length; i++) {
+			var t = e.changedTouches[i];
+			if (t.identifier !== touchId) continue;
+			var dx = t.clientX - anchorX;
+			var dy = t.clientY - anchorY;
+			var dist = Math.sqrt(dx * dx + dy * dy);
+			if (dist > TOUCH_LEASH) {
+				// anchor trails on a leash so reversals feel instant
+				anchorX = t.clientX - (dx / dist) * TOUCH_LEASH;
+				anchorY = t.clientY - (dy / dist) * TOUCH_LEASH;
+			}
+			if (dist > TOUCH_DEADZONE) {
+				joyDX = dx / dist;
+				joyDY = dy / dist;
+			} else {
+				joyDX = joyDY = 0;
+			}
+			e.preventDefault();
+		}
+	}
+
+	function onTouchEnd(e) {
+		for (var i = 0; i < e.changedTouches.length; i++) {
+			if (e.changedTouches[i].identifier === touchId) {
+				touchId = null;
+				joyDX = joyDY = 0; // thumb up: vacuum parks, mode stays on
+			}
+		}
+	}
+
+	function touchStep() {
+		if ((!joyDX && !joyDY) || posX === null) return;
+		var x = Math.min(canvas.width, Math.max(0, posX + joyDX * STEP));
+		var y = Math.min(canvas.height, Math.max(0, posY + joyDY * STEP));
+		byKeyboard = true;
+		setDir(dirFromDelta(joyDX, joyDY));
+		paintTo(x, y);
+		sprite.style.left = (x - SIZE / 2) + 'px';
+		sprite.style.top = (y - SIZE / 2) + 'px';
+		sprite.style.display = 'block';
+		followVacuum(x, y);
+	}
+
 	// keep the vacuum in view, lawnmower style
 	function followVacuum(x, y) {
 		var margin = SIZE * 2;
@@ -292,8 +384,15 @@
 		clearTimeout(holdTimer);
 		clearInterval(cruiseTimer);
 		clearInterval(edgeTimer);
-		holdTimer = cruiseTimer = edgeTimer = null;
+		clearInterval(touchTimer);
+		holdTimer = cruiseTimer = edgeTimer = touchTimer = null;
 		lastClientX = lastClientY = null;
+		touchId = null;
+		joyDX = joyDY = 0;
+		if (exitBtn) {
+			exitBtn.remove();
+			exitBtn = null;
+		}
 		heldKeys = {};
 		heldCount = 0;
 		document.removeEventListener('mousemove', onMove);

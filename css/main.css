@@ -184,8 +184,15 @@ div.logo-row {
   margin-bottom: 8px;
 }
 
-.table-caption {
+.caption {
+  text-align: center;
   font-size: 14px;
+  font-weight: normal;
+  font-style: italic;
+}
+.table-caption {
+  text-align: center;
+  font-size: 13px;
   font-weight: normal;
   font-style: italic;
 }
@@ -215,9 +222,17 @@ div.logo-row {
   /* source-code link flows as a normal centered line instead of
      floating over whatever happens to be top-right on a phone */
   .header {
+    font-size: 12px;
     position: static;
     text-align: center;
-    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  .footer {
+    font-size: 12px;
+  }
+  .table-caption {
+    font-size: 12px;
+    text-align: left;
   }
   .banner {
     height: auto;
@@ -226,14 +241,14 @@ div.logo-row {
   }
   .logo-row img {
     height: 40px;
-    margin: 0.25em 0.3em;
+    margin: 0.25em 0.33em;
   }
   .content {
-    padding: 0 6px;
+    padding: 0 8px;
   }
   /* smaller gift-wrap tiles so a phone-width margin still shows a motif */
   body::before {
-    background-size: 100px auto;
+    background-size: 64px auto;
   }
   table.wikitable {
     width: 100%;
