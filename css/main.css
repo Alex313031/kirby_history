@@ -253,4 +253,10 @@ div.logo-row {
   table.wikitable {
     width: 100%;
   }
+  /* dynamic-toolbar clearance: mobile browsers park their bottom URL bar
+     over the last ~50px of a page (no scroll left to retract it at the
+     very bottom), hiding the footer links. Pad past it. */
+  .footer {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  }
 }
