@@ -19,7 +19,8 @@
 	var EDGE_SPEED = 12;        // px scrolled per edge tick
 	var EDGE_MS = 25;           // edge autoscroll tick interval
 	var TOUCH_DEADZONE = 10; // px of drag before the joystick engages
-	var TOUCH_LEASH = 48;    // anchor trails the thumb at this radius
+	var TOUCH_LEASH = 64;    // anchor trails the thumb at this radius (also = full-throttle distance)
+	var TOUCH_SPEED = 10;    // MAX px per tick on touch (~400 px/s; keyboard cruise is 16)
 
 	var ARROWS = {
 		ArrowUp:    [0, -1],
@@ -299,8 +300,13 @@
 				anchorY = t.clientY - (dy / dist) * TOUCH_LEASH;
 			}
 			if (dist > TOUCH_DEADZONE) {
-				joyDX = dx / dist;
-				joyDY = dy / dist;
+				// analog throttle: speed scales with drag distance, and the
+				// squared curve gives fine control at the slow end
+				var mag = (dist - TOUCH_DEADZONE) / (TOUCH_LEASH - TOUCH_DEADZONE);
+				mag = Math.min(1, mag);
+				mag = mag * mag;
+				joyDX = (dx / dist) * mag;
+				joyDY = (dy / dist) * mag;
 			} else {
 				joyDX = joyDY = 0;
 			}
@@ -319,8 +325,8 @@
 
 	function touchStep() {
 		if ((!joyDX && !joyDY) || posX === null) return;
-		var x = Math.min(canvas.width, Math.max(0, posX + joyDX * STEP));
-		var y = Math.min(canvas.height, Math.max(0, posY + joyDY * STEP));
+		var x = Math.min(canvas.width, Math.max(0, posX + joyDX * TOUCH_SPEED));
+		var y = Math.min(canvas.height, Math.max(0, posY + joyDY * TOUCH_SPEED));
 		byKeyboard = true;
 		setDir(dirFromDelta(joyDX, joyDY));
 		paintTo(x, y);
