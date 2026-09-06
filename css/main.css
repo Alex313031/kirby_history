@@ -7,6 +7,10 @@
 html {
   background-color: var(--bgcolor);
   background-image: linear-gradient(var(--bgcolor), var(--bgcolor2));
+  /* stop iOS Safari from inflating text inside wide blocks (the table
+     caption was getting boosted on real devices only) */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 body {
   color: var(--fontcolor);
@@ -52,7 +56,10 @@ h2 {
   width: 1200px;
   max-width: 100%;
   margin: 0 auto;
-  padding: 0 12px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 10px;
+  padding-bottom: 0;
   /* opaque ground so the wrap never sits under text or the table */
   background-color: var(--bgcolor);
 }
@@ -209,6 +216,7 @@ div.logo-row {
 /* Bottom of page */
 .footer {
   font-size: 13px;
+  padding-bottom: 10px;
   color: var(--footer-text);
   display: flex;
   justify-content: space-between;
@@ -244,19 +252,20 @@ div.logo-row {
     margin: 0.25em 0.33em;
   }
   .content {
-    padding: 0 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 6px;
+    padding-bottom: 0;
+  /* dynamic-toolbar clearance: mobile browsers park their bottom URL bar
+     over the last ~50px of a page (no scroll left to retract it at the
+     very bottom), hiding the footer links. Pad past it. */
+    margin-bottom: calc(50px + env(safe-area-inset-bottom, 0px));
   }
   /* smaller gift-wrap tiles so a phone-width margin still shows a motif */
   body::before {
     background-size: 64px auto;
   }
   table.wikitable {
-    width: 100%;
-  }
-  /* dynamic-toolbar clearance: mobile browsers park their bottom URL bar
-     over the last ~50px of a page (no scroll left to retract it at the
-     very bottom), hiding the footer links. Pad past it. */
-  .footer {
-    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+    width: 99%;
   }
 }
