@@ -34,7 +34,7 @@
 		down:  'imgs/vroom/down.png',
 		left:  'imgs/vroom/left.png',
 		right: 'imgs/vroom/right.png',
-		idle:  'imgs/vroom.png'
+		idle:  'imgs/vroom/vroom.png'
 	};
 
 	// where the vacuum head sits in each sprite, as an offset from the
