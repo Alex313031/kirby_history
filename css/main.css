@@ -290,13 +290,3 @@ div.logo-row {
     max-width: 92%;
   }
 }
-
-/* Vacuum game field: fills the viewport below the header so the canvas
-   (mounted to body by game.js) has a full room to clean */
-.game {
-  min-height: 90vh;
-}
-#gamefield {
-  width: 100%;
-  min-height: 90vh;
-}
