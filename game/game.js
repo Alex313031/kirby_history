@@ -17,6 +17,10 @@
 	var GLIDE_PX = 8;
 	var TOUCH_DEADZONE = 16;             // px of drag before a direction registers
 
+	// --- timing ---
+	var TIME_LIMIT = 60;                 // seconds, Timed Mode
+	var mode = 'timed';                  // 'timed' | 'freestyle'
+
 	// --- colors (fixed; identical in light/dark so the "room" reads the same) ---
 	var COL_FLOOR = '#b9a986';           // dusty carpet (dirty)
 	var COL_CLEAN = '#e9dec2';           // cleaned carpet (lighter)
@@ -26,7 +30,8 @@
 	// --- sprites ---
 	var DIR_IMGS = {
 		up: 'assets/up.png', down: 'assets/down.png',
-		left: 'assets/left.png', right: 'assets/right.png', idle: 'assets/vroom.png'
+		left: 'assets/left.png', right: 'assets/right.png', idle: 'assets/vroom.png',
+		dirty: 'assets/carpet_dirty.png', clean: 'assets/carpet_clean.png'
 	};
 	var imgs = {};
 
@@ -42,7 +47,8 @@
 	var START = { col: 1, row: 1 };
 
 	var canvas, ctx, hud, resetBtn;
-	var grid, kirby, heldDir, facing, cleaned, reachableTotal, won, startTime, raf;
+	var grid, kirby, heldDir, facing, cleaned, reachableTotal;
+	var won, timeUp, over, elapsed, startTime, raf, modeSel;
 
 	// --- setup ---
 	function buildGrid() {
@@ -86,7 +92,7 @@
 		cleaned = 1;
 		heldDir = null;
 		facing = 'idle';
-		won = false;
+		won = false; timeUp = false; over = false; elapsed = 0;
 		startTime = performance.now();
 	}
 
@@ -119,10 +125,14 @@
 
 	// --- main loop ---
 	function tick() {
-		if (aligned() && !won) tryStartMove();        // only accept a new cell when settled
-		kirby.px = step(kirby.px, kirby.col * CELL);   // glide toward the target cell
+		if (!over) {
+			elapsed = (performance.now() - startTime) / 1000;
+			if (mode === 'timed' && elapsed >= TIME_LIMIT) { elapsed = TIME_LIMIT; timeUp = true; over = true; }
+		}
+		if (aligned() && !over) tryStartMove();        // only accept a new cell when settled
+		if (!over && cleaned >= reachableTotal) { won = true; over = true; }
+		kirby.px = step(kirby.px, kirby.col * CELL);   // glide toward the target cell (finishes settling even when over)
 		kirby.py = step(kirby.py, kirby.row * CELL);
-		if (!won && cleaned >= reachableTotal) { won = true; }
 		render();
 		raf = requestAnimationFrame(tick);
 	}
@@ -131,9 +141,15 @@
 		for (var r = 0; r < ROWS; r++) {
 			for (var c = 0; c < COLS; c++) {
 				var s = grid[r][c];
-				ctx.fillStyle = s === BLOCKED ? COL_WALL : (s === CLEAN ? COL_CLEAN : COL_FLOOR);
-				ctx.fillRect(c * CELL, r * CELL, CELL, CELL);
-				if (s !== BLOCKED) { ctx.strokeStyle = COL_GRID; ctx.strokeRect(c * CELL, r * CELL, CELL, CELL); }
+				var x = c * CELL, y = r * CELL;
+				if (s === BLOCKED) {
+					ctx.fillStyle = COL_WALL;
+					ctx.fillRect(x, y, CELL, CELL);
+				} else {
+					var tile = imgs[s === CLEAN ? 'clean' : 'dirty'];
+					if (tile && tile.complete) ctx.drawImage(tile, x, y, CELL, CELL);
+					else { ctx.fillStyle = s === CLEAN ? COL_CLEAN : COL_FLOOR; ctx.fillRect(x, y, CELL, CELL); }
+				}
 			}
 		}
 		FURNITURE.forEach(function (f) {
@@ -144,10 +160,17 @@
 		if (k && k.complete) ctx.drawImage(k, kirby.px, kirby.py, CELL, CELL);
 
 		var pct = Math.round((cleaned / reachableTotal) * 100);
-		var secs = ((performance.now() - startTime) / 1000).toFixed(1);
-		hud.textContent = won
-			? 'Room clean! ' + secs + 's  (R / Reset to replay)'
-			: 'Cleaned ' + pct + '%   ' + secs + 's';
+		if (won) {
+			hud.textContent = mode === 'timed'
+				? 'Room clean in ' + elapsed.toFixed(1) + 's!  (' + (TIME_LIMIT - elapsed).toFixed(1) + 's to spare)'
+				: 'Room clean! ' + elapsed.toFixed(1) + 's';
+		} else if (timeUp) {
+			hud.textContent = 'You Lose! Cleaned ' + pct + '%';
+		} else if (mode === 'timed') {
+			hud.textContent = 'Cleaned ' + pct + '%    Time: ' + (TIME_LIMIT - elapsed).toFixed(1) + 's';
+		} else {
+			hud.textContent = 'Cleaned ' + pct + '%    ' + elapsed.toFixed(1) + 's';
+		}
 	}
 
 	// --- input: cardinal only ---
@@ -196,21 +219,39 @@
 		resetBtn = document.createElement('button');
 		resetBtn.textContent = 'Reset';
 		resetBtn.onclick = function () { this.blur(); reset(); };
+		modeSel = document.createElement('select');
+		[['timed', 'Timed Mode'], ['freestyle', 'Freestyle']].forEach(function (o) {
+			var opt = document.createElement('option');
+			opt.value = o[0]; opt.textContent = o[1];
+			modeSel.appendChild(opt);
+		});
+		modeSel.value = mode;
+		modeSel.onchange = function () { mode = this.value; this.blur(); reset(); };
+
+		var controls = document.createElement('div');
+		controls.className = 'game-controls';
+		controls.appendChild(modeSel);
+		controls.appendChild(resetBtn);
+
+		// playArea = canvas + all the empty space around/below it; this is
+		// the touch-steering zone. Controls (mode + reset) sit ABOVE it and
+		// stay tappable, not captured by swipe steering.
+		var playArea = document.createElement('div');
+		playArea.className = 'game-play';
+		playArea.appendChild(canvas);
 
 		var field = document.getElementById('gamefield');
-		field.appendChild(resetBtn);   // reset at the top of the stack
+		field.appendChild(controls);   // mode + reset at the top (not touch-captured)
 		field.appendChild(hud);
-		field.appendChild(canvas);
+		field.appendChild(playArea);
 		ctx = canvas.getContext('2d');
 
 		document.addEventListener('keydown', onKeyDown, true);
 		document.addEventListener('keyup', onKeyUp, true);
-		// touch on the WHOLE field (not just the canvas) so the empty space
-		// around it is swipeable too
-		field.addEventListener('touchstart', onTouchStart, { passive: false });
-		field.addEventListener('touchmove', onTouchMove, { passive: false });
-		field.addEventListener('touchend', onTouchEnd);
-		field.addEventListener('touchcancel', onTouchEnd);
+		playArea.addEventListener('touchstart', onTouchStart, { passive: false });
+		playArea.addEventListener('touchmove', onTouchMove, { passive: false });
+		playArea.addEventListener('touchend', onTouchEnd);
+		playArea.addEventListener('touchcancel', onTouchEnd);
 
 		reset();
 		raf = requestAnimationFrame(tick);
