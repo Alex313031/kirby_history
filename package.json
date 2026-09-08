@@ -1,0 +1,20 @@
+{
+  "name": "kirby_website",
+  "version": "2.0.0",
+  "description": "A Kirby Vacuum cleaner history site, with personal blog and vacuum game.",
+  "author": "Alex313031",
+  "license": "BSD-3-Clause",
+  "copyright": "Copyright © 2026 Alex313031",
+  "repository": "https://github.com/Alex313031/kirby_history",
+  "private": true,
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "serve": "ws --directory .",
+    "check": "node --check js/button.js && node --check js/copy-text.js && node --check js/table-hover.js && node --check js/vroom.js && node --check game/game.js"
+  },
+  "devDependencies": {
+    "local-web-server": "5.4.0"
+  }
+}

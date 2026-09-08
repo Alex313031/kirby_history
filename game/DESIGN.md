@@ -65,6 +65,11 @@ Collision is just the cell-state check. No bounding boxes, no pixel tests.
 ## Assets
 - Directional sprites `assets/{up,down,left,right}.png` + idle `vroom.png`,
   all 64x64.
+- Carpet tiles `assets/carpet_{dirty,clean}.png`, 64x64, seamless.
+- Wall sprites (64x64 cells, wood ~32px thick, rest transparent):
+  `wall_h` (top/bottom), `wall_v` (left/right), `wall_tl/tr/bl/br` (corners).
+  Wood on the room-facing half; `wall_h` drawn beam-bottom + `wall_v` drawn
+  beam-right, code flips them for the opposite side. Corners drawn individually.
 
 ## Build order
 1. Core loop: grid, one-cell stepping + tween, cell-cleaning, obstacle

@@ -1,8 +1,20 @@
 /* "Suck It!" vacuum game styles (see game.js / DESIGN.md).
    Depends on the shared color tokens from ../css/colors.css. */
 
-/* game-page source-code link: bottom-right (main.css isn't loaded here,
-   so the .header rule is defined locally for this page) */
+:root,:root.light,:root.dark {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0; /* game page doesn't load main.css; kill default body margin (was causing overflow scrollbar) */
+  background: #656565;
+}
+
+/* source-code link: top-right, out of the lower touch-steering zone */
 .header {
   position: fixed;
   top: 10px;
@@ -12,47 +24,87 @@
   z-index: 10;
 }
 
+/* <main> fills exactly the viewport -- dvh accounts for the mobile URL bar
+   so nothing spills past the bottom into a scrollbar */
 .game {
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
 }
 #gamefield {
-  min-height: 100vh;
+  height: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding-top: 8px;
+  padding-top: 44px;  /* clear the fixed source-code link row above the controls */
 }
-/* touch-steering zone: canvas + all surrounding space, fills below the
-   controls; controls above are NOT captured so the dropdown/reset work */
-.game-play {
-  flex: 1 1 auto;
-  align-self: stretch;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  touch-action: none;
-}
-#gamefield canvas {
-  max-width: 100%;
-  height: auto;
-  background-color: #000;
-  border: 2px solid var(--border);
-  image-rendering: pixelated; /* keep the 64px pixel art crisp when scaled */
-}
-.game-hud {
-  font-family: "Roboto", monospace;
-  font-size: 18px;
-  color: var(--fontcolor);
-}
+
+/* controls (mode + reset) + HUD sit directly above the field, NOT captured
+   by touch steering */
 .game-controls {
   display: flex;
   gap: 10px;
   align-items: center;
 }
+button {
+  font-size: 14px;
+}
+
+/* buttons + dropdown: same styling as the main site (main.css) */
+button,
 .game-controls select {
   font-family: inherit;
+  box-shadow: 1px 1px 1px 0 var(--buttonborder);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background-color: #292929;
+  color: #ffffff;
+  cursor: pointer;
+}
+button:hover,
+.game-controls select:hover {
+  background-color: #494949;
+}
+button:active {
+  box-shadow: 1px 1px 1px 0 #222222 inset;
+  background-color: #393939;
+}
+/* uniform control sizing: buttons and dropdown same height */
+.game-controls button,
+.game-controls select {
+  height: 30px;
+  box-sizing: border-box;
   font-size: 14px;
-  padding: 2px 4px;
+  padding: 0 8px;
+  margin: 0;
+  vertical-align: middle;
+}
+.game-hud {
+  font-family: monospace;
+  font-size: 18px;
+  color: var(--fontcolor);
+}
+
+/* touch-steering zone: the field (canvas) plus all space below it. Canvas
+   sits flush at the top of this zone (right under the controls); the empty
+   space beneath is swipeable too. Controls above are outside this element. */
+.game-play {
+  flex: 1 1 auto;
+  min-height: 0;            /* let it shrink so the canvas fits with no page scroll */
+  align-self: stretch;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  touch-action: none;
+}
+#gamefield canvas {
+  max-width: 100%;
+  max-height: 100%;         /* fit the zone vertically too (aspect preserved, no overflow) */
+  background-color: #232323;
+  border: 2px solid #000; /* fixed dark outline: stays visible even on the all-white title card (var(--border) would be white in dark theme) */
+  image-rendering: pixelated; /* keep the 64px pixel art crisp when scaled */
 }
