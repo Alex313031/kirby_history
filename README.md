@@ -9,7 +9,10 @@
 
 Currently located at http://thorium.rocks/kirby_history/
 
-For a GitHub-friendly list of Kirby Models, see [Models_List.md](./Models_List.md).
+It also has a personal Kirby restoration blog at http://thorium.rocks/kirby_history/blog
+and a mid-2000's Adobe flash style game at http://thorium.rocks/kirby_history/game
+
+ - For a GitHub-friendly list of Kirby Models, see [Models_List.md](./Models_List.md).
 
 --------
 
@@ -17,3 +20,5 @@ For a GitHub-friendly list of Kirby Models, see [Models_List.md](./Models_List.m
 
 <img src="./imgs/Gary_Larson_Appliance_Healers_1986.jpg" width="33%">
 
+### License
+Licensed under the [BSD-3 Clause License](LICENSE.md)
