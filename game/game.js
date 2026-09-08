@@ -74,6 +74,8 @@
 	music.loop = true; music.volume = 0.40;
 	var vroomSfx = new Audio('assets/sounds/vacuum_on.mp3');   // recorded by Alex
 	vroomSfx.loop = true; vroomSfx.volume = 0.15;
+	var winSfx = new Audio('assets/sounds/win.mp3');   winSfx.volume = 0.30;
+	var failSfx = new Audio('assets/sounds/fail.mp3'); failSfx.volume = 0.30;
 	var audioStarted = false, musicMuted = true, sfxMuted = false, vroomPlaying = false;
 
 	function startAudio() {   // first user gesture unlocks + starts the music
@@ -94,6 +96,11 @@
 		if (!audioStarted || sfxMuted) { if (vroomPlaying) { vroomSfx.pause(); vroomPlaying = false; } return; }
 		if (moving && !vroomPlaying) { vroomSfx.currentTime = 0; vroomSfx.play().catch(function (e) { console.warn('vroom sfx:', e.name); }); vroomPlaying = true; }
 		else if (!moving && vroomPlaying) { vroomSfx.pause(); vroomPlaying = false; }
+	}
+	function playOneShot(a) {   // win/fail stingers; follow the SFX (vacuum) mute
+		if (!audioStarted || sfxMuted) return;
+		try { a.currentTime = 0; } catch (e) {}
+		a.play().catch(function () {});
 	}
 
 	// --- setup ---
@@ -342,10 +349,10 @@
 		if (!started) { render(); raf = requestAnimationFrame(tick); return; }
 		if (!over) {
 			elapsed = (performance.now() - startTime) / 1000;
-			if (mode === 'timed' && elapsed >= TIME_LIMIT) { elapsed = TIME_LIMIT; timeUp = true; over = true; }
+			if (mode === 'timed' && elapsed >= TIME_LIMIT) { elapsed = TIME_LIMIT; timeUp = true; over = true; playOneShot(failSfx); }
 		}
 		if (aligned() && !over) tryStartMove();        // only accept a new cell when settled
-		if (!over && cleaned >= reachableTotal) { won = true; over = true; }
+		if (!over && cleaned >= reachableTotal) { won = true; over = true; playOneShot(winSfx); }
 		kirby.px = step(kirby.px, kirby.col * CELL);   // glide toward the target cell (finishes settling even when over)
 		kirby.py = step(kirby.py, kirby.row * CELL);
 		updateVroom(!over && (!aligned() || !!heldDir));
