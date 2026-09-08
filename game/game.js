@@ -92,7 +92,7 @@
 	}
 	function updateVroom(moving) {
 		if (!audioStarted || sfxMuted) { if (vroomPlaying) { vroomSfx.pause(); vroomPlaying = false; } return; }
-		if (moving && !vroomPlaying) { vroomSfx.play().catch(function (e) { console.warn('vroom sfx:', e.name); }); vroomPlaying = true; }
+		if (moving && !vroomPlaying) { vroomSfx.currentTime = 0; vroomSfx.play().catch(function (e) { console.warn('vroom sfx:', e.name); }); vroomPlaying = true; }
 		else if (!moving && vroomPlaying) { vroomSfx.pause(); vroomPlaying = false; }
 	}
 
@@ -250,6 +250,8 @@
 		return null;   // caller falls back to a known-good static layout
 	}
 
+	function replay() { reset(); startGame(); }   // end-screen "play again": new game, no title
+
 	function startGame() {   // first move dismisses the title card and starts play + music
 		if (started) return;
 		started = true;
@@ -351,11 +353,33 @@
 		raf = requestAnimationFrame(tick);
 	}
 
+	// shared win/lose overlay: dims the field, then big title + stats + hint
+	function drawEndOverlay(title, titleColor, statsText, hintText) {
+		ctx.save();
+		ctx.fillStyle = 'rgba(0, 0, 0, 0.50)';
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'middle';
+		// canvas can't use CSS text-shadow; apply it from the --font-shadow token
+		ctx.shadowColor = getComputedStyle(document.documentElement).getPropertyValue('--font-shadow').trim() || '#000';
+		ctx.shadowOffsetX = -3; ctx.shadowOffsetY = -3; ctx.shadowBlur = 1;
+		ctx.fillStyle = titleColor;
+		ctx.font = 'italic bold 128px monospace';
+		ctx.fillText(title, canvas.width / 2, canvas.height / 2 - 45);
+		ctx.fillStyle = '#ffffff';
+		ctx.font = '38px monospace';
+		ctx.fillText(statsText, canvas.width / 2, canvas.height / 2 + 48);
+		ctx.fillStyle = '#dddddd';
+		ctx.font = 'italic 24px monospace';
+		ctx.fillText(hintText, canvas.width / 2, canvas.height / 2 + 98);
+		ctx.restore();
+	}
+
 	function render() {
 		if (!started) {
 			if (imgs.title && imgs.title.complete) ctx.drawImage(imgs.title, 0, 0, canvas.width, canvas.height);
 			else { ctx.fillStyle = COL_FLOOR; ctx.fillRect(0, 0, canvas.width, canvas.height); }
-			hud.textContent = 'Arrow keys or swipe to start';
+			hud.textContent = 'Space bar or tap to start';
 			hud.style.color = '';
 			return;
 		}
@@ -392,6 +416,13 @@
 		if (k && k.complete) ctx.drawImage(k, kirby.px, kirby.py, CELL, CELL);
 
 		var pct = Math.round((cleaned / reachableTotal) * 100);
+
+		if (won) {
+			drawEndOverlay('You Win!', '#00ff00', 'Cleaned 100% | Time: ' + elapsed.toFixed(1) + 's', 'Press space or tap to play again');
+		} else if (timeUp) {
+			drawEndOverlay('You Lose!', '#ff0000', 'Cleaned ' + pct + '% | Time: ' + TIME_LIMIT + 's', 'Press R or Reset to try again');
+		}
+
 		hud.style.color = won ? '#00ff00' : (timeUp ? '#ff0000' : '');   // green win / red lose / default
 		if (won) {
 			hud.textContent = mode === 'timed'
@@ -400,16 +431,16 @@
 		} else if (timeUp) {
 			hud.textContent = 'You Lose! Cleaned ' + pct + '%';
 		} else if (mode === 'timed') {
-			hud.textContent = 'Cleaned ' + pct + '%    Time: ' + (TIME_LIMIT - elapsed).toFixed(1) + 's';
+			hud.textContent = 'Cleaned ' + pct + '%   Time: ' + (TIME_LIMIT - elapsed).toFixed(1) + 's';
 		} else {
-			hud.textContent = 'Cleaned ' + pct + '%    ' + elapsed.toFixed(1) + 's';
+			hud.textContent = 'Cleaned ' + pct + '%   ' + elapsed.toFixed(1) + 's';
 		}
 	}
 
 	// --- input: cardinal only ---
 	function onKeyDown(e) {
 		if (e.key === 'Escape' || e.key === 'r' || e.key === 'R') { reset(); e.preventDefault(); return; }
-		if (e.key === ' ' || e.key === 'Spacebar') { startGame(); e.preventDefault(); return; }  // space starts, doesn't move
+		if (e.key === ' ' || e.key === 'Spacebar') { if (over) replay(); else startGame(); e.preventDefault(); return; }  // space starts / plays again
 		if (!(e.key in DIRS)) return;
 		e.preventDefault();               // arrows must not scroll the page
 		startGame();                      // first arrow dismisses the title
@@ -421,7 +452,7 @@
 
 	var touchId = null, ax = 0, ay = 0;
 	function onTouchStart(e) {
-		startGame();                      // first touch dismisses the title
+		if (over) replay(); else startGame();   // tap dismisses the title / plays again
 		if (touchId !== null) return;
 		var t = e.changedTouches[0];
 		touchId = t.identifier; ax = t.clientX; ay = t.clientY;
@@ -454,6 +485,7 @@
 		hud.className = 'game-hud';
 		resetBtn = document.createElement('button');
 		resetBtn.textContent = 'Reset';
+		resetBtn.title = 'Reset Game';
 		resetBtn.onclick = function () { this.blur(); reset(); };
 		modeSel = document.createElement('select');
 		[['timed', 'Timed Mode'], ['freestyle', 'Freestyle']].forEach(function (o) {
@@ -462,6 +494,7 @@
 			modeSel.appendChild(opt);
 		});
 		modeSel.value = mode;
+		modeSel.title = "Choose game mode";
 		modeSel.onchange = function () { mode = this.value; this.blur(); reset(); };
 
 		musicBtn = document.createElement('button');
@@ -499,7 +532,7 @@
 		playArea.addEventListener('touchmove', onTouchMove, { passive: false });
 		playArea.addEventListener('touchend', onTouchEnd);
 		playArea.addEventListener('touchcancel', onTouchEnd);
-		playArea.addEventListener('mousedown', function () { startGame(); });   // click the field to start (desktop)
+		playArea.addEventListener('mousedown', function () { if (over) replay(); else startGame(); });   // click to start / play again (desktop)
 
 		reset();
 		raf = requestAnimationFrame(tick);

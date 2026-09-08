@@ -14,7 +14,7 @@
         }
     ],
     "theme_color": "#13181e",
-    "background_color": "#ffffff",
+    "background_color": "#13181e",
     "display": "standalone",
     "start_url": "/kirby_history/",
     "scope": "/kirby_history/"
