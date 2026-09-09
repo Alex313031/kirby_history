@@ -71,6 +71,54 @@ Collision is just the cell-state check. No bounding boxes, no pixel tests.
   Wood on the room-facing half; `wall_h` drawn beam-bottom + `wall_v` drawn
   beam-right, code flips them for the opposite side. Corners drawn individually.
 
+## Levels & door
+- Progression across `MAX_LEVEL` levels (currently **4**). Clearing a room
+  (100% of reachable floor) does **not** end the game -- it opens a **door**.
+- **Door**: a single 64x64 cell on a random wall (never a corner), one per
+  level. Closed = impassable (wood panel); opens the instant the room is clean
+  (green portal, `passable()` lets Kirby through). The interior cell behind it
+  is kept furniture-free by the generator so the exit is always reachable.
+  Kirby glides fully onto the door cell before the level flips (no early cut).
+- Driving onto an open door cell: if it's the last level -> **You Win!** (green
+  end overlay); otherwise -> `nextLevel()` (regenerate, no title card).
+- **Level entry mirrors the exit**: you emerge on the wall *opposite* the door,
+  at the same position along it, gliding one cell inward in the same heading
+  (continuous motion, not a teleport). Level 1 spawns in the top-left corner.
+- **Entry door** (levels reached through a door): an *open* door appears at the
+  entry cell and Kirby glides through it; ~1 s after he settles on the field it
+  reverts to plain wall. So Kirby comes *through a door*, yet mid-play a level
+  shows only its single exit door. The entry door is cosmetic (not walkable, so
+  you can't back out), and the random exit door is guaranteed never to reuse the
+  entry cell (or closing the entry door would delete the exit).
+- Controls: arrows / cardinal touch-drag to move; Space or tap to start &
+  replay; R or Esc to reset; **M** toggles music.
+- **Difficulty**: level N adds `2*(N-1)` extra objects, each a random duplicate
+  of a non-couch/TV piece (chair / side table / coffee table / trash), placed
+  free-standing. Generator degrades the count if a level can't be fit; every
+  layout is flood-fill validated (no trapped floor, exit approach clear).
+- **Timer** doesn't start until the player's first actual move (the title-
+  dismissed room sits idle at full time), freezes the moment a room is clean
+  (door open) so reaching the exit isn't a race, and resets per level. Timeout
+  still loses -> back to level 1.
+- Sounds: `win.mp3` on the final win, `fail.mp3` on timeout (one-shot, follow
+  the SFX/Vacuum mute).
+- **Cat** (level >= `CAT_LEVEL`, = 4): spawns on a random floor cell, idles until
+  1 s after the player's first move, then runs in long straight *lines* in any of
+  **8 directions** (cardinals + diagonals) — holds its heading until blocked or a
+  rare random break (turns seldom), then turns to a random non-reversing direction
+  (diagonals don't cut corners) — at a fast glide (`CAT_GLIDE`). The sprite is a
+  left-facing profile; it's mirrored horizontally when running rightward and
+  holds its last facing on pure-vertical moves (`cat.faceRight`).
+  Moves like a real cat. Floor-only (won't cross walls/furniture/doors, so it
+  can't leave the room) and a **solid moving obstacle**: Kirby can't enter its
+  cell and it won't step onto Kirby, so it gets in the way (costs time to route
+  around) without ever sitting on the exit or affecting cleaning. Inspired by Neko.
+- `START_LEVEL` (debug): the level to begin on (default 1). Set it to 4 to jump
+  straight into level 4 for testing instead of playing up to it.
+- **Dev console API** (on `window`, no source edits): `SetLevel(n)`, `CleanRoom()`,
+  `OpenDoor()`, `Win()`, `Lose()`, `SpawnCat()`, `SetMaxLevel(n)`, `Help()`.
+  Type `Help()` in the browser console for the list.
+
 ## Build order
 1. Core loop: grid, one-cell stepping + tween, cell-cleaning, obstacle
    rejection, win check. (Hand-coded test level.)
@@ -78,3 +126,4 @@ Collision is just the cell-state check. No bounding boxes, no pixel tests.
 3. Furniture PNGs + multi-cell blocking + draw.
 4. Procedural furniture placement + flood-fill validation.
 5. Polish: title/win/lose screens, mobile controls.
+6. Levels + door progression + difficulty scaling.

@@ -8,7 +8,7 @@
 	// --- grid / geometry ---
 	var CELL = 64;
 	var COLS = 16, ROWS = 12;            // 1024 x 768
-	var FLOOR = 0, CLEAN = 1, WALL = 2, FURN_DIRTY = 3, FURN_CLEAN = 4;
+	var FLOOR = 0, CLEAN = 1, WALL = 2, FURN_DIRTY = 3, FURN_CLEAN = 4, DOOR = 5;
 
 	// --- motion ---
 	// Runs on a 60fps rAF loop. GLIDE_PX = sprite px advanced per frame.
@@ -20,6 +20,10 @@
 	// --- timing ---
 	var TIME_LIMIT = 60;                 // seconds, Timed Mode
 	var mode = 'timed';                  // 'timed' | 'freestyle'
+	var MAX_LEVEL = 4;                    // clear this many levels to win the game
+	var START_LEVEL = 4;                 // DEBUG: level to start on -- set to 4 to jump straight to level 4
+	var CAT_LEVEL = 4;                    // a cat starts scurrying around the room from this level on
+	var CAT_GLIDE = 12;                   // cat px/frame (faster than Kirby's 8 = a scurry; step() clamps to the cell, any value OK)
 
 	// --- colors (fixed; identical in light/dark so the "room" reads the same) ---
 	var COL_FLOOR = '#b9a986';           // dusty carpet (dirty)
@@ -36,7 +40,9 @@
 		wall_left: 'assets/wall_left.png', wall_right: 'assets/wall_right.png',
 		wall_top_left: 'assets/wall_top_left.png', wall_top_right: 'assets/wall_top_right.png',
 		wall_bottom_left: 'assets/wall_bottom_left.png', wall_bottom_right: 'assets/wall_bottom_right.png',
-		title: 'assets/titlecard.png'
+		title: 'assets/titlecard.png',
+		door_closed: 'assets/door_closed.png', door_open: 'assets/door_open.png',   // 64x64 each
+		cat: 'assets/cat.png'
 	};
 	var imgs = {};
 
@@ -45,7 +51,7 @@
 	// faces a random direction with the TV 1 cell in front of its middle; the
 	// chair faces a random direction with a side table 1 cell off an arm side
 	// (table randomly rotated); coffee table and trash go anywhere. Validated.
-	var FURNI_SRCS = ['assets/couch.png', 'assets/tv.png', 'assets/chair.png', 'assets/side_table.png', 'assets/coffee_table.png', 'assets/trash_can.png'];
+	var FURNI_SRCS = ['assets/couch.png', 'assets/tv.png', 'assets/chair.png', 'assets/side_table.png', 'assets/coffee_table.png', 'assets/trash_can.png', 'assets/pot_plant.png'];
 	var FALLBACK_FURNITURE = [
 		{ src: 'assets/couch.png',        col: 6,  row: 2, w: 3, h: 1, rot: 0 },
 		{ src: 'assets/tv.png',           col: 7,  row: 4, w: 1, h: 1, rot: 180 },
@@ -60,11 +66,15 @@
 	var DIRS = {
 		ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0]
 	};
-	var START = { col: 1, row: 1 };
+	var START = { col: 1, row: 1 };           // current spawn cell (level 1 corner; later = mirrored from the exit door)
+	var entryPx = CELL, entryPy = CELL, entryFacing = 'idle';   // glide-in start px/py + facing on level entry
 
 	var canvas, ctx, hud, resetBtn;
-	var grid, kirby, heldDir, facing, cleaned, reachableTotal;
-	var won, timeUp, over, elapsed, startTime, raf, modeSel, musicBtn, sfxBtn;
+	var grid, kirby, heldDir, facing, cleaned, reachableTotal, cat;
+	var won, timeUp, over, elapsed, startTime, moved, raf, modeSel, musicBtn, sfxBtn;
+	var level = START_LEVEL;   // current level; each cleared room advances +1 and adds furniture
+	var door = null;       // { cells:[[c,r]], inner:[[c,r]], open } -- the single-cell exit
+	var entryDoor = null;  // { col, row, closeAt } -- transient OPEN door Kirby glides in through; -> wall ~1s after landing
 	var started = false;   // title card shows until the first move
 
 	// --- audio ---
@@ -87,6 +97,10 @@
 		musicMuted = m;
 		if (m) music.pause();
 		else if (audioStarted) music.play().catch(function (e) { console.warn('music:', e.name); });
+	}
+	function toggleMusic() {   // shared by the M key and the Music button
+		setMusicMuted(!musicMuted);
+		if (musicBtn) musicBtn.textContent = (musicMuted ? '\uD83D\uDD07' : '\uD83D\uDD0A') + ' Music';
 	}
 	function setSfxMuted(m) {
 		sfxMuted = m;
@@ -118,6 +132,7 @@
 				for (var dc = 0; dc < f.w; dc++)
 					grid[f.row + dr][f.col + dc] = FURN_DIRTY;
 		});
+		if (door) door.cells.forEach(function (dc) { grid[dc[1]][dc[0]] = DOOR; });
 	}
 
 	// BFS over passable cells from start -> count of cleanable cells reachable
@@ -242,19 +257,62 @@
 		return null;
 	}
 
-	function generateFurniture() {
+	// a single-cell door on a random wall (never a corner); `inner` = the one
+	// interior cell directly behind it (kept clear so the exit stays reachable).
+	function pickDoor(avoid) {
+		for (var t = 0; t < 100; t++) {
+			var side = randInt(4), cell, inner;
+			if (side < 2) {                                   // top / bottom wall
+				var row = side === 0 ? 0 : ROWS - 1, inr = side === 0 ? 1 : ROWS - 2;
+				var c = 1 + randInt(COLS - 2);                 // any non-corner column
+				cell = [c, row]; inner = [c, inr];
+			} else {                                          // left / right wall
+				var col = side === 2 ? 0 : COLS - 1, inc = side === 2 ? 1 : COLS - 2;
+				var r = 1 + randInt(ROWS - 2);                 // any non-corner row
+				cell = [col, r]; inner = [inc, r];
+			}
+			if (inner[0] === START.col && inner[1] === START.row) continue;
+			if (avoid && cell[0] === avoid[0] && cell[1] === avoid[1]) continue;   // exit door must not reuse the entry cell
+			return { cells: [cell], inner: [inner], open: false };
+		}
+		return { cells: [[7, 0]], inner: [[7, 1]], open: false };
+	}
+
+	// one extra object for difficulty scaling: a random duplicate of any of the
+	// non-couch/TV pieces, placed free-standing (random rotation where it reads).
+	function randomExtra() {
+		switch (randInt(5)) {
+			case 0: return { src: 'assets/coffee_table.png', footprints: [{ w: 1, h: 2, rot: 0 }, { w: 2, h: 1, rot: 90 }] };
+			case 1: return { src: 'assets/chair.png', footprints: [{ w: 1, h: 1, rot: [0, 90, 180, 270][randInt(4)] }] };
+			case 2: return { src: 'assets/side_table.png', footprints: [{ w: 1, h: 1, rot: randInt(8) * 45 }] };
+			case 3: return { src: 'assets/pot_plant.png', footprints: [{ w: 1, h: 1, rot: 0 }] };
+			default: return { src: 'assets/trash_can.png', footprints: [{ w: 1, h: 1, rot: 0 }] };
+		}
+	}
+
+	// base furniture + `extraCount` random extras + a door, validated so every
+	// floor cell (and the door approach) stays reachable. null if it can't fit.
+	function generateLevel(extraCount, avoid) {
 		var DIRS4 = ['down', 'up', 'left', 'right'];
 		for (var attempt = 0; attempt < 400; attempt++) {
-			var occ = {};
+			var d = pickDoor(avoid), occ = {};
 			var g1 = placeGroup(occ, couchTvGroup(DIRS4[randInt(4)]));
 			var g2 = placeGroup(occ, chairSideGroup(DIRS4[randInt(4)], randInt(2) === 0));
 			if (!g1 || !g2) continue;
 			var ct = placeFree(occ, 'assets/coffee_table.png', [{ w: 1, h: 2, rot: 0 }, { w: 2, h: 1, rot: 90 }]);
 			var tr = placeFree(occ, 'assets/trash_can.png', [{ w: 1, h: 1, rot: 0 }]);
 			if (!ct || !tr) continue;
-			if (layoutReachable(occ)) return g1.concat(g2, [ct, tr]);
+			var items = g1.concat(g2, [ct, tr]), ok = true;
+			for (var i = 0; i < extraCount; i++) {
+				var ex = randomExtra(), placed = placeFree(occ, ex.src, ex.footprints);
+				if (!placed) { ok = false; break; }
+				items.push(placed);
+			}
+			if (!ok) continue;
+			if (d.inner.some(function (p) { return occ[p[0] + ',' + p[1]]; })) continue;   // keep the exit approach clear
+			if (layoutReachable(occ)) return { furniture: items, door: d };
 		}
-		return null;   // caller falls back to a known-good static layout
+		return null;
 	}
 
 	function replay() { reset(); startGame(); }   // end-screen "play again": new game, no title
@@ -266,9 +324,19 @@
 		startAudio();
 	}
 
-	function reset() {
-		FURNITURE = generateFurniture() || FALLBACK_FURNITURE;
+	// build the room for the CURRENT `level`: base furniture + 2 extra objects
+	// per level past the first, a fresh random door, and a reset timer. Falls
+	// back to fewer extras (then a static layout) if a level can't be fit.
+	function setupLevel() {
+		var entryCell = (entryFacing !== 'idle') ? [entryPx / CELL, entryPy / CELL] : null;   // border cell Kirby enters through
+		var extra = 2 * (level - 1), gen = null;
+		while (extra >= 0 && !gen) { gen = generateLevel(extra, entryCell); if (!gen) extra -= 2; }
+		if (gen) { FURNITURE = gen.furniture; door = gen.door; }
+		else { FURNITURE = FALLBACK_FURNITURE; door = { cells: [[7, 0]], inner: [[7, 1]] }; }
+		door.open = false;
 		buildGrid();
+		entryDoor = entryCell ? { col: entryCell[0], row: entryCell[1], closeAt: 0 } : null;
+		if (entryDoor) grid[entryDoor.row][entryDoor.col] = DOOR;   // temporary open door Kirby glides through
 		reachableTotal = countReachable();
 		var totalFloor = 0;
 		for (var rr = 0; rr < ROWS; rr++)
@@ -276,15 +344,43 @@
 				if (grid[rr][cc] === FLOOR) totalFloor++;
 		if (reachableTotal < totalFloor)
 			console.warn('Vroom: ' + (totalFloor - reachableTotal) + ' floor cell(s) unreachable -- furniture is trapping floor');
-		kirby = { col: START.col, row: START.row, px: START.col * CELL, py: START.row * CELL };
+		kirby = { col: START.col, row: START.row, px: entryPx, py: entryPy };
 		grid[START.row][START.col] = CLEAN;
 		cleaned = 1;
 		cleanAdjacent(START.col, START.row);
 		heldDir = null;
-		facing = 'idle';
-		won = false; timeUp = false; over = false; elapsed = 0;
+		facing = entryFacing;
+		won = false; timeUp = false; over = false; elapsed = 0; moved = false;
 		startTime = performance.now();
+		cat = (level >= CAT_LEVEL) ? spawnCat() : null;   // the scurrying cat, from level CAT_LEVEL on
+	}
+
+	// full restart: back to level 1 and the title card
+	function reset() {
+		level = START_LEVEL;
+		START = { col: 1, row: 1 };
+		entryPx = CELL; entryPy = CELL; entryFacing = 'idle';   // level 1: corner spawn, no glide-in
+		setupLevel();
 		started = false;   // show the title card again
+	}
+
+	// cleared a room -> advance: harder room, no title card (play continues)
+	// entering the next room: emerge on the wall OPPOSITE the exit door, at the
+	// same position along it, gliding inward in the same heading (continuous).
+	function entryFromDoor(dr) {
+		var a = dr.cells[0], c = a[0], r = a[1];
+		if (a[1] === 0)        return { col: c, row: ROWS - 2, px: c * CELL, py: (ROWS - 1) * CELL, facing: 'up' };
+		if (a[1] === ROWS - 1) return { col: c, row: 1,        px: c * CELL, py: 0,                 facing: 'down' };
+		if (a[0] === 0)        return { col: COLS - 2, row: r,  px: (COLS - 1) * CELL, py: r * CELL, facing: 'left' };
+		return                     { col: 1, row: r,        px: 0,        py: r * CELL,          facing: 'right' };
+	}
+
+	function nextLevel() {
+		var e = entryFromDoor(door);
+		level++;
+		START = { col: e.col, row: e.row };
+		entryPx = e.px; entryPy = e.py; entryFacing = e.facing;
+		setupLevel();
 	}
 
 	function tryStartMove() {
@@ -292,8 +388,11 @@
 		facing = dirName(heldDir);
 		var nc = kirby.col + heldDir[0], nr = kirby.row + heldDir[1];
 		if (nc < 0 || nc >= COLS || nr < 0 || nr >= ROWS) return;   // OOB
-		if (!passable(grid[nr][nc])) return;                        // wall/furniture
+		if (!canEnter(nc, nr)) return;                              // wall / furniture / closed or entry door
+		if (cat && cat.col === nc && cat.row === nr) return;        // the cat is in the way -- wait for it to move
+		if (!moved) { moved = true; startTime = performance.now(); if (cat) cat.nextMoveAt = startTime + 1000; }   // countdown starts on the first actual move
 		kirby.col = nc; kirby.row = nr;                             // commit
+		if (grid[nr][nc] === DOOR) return;                          // step onto the door; tick runs the transition once aligned on it
 		if (grid[nr][nc] === FLOOR) { grid[nr][nc] = CLEAN; cleaned++; }
 		cleanAdjacent(nc, nr);   // suction reaches furniture on the 4 sides (not corners)
 	}
@@ -305,7 +404,18 @@
 		return 'down';
 	}
 
-	function passable(s) { return s === FLOOR || s === CLEAN; }
+	function passable(s) { return s === FLOOR || s === CLEAN; }   // floor-only (doors never count toward cleaning/reachability)
+	// movement passability: floor, or the EXIT door once open (the entry door is cosmetic, not walkable)
+	function canEnter(c, r) {
+		var s = grid[r][c];
+		if (s === FLOOR || s === CLEAN) return true;
+		return s === DOOR && !!door && door.open && door.cells.some(function (p) { return p[0] === c && p[1] === r; });
+	}
+	// a DOOR cell renders open if it's the (transient) entry door or the opened exit door
+	function doorDrawnOpen(c, r) {
+		if (entryDoor && entryDoor.col === c && entryDoor.row === r) return true;
+		return !!door && door.open && door.cells.some(function (p) { return p[0] === c && p[1] === r; });
+	}
 
 	// vacuuming a cell also cleans furniture in the 4 side-adjacent cells
 	// (the couch's visible carpet tidies up as you pass alongside it)
@@ -333,28 +443,104 @@
 		if (img && img.complete) ctx.drawImage(img, x, y, CELL, CELL);
 		else { ctx.fillStyle = COL_WALL; ctx.fillRect(x, y, CELL, CELL); }
 	}
+	// the exit cell, drawn from assets/door_{closed,open}.png (64x64 each).
+	// Falls back to a procedural panel/portal if the sprite hasn't loaded, so
+	// the game still reads even with the PNGs missing.
+	function drawDoor(x, y, open) {
+		var im = open ? imgs.door_open : imgs.door_closed;
+		if (im && im.complete && im.naturalWidth) {
+			ctx.drawImage(im, x, y, CELL, CELL);
+			return;
+		}
+		if (open) {
+			ctx.fillStyle = '#0d0d12'; ctx.fillRect(x, y, CELL, CELL);
+			ctx.fillStyle = 'rgba(0, 255, 102, 0.18)'; ctx.fillRect(x, y, CELL, CELL);
+			ctx.strokeStyle = '#00ff66'; ctx.lineWidth = 4; ctx.strokeRect(x + 2, y + 2, CELL - 4, CELL - 4);
+		} else {
+			ctx.fillStyle = '#6b4a2a'; ctx.fillRect(x, y, CELL, CELL);
+			ctx.strokeStyle = '#3f2c18'; ctx.lineWidth = 4; ctx.strokeRect(x + 2, y + 2, CELL - 4, CELL - 4);
+			ctx.fillStyle = '#d8b24a';
+			ctx.beginPath(); ctx.arc(x + CELL * 0.7, y + CELL / 2, 4, 0, Math.PI * 2); ctx.fill();
+		}
+	}
 
 	function aligned() {
 		return kirby.px === kirby.col * CELL && kirby.py === kirby.row * CELL;
 	}
 
-	function step(v, target) {
-		if (v < target) return Math.min(target, v + GLIDE_PX);
-		if (v > target) return Math.max(target, v - GLIDE_PX);
+	function step(v, target, spd) {
+		spd = spd || GLIDE_PX;
+		if (v < target) return Math.min(target, v + spd);
+		if (v > target) return Math.max(target, v - spd);
 		return v;
+	}
+
+	function catPassable(c, r) {   // floor cells only, and never onto Kirby (the cat is a solid obstacle)
+		if (c < 0 || c >= COLS || r < 0 || r >= ROWS) return false;
+		if (kirby && c === kirby.col && r === kirby.row) return false;
+		return passable(grid[r][c]);
+	}
+	function catCanStep(c, r, dc, dr) {   // can the cat step (dc,dr) from (c,r)? diagonals must not cut a corner
+		if (!catPassable(c + dc, r + dr)) return false;
+		if (dc !== 0 && dr !== 0) return catPassable(c + dc, r) && catPassable(c, r + dr);
+		return true;
+	}
+	function spawnCat() {          // drop the cat on a random floor cell (never Kirby's spawn)
+		for (var t = 0; t < 200; t++) {
+			var c = 1 + randInt(COLS - 2), r = 1 + randInt(ROWS - 2);
+			if (grid[r][c] === FLOOR && !(c === START.col && r === START.row))
+				return { col: c, row: r, px: c * CELL, py: r * CELL, dir: [0, 1], faceRight: false, nextMoveAt: startTime + 1000 };
+		}
+		return null;
+	}
+	// the cat runs in long straight LINES like a real cat, in any of 8 directions
+	// (cardinals + diagonals). It holds its heading until blocked or a rare random
+	// break (turns seldom), then turns to a random steppable direction without
+	// reversing. Diagonals don't cut corners. Solid obstacle. Idle until 1s after
+	// the player's first move.
+	function catStep() {
+		if (!cat || !moved) return;
+		cat.px = step(cat.px, cat.col * CELL, CAT_GLIDE);
+		cat.py = step(cat.py, cat.row * CELL, CAT_GLIDE);
+		if (cat.px !== cat.col * CELL || cat.py !== cat.row * CELL) return;   // still gliding
+		var now = performance.now();
+		if (now < cat.nextMoveAt) return;                                     // 1s start delay / turn pause
+		if (catCanStep(cat.col, cat.row, cat.dir[0], cat.dir[1]) && randInt(40) !== 0) {   // ~97.5%: extend the line
+			cat.col += cat.dir[0]; cat.row += cat.dir[1];
+			return;
+		}
+		// line ended -> pause, then turn to a random steppable direction (no straight reversal)
+		var DIRS8 = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
+		var rev0 = -cat.dir[0], rev1 = -cat.dir[1], choices = [];
+		DIRS8.forEach(function (d) {
+			if (d[0] === rev0 && d[1] === rev1) return;                       // avoid reversing straight back
+			if (catCanStep(cat.col, cat.row, d[0], d[1])) choices.push(d);
+		});
+		if (!choices.length) DIRS8.forEach(function (d) { if (catCanStep(cat.col, cat.row, d[0], d[1])) choices.push(d); });
+		if (choices.length) { cat.dir = choices[randInt(choices.length)]; if (cat.dir[0] !== 0) cat.faceRight = cat.dir[0] > 0; }   // face the way it runs (profile sprite)
+		cat.nextMoveAt = now + 250 + randInt(600);                           // pause at the turn
 	}
 
 	// --- main loop ---
 	function tick() {
 		if (!started) { render(); raf = requestAnimationFrame(tick); return; }
-		if (!over) {
+		if (moved && !over && !(door && door.open)) {  // clock runs only after the first move; freezes when the room's clean
 			elapsed = (performance.now() - startTime) / 1000;
 			if (mode === 'timed' && elapsed >= TIME_LIMIT) { elapsed = TIME_LIMIT; timeUp = true; over = true; playOneShot(failSfx); }
 		}
 		if (aligned() && !over) tryStartMove();        // only accept a new cell when settled
-		if (!over && cleaned >= reachableTotal) { won = true; over = true; playOneShot(winSfx); }
+		if (!over && aligned() && door && door.open && grid[kirby.row][kirby.col] === DOOR) {   // arrived on the open door
+			if (level >= MAX_LEVEL) { won = true; over = true; playOneShot(winSfx); }   // last level -> win
+			else nextLevel();                                                            // else advance to the next room
+		}
+		if (!over && door && !door.open && cleaned >= reachableTotal) { door.open = true; }   // room clean -> open the exit (win fires on exiting the last level)
 		kirby.px = step(kirby.px, kirby.col * CELL);   // glide toward the target cell (finishes settling even when over)
 		kirby.py = step(kirby.py, kirby.row * CELL);
+		if (entryDoor) {                               // close the entry door ~1s after Kirby lands on the field
+			if (!entryDoor.closeAt) { if (aligned()) entryDoor.closeAt = performance.now() + 1000; }
+			else if (performance.now() >= entryDoor.closeAt) { grid[entryDoor.row][entryDoor.col] = WALL; entryDoor = null; }
+		}
+		if (!over) catStep();                          // the cat scurries (level >= CAT_LEVEL)
 		updateVroom(!over && (!aligned() || !!heldDir));
 		render();
 		raf = requestAnimationFrame(tick);
@@ -367,8 +553,10 @@
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
-		// canvas can't use CSS text-shadow; apply it from the --font-shadow token
-		ctx.shadowColor = getComputedStyle(document.documentElement).getPropertyValue('--font-shadow').trim() || '#000';
+		// canvas text shadow: ALWAYS black -- the --font-shadow token flips to white
+		// in light theme, which inverted the shadows and wrecked the text on a
+		// light-mode machine. Hard-code black so it reads on any theme.
+		ctx.shadowColor = '#000';
 		ctx.shadowOffsetX = -3; ctx.shadowOffsetY = -3; ctx.shadowBlur = 1;
 		ctx.fillStyle = titleColor;
 		ctx.font = 'italic bold 128px monospace';
@@ -399,6 +587,8 @@
 				var x = c * CELL, y = r * CELL;
 				if (s === WALL) {
 					blit(wallImg(r, c), x, y);
+				} else if (s === DOOR) {
+					drawDoor(x, y, doorDrawnOpen(c, r));
 				} else {
 					var isClean = (s === CLEAN || s === FURN_CLEAN);
 					var tile = imgs[isClean ? 'clean' : 'dirty'];
@@ -419,34 +609,42 @@
 			else ctx.drawImage(im, -pw / 2, -ph / 2, pw, ph);
 			ctx.restore();
 		});
+		if (cat) {
+			var ci = imgs.cat;
+			if (ci && ci.complete) {
+				if (cat.faceRight) { ctx.save(); ctx.translate(cat.px + CELL, cat.py); ctx.scale(-1, 1); ctx.drawImage(ci, 0, 0, CELL, CELL); ctx.restore(); }   // sprite faces LEFT by default -> flip for rightward runs
+				else ctx.drawImage(ci, cat.px, cat.py, CELL, CELL);
+			}
+		}
 		var k = imgs[facing];
 		if (k && k.complete) ctx.drawImage(k, kirby.px, kirby.py, CELL, CELL);
 
 		var pct = Math.round((cleaned / reachableTotal) * 100);
 
 		if (won) {
-			drawEndOverlay('You Win!', '#00ff00', 'Cleaned 100% | Time: ' + elapsed.toFixed(1) + 's', 'Press space or tap to play again');
+			drawEndOverlay('You Win!', '#00ff00', 'All ' + MAX_LEVEL + ' levels cleaned!', 'Press space or tap to play again');
 		} else if (timeUp) {
-			drawEndOverlay('You Lose!', '#ff0000', 'Cleaned ' + pct + '% | Time: ' + TIME_LIMIT + 's', 'Press R or Reset to try again');
+			drawEndOverlay('You Lose!', '#ff0000', 'Reached Level ' + level + '  |  Cleaned ' + pct + '%', 'Press R or Reset to try again');
 		}
 
-		hud.style.color = won ? '#00ff00' : (timeUp ? '#ff0000' : '');   // green win / red lose / default
+		hud.style.color = (won || (door && door.open)) ? '#00ff00' : (timeUp ? '#ff0000' : '');   // green win/door-open / red lose / default
 		if (won) {
-			hud.textContent = mode === 'timed'
-				? 'Room clean in ' + elapsed.toFixed(1) + 's!  (' + (TIME_LIMIT - elapsed).toFixed(1) + 's to spare)'
-				: 'Room clean! ' + elapsed.toFixed(1) + 's';
+			hud.textContent = 'You Win! All ' + MAX_LEVEL + ' levels cleaned!';
 		} else if (timeUp) {
-			hud.textContent = 'You Lose! Cleaned ' + pct + '%';
+			hud.textContent = 'You Lose! Reached Level ' + level + ' (cleaned ' + pct + '%)';
+		} else if (door && door.open) {
+			hud.textContent = 'Level ' + level + ' clean! Head to the door →';
 		} else if (mode === 'timed') {
-			hud.textContent = 'Cleaned ' + pct + '%   Time: ' + (TIME_LIMIT - elapsed).toFixed(1) + 's';
+			hud.textContent = 'Level ' + level + '   Cleaned ' + pct + '%   Time: ' + (TIME_LIMIT - elapsed).toFixed(1) + 's';
 		} else {
-			hud.textContent = 'Cleaned ' + pct + '%   ' + elapsed.toFixed(1) + 's';
+			hud.textContent = 'Level ' + level + '   Cleaned ' + pct + '%   ' + elapsed.toFixed(1) + 's';
 		}
 	}
 
 	// --- input: cardinal only ---
 	function onKeyDown(e) {
 		if (e.key === 'Escape' || e.key === 'r' || e.key === 'R') { reset(); e.preventDefault(); return; }
+		if ((e.key === 'm' || e.key === 'M') && !e.ctrlKey && !e.metaKey && !e.altKey) { toggleMusic(); e.preventDefault(); return; }
 		if (e.key === ' ' || e.key === 'Spacebar') { if (over) replay(); else startGame(); e.preventDefault(); return; }  // space starts / plays again
 		if (!(e.key in DIRS)) return;
 		e.preventDefault();               // arrows must not scroll the page
@@ -506,8 +704,8 @@
 
 		musicBtn = document.createElement('button');
 		musicBtn.textContent = '\uD83D\uDD07 Music';
-		musicBtn.title = 'Toggle background music';
-		musicBtn.onclick = function () { setMusicMuted(!musicMuted); this.textContent = (musicMuted ? '\uD83D\uDD07' : '\uD83D\uDD0A') + ' Music'; this.blur(); };
+		musicBtn.title = 'Toggle background music (M)';
+		musicBtn.onclick = function () { toggleMusic(); this.blur(); };
 		sfxBtn = document.createElement('button');
 		sfxBtn.textContent = '\uD83D\uDD0A Vacuum';
 		sfxBtn.title = 'Toggle vacuum sound';
@@ -528,8 +726,11 @@
 		playArea.appendChild(canvas);
 
 		var field = document.getElementById('gamefield');
-		field.appendChild(controls);   // mode + reset at the top (not touch-captured)
-		field.appendChild(hud);
+		var panel = document.createElement('div');   // buttons row + status box, unified to one width
+		panel.className = 'control-panel';
+		panel.appendChild(controls);
+		panel.appendChild(hud);
+		field.appendChild(panel);
 		field.appendChild(playArea);
 		ctx = canvas.getContext('2d');
 
@@ -543,6 +744,55 @@
 
 		reset();
 		raf = requestAnimationFrame(tick);
+	}
+
+	// --- dev console API: tweak the game live from the browser console, no source
+	// edits. All are attached to window; type Help() in the console for the list. ---
+	function devSetLevel(n) {                       // jump straight to level n
+		level = Math.max(1, n | 0);
+		START = { col: 1, row: 1 };                 // corner spawn, no glide-in (like starting fresh there)
+		entryPx = CELL; entryPy = CELL; entryFacing = 'idle';
+		setupLevel();
+		started = true;                             // drop into play, skip the title card
+		return 'level ' + level + (level >= CAT_LEVEL ? ' (with cat)' : '');
+	}
+	function devCleanRoom() {                       // clean all floor -> opens the exit
+		for (var r = 0; r < ROWS; r++) for (var c = 0; c < COLS; c++) if (grid[r][c] === FLOOR) grid[r][c] = CLEAN;
+		cleaned = reachableTotal;
+		return 'room cleaned -- exit should open';
+	}
+	function devOpenDoor() { if (door) door.open = true; return 'exit door forced open'; }
+	function devWin() { won = true; over = true; playOneShot(winSfx); return 'win screen'; }
+	function devLose() { timeUp = true; over = true; playOneShot(failSfx); return 'lose screen'; }
+	function devSpawnCat() {                        // drop a cat into the current room and activate it
+		moved = true;
+		cat = spawnCat();
+		if (cat) cat.nextMoveAt = performance.now() + 300;
+		return cat ? 'cat spawned' : 'no free floor cell for a cat';
+	}
+	function devSetMaxLevel(n) { MAX_LEVEL = Math.max(1, n | 0); return 'MAX_LEVEL = ' + MAX_LEVEL; }
+	function devHelp() {
+		console.log('Vroom dev console:\n' +
+			'  SetLevel(n)     jump to level n (n>=1; cat appears at level ' + CAT_LEVEL + '+)\n' +
+			'  CleanRoom()     instantly clean the room (opens the exit)\n' +
+			'  OpenDoor()      force the exit door open\n' +
+			'  Win()           show the win screen\n' +
+			'  Lose()          show the lose screen\n' +
+			'  SpawnCat()      drop a cat into the current room (and start it moving)\n' +
+			'  SetMaxLevel(n)  change how many levels there are\n' +
+			'  Help()          this list');
+		return 'level ' + level + ' / ' + MAX_LEVEL;
+	}
+	if (typeof window !== 'undefined') {
+		window.SetLevel = devSetLevel;
+		window.CleanRoom = devCleanRoom;
+		window.OpenDoor = devOpenDoor;
+		window.Win = devWin;
+		window.Lose = devLose;
+		window.SpawnCat = devSpawnCat;
+		window.SetMaxLevel = devSetMaxLevel;
+		window.Help = devHelp;
+		console.log('%cVroom%c dev console ready -- type Help()', 'font-weight:bold', '');
 	}
 
 	boot();
