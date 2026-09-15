@@ -72,7 +72,9 @@ Collision is just the cell-state check. No bounding boxes, no pixel tests.
   beam-right, code flips them for the opposite side. Corners drawn individually.
 
 ## Levels & door
-- Progression across `MAX_LEVEL` levels (currently **4**). Clearing a room
+- Progression across `MAX_LEVEL` levels (currently **5**). New elements are
+  introduced per level: the **cat** at level 4 (`CAT_LEVEL`), the **bed** at
+  level 5 (`BED_LEVEL`), and a tighter clock at level 5 (see Timer). Clearing a room
   (100% of reachable floor) does **not** end the game -- it opens a **door**.
 - **Door**: a single 64x64 cell on a random wall (never a corner), one per
   level. Closed = impassable (wood panel); opens the instant the room is clean
@@ -93,15 +95,26 @@ Collision is just the cell-state check. No bounding boxes, no pixel tests.
 - Controls: arrows / cardinal touch-drag to move; Space or tap to start &
   replay; R or Esc to reset; **M** toggles music.
 - **Difficulty**: level N adds `2*(N-1)` extra objects, each a random duplicate
-  of a non-couch/TV piece (chair / side table / coffee table / trash), placed
-  free-standing. Generator degrades the count if a level can't be fit; every
-  layout is flood-fill validated (no trapped floor, exit approach clear).
+  of a non-couch/TV piece (chair / side table / coffee table / trash / plant),
+  placed free-standing. Generator degrades the count if a level can't be fit;
+  every layout is flood-fill validated (no trapped floor, exit approach clear).
+- **Bed** (level >= `BED_LEVEL`, = 5): a `1x2` bed becomes a *guaranteed base
+  piece* in every room from level 5 on (like the cat, an element that appears at
+  a set level). Placed free-standing; validated same as all furniture.
 - **Timer** doesn't start until the player's first actual move (the title-
   dismissed room sits idle at full time), freezes the moment a room is clean
   (door open) so reaching the exit isn't a race, and resets per level. Timeout
-  still loses -> back to level 1.
-- Sounds: `win.mp3` on the final win, `fail.mp3` on timeout (one-shot, follow
-  the SFX/Vacuum mute).
+  still loses -> back to level 1. **Per-level time**: `TIME_LIMIT` (60s) is the
+  default; `LEVEL_TIME` holds overrides (e.g. `{ 5: 45 }` = level 5 gets 45s), so
+  the clock can tighten as levels go up. Add entries to tune future levels.
+- **Audio** (Howler.js, vendored at `vendor/howler.min.js`): Web Audio for
+  low-latency, in-sync vacuum start/stop (fixes iOS HTML5-`<audio>` lag) plus a
+  volume bus for mixing. Music is a looping Howl (`html5:true`, the long-track
+  path); the vacuum loop + `win.mp3`/`fail.mp3` stingers run on Web Audio and
+  follow the SFX/Vacuum mute. **Ducking**: a stinger dips the music to
+  `DUCK_VOL` (30% of `MUSIC_VOL`) over `DUCK_DOWN_MS` (250 ms), then ramps it
+  back over `DUCK_UP_MS` (1800 ms) when the stinger ends (`onend`/`onstop`).
+  Tune those four consts at the top of the audio block.
 - **Cat** (level >= `CAT_LEVEL`, = 4): spawns on a random floor cell, idles until
   1 s after the player's first move, then runs in long straight *lines* in any of
   **8 directions** (cardinals + diagonals) — holds its heading until blocked or a

@@ -18,11 +18,13 @@
 	var TOUCH_DEADZONE = 16;             // px of drag before a direction registers
 
 	// --- timing ---
-	var TIME_LIMIT = 60;                 // seconds, Timed Mode
+	var TIME_LIMIT = 60;                 // seconds, Timed Mode (default)
+	var LEVEL_TIME = { 5: 45 };          // per-level Timed-Mode overrides (sec); e.g. level 5 = 45. default = TIME_LIMIT
 	var mode = 'timed';                  // 'timed' | 'freestyle'
-	var MAX_LEVEL = 4;                    // clear this many levels to win the game
-	var START_LEVEL = 4;                 // DEBUG: level to start on -- set to 4 to jump straight to level 4
+	var MAX_LEVEL = 5;                    // clear this many levels to win the game
+	var START_LEVEL = 1;                 // DEBUG: level to start on -- e.g. set to 5 to jump straight to level 5
 	var CAT_LEVEL = 4;                    // a cat starts scurrying around the room from this level on
+	var BED_LEVEL = 5;                   // a bed appears in the room from this level on
 	var CAT_GLIDE = 12;                   // cat px/frame (faster than Kirby's 8 = a scurry; step() clamps to the cell, any value OK)
 
 	// --- colors (fixed; identical in light/dark so the "room" reads the same) ---
@@ -51,7 +53,7 @@
 	// faces a random direction with the TV 1 cell in front of its middle; the
 	// chair faces a random direction with a side table 1 cell off an arm side
 	// (table randomly rotated); coffee table and trash go anywhere. Validated.
-	var FURNI_SRCS = ['assets/couch.png', 'assets/tv.png', 'assets/chair.png', 'assets/side_table.png', 'assets/coffee_table.png', 'assets/trash_can.png', 'assets/pot_plant.png'];
+	var FURNI_SRCS = ['assets/couch.png', 'assets/tv.png', 'assets/chair.png', 'assets/side_table.png', 'assets/coffee_table.png', 'assets/trash_can.png', 'assets/pot_plant.png', 'assets/bed.png'];
 	var FALLBACK_FURNITURE = [
 		{ src: 'assets/couch.png',        col: 6,  row: 2, w: 3, h: 1, rot: 0 },
 		{ src: 'assets/tv.png',           col: 7,  row: 4, w: 1, h: 1, rot: 180 },
@@ -71,7 +73,7 @@
 
 	var canvas, ctx, hud, resetBtn;
 	var grid, kirby, heldDir, facing, cleaned, reachableTotal, cat;
-	var won, timeUp, over, elapsed, startTime, moved, raf, modeSel, musicBtn, sfxBtn;
+	var won, timeUp, over, elapsed, startTime, moved, timeLimit, raf, modeSel, musicBtn, sfxBtn;
 	var level = START_LEVEL;   // current level; each cleared room advances +1 and adds furniture
 	var door = null;       // { cells:[[c,r]], inner:[[c,r]], open } -- the single-cell exit
 	var entryDoor = null;  // { col, row, closeAt } -- transient OPEN door Kirby glides in through; -> wall ~1s after landing
@@ -79,42 +81,63 @@
 
 	// --- audio ---
 	// Background: Lounge Jazz. SFX: self-recorded vacuum,
-	// looped while moving. Both need a user gesture to start (autoplay policy).
-	var music = new Audio('assets/sounds/TerrySnyder&JackCooper_CestSiBon.mp3');
-	music.loop = true; music.volume = 0.40;
-	var vroomSfx = new Audio('assets/sounds/vacuum_on.mp3');   // recorded by Alex
-	vroomSfx.loop = true; vroomSfx.volume = 0.15;
-	var winSfx = new Audio('assets/sounds/win.mp3');   winSfx.volume = 0.30;
-	var failSfx = new Audio('assets/sounds/fail.mp3'); failSfx.volume = 0.30;
-	var audioStarted = false, musicMuted = true, sfxMuted = false, vroomPlaying = false;
+	// looped while moving. Audio runs through Howler.js (Web Audio): reliable
+	// low-latency start/stop on iOS -- plain HTML5 <audio> lagged and desynced
+	// from the vacuum's motion -- and a volume bus so win/fail stingers can
+	// DUCK the music (dip it, then ramp it back up).
+	var MUSIC_VOL = 0.40, VROOM_VOL = 0.15, STINGER_VOL = 0.30;
+	var DUCK_VOL = MUSIC_VOL * 0.25;              // music dips to here under a stinger (not silent)
+	var DUCK_DOWN_MS = 250, DUCK_UP_MS = 1600;    // fast dip, slow recovery
+	// music: Web Audio (like the SFX) -- seamless loop, no HTML5 <audio> pool to
+	// exhaust (that "pool exhausted / locked" warning), unlocks cleanly on iOS.
+	// Trade-off: the track is decoded fully into memory -- fine for one bg loop.
+	var music = new Howl({ src: ['assets/sounds/TerrySnyder&JackCooper_CestSiBon.mp3'], loop: true, volume: MUSIC_VOL });
+	// vacuum + stingers: Web Audio (default) for tight, in-sync start/stop
+	var vroomSfx = new Howl({ src: ['assets/sounds/vacuum_on.mp3'], loop: true, volume: VROOM_VOL });   // recorded by Alex
+	var winSfx  = new Howl({ src: ['assets/sounds/win.mp3'],  volume: STINGER_VOL, onend: unduck, onstop: unduck });
+	var failSfx = new Howl({ src: ['assets/sounds/fail.mp3'], volume: STINGER_VOL, onend: unduck, onstop: unduck });
+	var audioStarted = false, musicMuted = false, sfxMuted = false, vroomPlaying = false;   // music ON by default -> starts on game start (first move)
 
-	function startAudio() {   // first user gesture unlocks + starts the music
+	function startAudio() {   // first user gesture unlocks (Howler auto-unlocks) + starts music
 		if (audioStarted) return;
 		audioStarted = true;
-		if (!musicMuted) music.play().catch(function (e) { console.warn('music blocked:', e.name, e.message); });
+		if (!musicMuted && !music.playing()) music.play();
 	}
 	function setMusicMuted(m) {
 		musicMuted = m;
 		if (m) music.pause();
-		else if (audioStarted) music.play().catch(function (e) { console.warn('music:', e.name); });
+		else if (audioStarted && !music.playing()) music.play();
 	}
 	function toggleMusic() {   // shared by the M key and the Music button
 		setMusicMuted(!musicMuted);
 		if (musicBtn) musicBtn.textContent = (musicMuted ? '\uD83D\uDD07' : '\uD83D\uDD0A') + ' Music';
 	}
+	function toggleSfx() {   // shared by the V key and the Vacuum button
+		setSfxMuted(!sfxMuted);
+		if (sfxBtn) sfxBtn.textContent = (sfxMuted ? '\uD83D\uDD07' : '\uD83D\uDD0A') + ' Vacuum';
+	}
 	function setSfxMuted(m) {
 		sfxMuted = m;
-		if (m && vroomPlaying) { vroomSfx.pause(); vroomPlaying = false; }
+		if (m && vroomPlaying) { vroomSfx.stop(); vroomPlaying = false; }
 	}
 	function updateVroom(moving) {
-		if (!audioStarted || sfxMuted) { if (vroomPlaying) { vroomSfx.pause(); vroomPlaying = false; } return; }
-		if (moving && !vroomPlaying) { vroomSfx.currentTime = 0; vroomSfx.play().catch(function (e) { console.warn('vroom sfx:', e.name); }); vroomPlaying = true; }
-		else if (!moving && vroomPlaying) { vroomSfx.pause(); vroomPlaying = false; }
+		if (!audioStarted || sfxMuted) { if (vroomPlaying) { vroomSfx.stop(); vroomPlaying = false; } return; }
+		if (moving && !vroomPlaying) { vroomSfx.play(); vroomPlaying = true; }
+		else if (!moving && vroomPlaying) { vroomSfx.stop(); vroomPlaying = false; }
 	}
-	function playOneShot(a) {   // win/fail stingers; follow the SFX (vacuum) mute
+	// --- mixing: duck the music under a stinger, then ramp it back up ---
+	function duck() {
+		if (musicMuted || !music.playing()) return;
+		music.fade(music.volume(), DUCK_VOL, DUCK_DOWN_MS);
+	}
+	function unduck() {
+		if (musicMuted || !music.playing()) return;
+		music.fade(music.volume(), MUSIC_VOL, DUCK_UP_MS);
+	}
+	function playOneShot(a) {   // win/fail stingers; follow the SFX (vacuum) mute; duck the music
 		if (!audioStarted || sfxMuted) return;
-		try { a.currentTime = 0; } catch (e) {}
-		a.play().catch(function () {});
+		duck();
+		a.play();
 	}
 
 	// --- setup ---
@@ -303,6 +326,11 @@
 			var tr = placeFree(occ, 'assets/trash_can.png', [{ w: 1, h: 1, rot: 0 }]);
 			if (!ct || !tr) continue;
 			var items = g1.concat(g2, [ct, tr]), ok = true;
+			if (level >= BED_LEVEL) {   // a bed becomes a guaranteed base piece from BED_LEVEL on
+				var bd = placeFree(occ, 'assets/bed.png', [{ w: 1, h: 2, rot: 0 }, { w: 2, h: 1, rot: 90 }]);
+				if (!bd) continue;
+				items.push(bd);
+			}
 			for (var i = 0; i < extraCount; i++) {
 				var ex = randomExtra(), placed = placeFree(occ, ex.src, ex.footprints);
 				if (!placed) { ok = false; break; }
@@ -328,6 +356,7 @@
 	// per level past the first, a fresh random door, and a reset timer. Falls
 	// back to fewer extras (then a static layout) if a level can't be fit.
 	function setupLevel() {
+		timeLimit = LEVEL_TIME[level] || TIME_LIMIT;   // per-level Timed-Mode limit
 		var entryCell = (entryFacing !== 'idle') ? [entryPx / CELL, entryPy / CELL] : null;   // border cell Kirby enters through
 		var extra = 2 * (level - 1), gen = null;
 		while (extra >= 0 && !gen) { gen = generateLevel(extra, entryCell); if (!gen) extra -= 2; }
@@ -526,7 +555,7 @@
 		if (!started) { render(); raf = requestAnimationFrame(tick); return; }
 		if (moved && !over && !(door && door.open)) {  // clock runs only after the first move; freezes when the room's clean
 			elapsed = (performance.now() - startTime) / 1000;
-			if (mode === 'timed' && elapsed >= TIME_LIMIT) { elapsed = TIME_LIMIT; timeUp = true; over = true; playOneShot(failSfx); }
+			if (mode === 'timed' && elapsed >= timeLimit) { elapsed = timeLimit; timeUp = true; over = true; playOneShot(failSfx); }
 		}
 		if (aligned() && !over) tryStartMove();        // only accept a new cell when settled
 		if (!over && aligned() && door && door.open && grid[kirby.row][kirby.col] === DOOR) {   // arrived on the open door
@@ -635,7 +664,7 @@
 		} else if (door && door.open) {
 			hud.textContent = 'Level ' + level + ' clean! Head to the door →';
 		} else if (mode === 'timed') {
-			hud.textContent = 'Level ' + level + '   Cleaned ' + pct + '%   Time: ' + (TIME_LIMIT - elapsed).toFixed(1) + 's';
+			hud.textContent = 'Level ' + level + '   Cleaned ' + pct + '%   Time: ' + (timeLimit - elapsed).toFixed(1) + 's';
 		} else {
 			hud.textContent = 'Level ' + level + '   Cleaned ' + pct + '%   ' + elapsed.toFixed(1) + 's';
 		}
@@ -645,6 +674,7 @@
 	function onKeyDown(e) {
 		if (e.key === 'Escape' || e.key === 'r' || e.key === 'R') { reset(); e.preventDefault(); return; }
 		if ((e.key === 'm' || e.key === 'M') && !e.ctrlKey && !e.metaKey && !e.altKey) { toggleMusic(); e.preventDefault(); return; }
+		if ((e.key === 'v' || e.key === 'V') && !e.ctrlKey && !e.metaKey && !e.altKey) { toggleSfx(); e.preventDefault(); return; }
 		if (e.key === ' ' || e.key === 'Spacebar') { if (over) replay(); else startGame(); e.preventDefault(); return; }  // space starts / plays again
 		if (!(e.key in DIRS)) return;
 		e.preventDefault();               // arrows must not scroll the page
@@ -703,13 +733,13 @@
 		modeSel.onchange = function () { mode = this.value; this.blur(); reset(); };
 
 		musicBtn = document.createElement('button');
-		musicBtn.textContent = '\uD83D\uDD07 Music';
+		musicBtn.textContent = '\uD83D\uDD0A Music';   // reflects music-on default
 		musicBtn.title = 'Toggle background music (M)';
 		musicBtn.onclick = function () { toggleMusic(); this.blur(); };
 		sfxBtn = document.createElement('button');
 		sfxBtn.textContent = '\uD83D\uDD0A Vacuum';
-		sfxBtn.title = 'Toggle vacuum sound';
-		sfxBtn.onclick = function () { setSfxMuted(!sfxMuted); this.textContent = (sfxMuted ? '\uD83D\uDD07' : '\uD83D\uDD0A') + ' Vacuum'; this.blur(); };
+		sfxBtn.title = 'Toggle vacuum sound (V)';
+		sfxBtn.onclick = function () { toggleSfx(); this.blur(); };
 
 		var controls = document.createElement('div');
 		controls.className = 'game-controls';
@@ -792,7 +822,10 @@
 		window.SpawnCat = devSpawnCat;
 		window.SetMaxLevel = devSetMaxLevel;
 		window.Help = devHelp;
-		console.log('%cVroom%c dev console ready -- type Help()', 'font-weight:bold', '');
+		// print the full command list at load -- the console retains messages logged
+		// before devtools is opened, so Help() is already there whenever you open it
+		console.log('%cVroom dev console ready', 'font-weight:bold');
+		devHelp();
 	}
 
 	boot();
