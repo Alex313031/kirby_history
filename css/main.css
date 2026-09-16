@@ -85,7 +85,7 @@ h2 {
   margin: 0.5em 0.5em;
   vertical-align: middle;
   border: 1px solid var(--border);
-  transition: box-shadow 0.10s ease;
+  transition: box-shadow 0.1s ease;
 }
 .gallery img:hover {
   box-shadow: 0 0 6px 1px var(--imgshadow);
@@ -193,7 +193,7 @@ div.logo-row {
 .banner,
 .model-thumb {
   border: 1px solid var(--border);
-  transition: box-shadow 0.10s ease;
+  transition: box-shadow 0.1s ease;
 }
 .banner:hover,
 .model-thumb:hover {
@@ -274,7 +274,7 @@ div.logo-row {
     padding-right: 8px;
     padding-top: 6px;
     padding-bottom: 0;
-  /* dynamic-toolbar clearance: mobile browsers park their bottom URL bar
+    /* dynamic-toolbar clearance: mobile browsers park their bottom URL bar
      over the last ~50px of a page (no scroll left to retract it at the
      very bottom), hiding the footer links. Pad past it. */
     margin-bottom: calc(50px + env(safe-area-inset-bottom, 0px));

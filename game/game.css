@@ -1,7 +1,9 @@
 /* "Suck It!" vacuum game styles (see game.js / DESIGN.md).
    Depends on the shared color tokens from ../css/colors.css. */
 
-:root,:root.light,:root.dark {
+:root,
+:root.light,
+:root.dark {
   color-scheme: dark;
 }
 
@@ -9,7 +11,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0; /* game page doesn't load main.css; kill default body margin (was causing overflow scrollbar) */
   background: #656565;
 }
@@ -38,16 +41,16 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding-top: 44px;  /* clear the fixed source-code link row above the controls */
+  padding-top: 44px; /* clear the fixed source-code link row above the controls */
 }
 
 /* controls (mode + reset) + HUD sit directly above the field, NOT captured
    by touch steering */
 /* controls row + status box stacked and unified to one width */
 .control-panel {
-  display: inline-flex;    /* shrink-to-fit the wider of the two rows */
+  display: inline-flex; /* shrink-to-fit the wider of the two rows */
   flex-direction: column;
-  align-items: stretch;    /* both rows take the panel's (widest-child) width */
+  align-items: stretch; /* both rows take the panel's (widest-child) width */
   gap: 8px;
 }
 .game-controls {
@@ -95,11 +98,11 @@ button:active {
   color: var(--fontcolor);
   text-align: center;
   white-space: nowrap;
-  text-shadow: 1px 1px 0 #000;   /* 1px black shadow, no blur */
-  border: 1px solid #222222;     /* outline box around the status area */
-  border-radius: 5px;            /* match the controls */
+  text-shadow: 1px 1px 0 #000; /* 1px black shadow, no blur */
+  border: 1px solid #222222; /* outline box around the status area */
+  border-radius: 5px; /* match the controls */
   padding: 4px 10px;
-  margin: 4px 0;                 /* 4px breathing room from the buttons above + game below */
+  margin: 4px 0; /* 4px breathing room from the buttons above + game below */
 }
 
 /* touch-steering zone: the field (canvas) plus all space below it. Canvas
@@ -107,7 +110,7 @@ button:active {
    space beneath is swipeable too. Controls above are outside this element. */
 .game-play {
   flex: 1 1 auto;
-  min-height: 0;            /* let it shrink so the canvas fits with no page scroll */
+  min-height: 0; /* let it shrink so the canvas fits with no page scroll */
   align-self: stretch;
   width: 100%;
   display: flex;
@@ -118,7 +121,7 @@ button:active {
 }
 #gamefield canvas {
   max-width: 100%;
-  max-height: 100%;         /* fit the zone vertically too (aspect preserved, no overflow) */
+  max-height: 100%; /* fit the zone vertically too (aspect preserved, no overflow) */
   background-color: #232323;
   border: 2px solid #000; /* fixed dark outline: stays visible even on the all-white title card (var(--border) would be white in dark theme) */
   image-rendering: pixelated; /* keep the 64px pixel art crisp when scaled */
