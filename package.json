@@ -1,6 +1,6 @@
 {
   "name": "kirby_website",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A Kirby Vacuum cleaner history site, with personal blog and vacuum game.",
   "author": "Alex313031",
   "license": "BSD-3-Clause",
@@ -14,7 +14,10 @@
     "serve": "ws --directory .",
     "check-js": "node --check js/button.js && node --check js/copy-text.js && node --check js/table-hover.js && node --check js/vroom.js && node --check game/game.js",
     "check-html": "node tools/validate-html.mjs",
-    "check-css": "node tools/validate-css.mjs",
+    "check-css": "npm run validate-css && npm run lint-css",
+    "validate-css": "node tools/validate-css.mjs",
+    "lint-css": "prettier --check \"**/*.css\"",
+    "format-css": "prettier --write \"**/*.css\"",
     "check": "npm run check-html ; npm run check-css ; npm run check-js",
     "dist": "npm run check && node tools/dist.mjs",
     "dist-serve": "npm run dist && ws --directory dist/"

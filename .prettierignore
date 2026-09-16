@@ -1,0 +1,4 @@
+# Prettier only formats source CSS here; keep it off generated + vendored files.
+node_modules
+dist
+game/vendor
