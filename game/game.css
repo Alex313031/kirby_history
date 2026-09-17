@@ -11,6 +11,12 @@
   box-sizing: border-box;
 }
 
+/* Keyboard a11y: visible focus ring for the game's controls */
+:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
 html,
 body {
   margin: 0; /* game page doesn't load main.css; kill default body margin (was causing overflow scrollbar) */

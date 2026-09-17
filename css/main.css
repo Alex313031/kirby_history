@@ -3,6 +3,28 @@
   box-sizing: border-box;
 }
 
+/* Keyboard a11y: visible focus ring + skip-to-content link (hidden until focused) */
+:focus-visible {
+  outline: 2px solid var(--fontcolor, #0a6cff);
+  outline-offset: 2px;
+}
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -48px;
+  z-index: 1000;
+  padding: 8px 12px;
+  background: var(--bgcolor, #fff);
+  color: var(--fontcolor, #000);
+  border: 1px solid var(--fontcolor, #000);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 8px;
+}
+
 /* General body settings */
 html {
   background-color: var(--bgcolor);

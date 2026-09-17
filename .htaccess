@@ -2,3 +2,33 @@ ErrorDocument 404 /404.html
 Options +Indexes
 IndexOptions +FancyIndexing
 IndexIgnore *.bak
+
+# --- Caching: long-lived for static assets (mod_expires) ---
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault                          "access plus 1 week"
+  ExpiresByType text/html                 "access plus 0 seconds"
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType application/javascript    "access plus 1 year"
+  ExpiresByType image/jpeg                "access plus 1 year"
+  ExpiresByType image/png                 "access plus 1 year"
+  ExpiresByType image/svg+xml             "access plus 1 year"
+  ExpiresByType image/x-icon              "access plus 1 year"
+  ExpiresByType font/woff2                "access plus 1 year"
+  ExpiresByType font/woff                 "access plus 1 year"
+  ExpiresByType application/pdf           "access plus 1 month"
+  ExpiresByType application/manifest+json "access plus 1 week"
+</IfModule>
+
+# --- Gzip: LOSSLESS, text types only -- images/PDFs are left untouched (mod_deflate) ---
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml application/manifest+json
+</IfModule>
+
+# --- Security / privacy response headers (mod_headers) ---
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

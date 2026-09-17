@@ -21,4 +21,8 @@ and a mid-2000's Adobe flash style game at http://thorium.rocks/kirby_history/ga
 <img src="./imgs/Gary_Larson_Appliance_Healers_1986.jpg" width="33%">
 
 ### License
-Licensed under the [BSD-3 Clause License](LICENSE.md)
+Site code licensed under the [BSD-3 Clause License](LICENSE.md).
+
+Images and Manuals Copyright [David Orencyr](https://collectingdust.com/).
+
+Game music by [Kevin MacLeod](incompetech.com), licensed under the [Creative Commons License](https://creativecommons.org/licenses/by/4.0/).
