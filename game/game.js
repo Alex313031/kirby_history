@@ -88,20 +88,35 @@
 	var MUSIC_VOL = 0.40, VROOM_VOL = 0.15, STINGER_VOL = 0.30;
 	var DUCK_VOL = MUSIC_VOL * 0.25;              // music dips to here under a stinger (not silent)
 	var DUCK_DOWN_MS = 250, DUCK_UP_MS = 1600;    // fast dip, slow recovery
-	// music: a 2-track playlist (Web Audio) -- plays each track in turn, then
-	// loops back around. loop=false on each so onend fires and hands to the next.
+	// music: a 2-track playlist (Web Audio) that CROSSFADES between tracks and
+	// loops back around. A timer fires CROSSFADE_MS before the current track ends
+	// (Howler has no near-end event), fading it out while the next fades in.
+	var CROSSFADE_MS = 1000;
 	var MUSIC_SRCS = [
 		'assets/sounds/TerrySnyder&JackCooper_CestSiBon.mp3',
-		'assets/sounds/Sweeter Vermouth.mp3',
+		'assets/sounds/Sweeter_Vermouth.mp3',
 	];
-	var musicIndex = 0;
+	var musicIndex = 0, musicTimer = null;
 	var musicTracks = MUSIC_SRCS.map(function (src) {
-		return new Howl({ src: [src], volume: MUSIC_VOL, onend: nextMusicTrack });
+		return new Howl({ src: [src], volume: MUSIC_VOL });   // loop=false so it ends -> crossfade
 	});
 	function currentMusic() { return musicTracks[musicIndex]; }
-	function nextMusicTrack() {   // advance to the next track (wraps) and play it
+	// (re)arm the crossfade to fire ~CROSSFADE_MS before the current track ends
+	function scheduleCrossfade() {
+		clearTimeout(musicTimer);
+		var m = currentMusic(), dur = m.duration();
+		if (!dur) { musicTimer = setTimeout(scheduleCrossfade, 200); return; }   // not decoded yet
+		musicTimer = setTimeout(crossfade, Math.max(0, (dur - m.seek()) * 1000 - CROSSFADE_MS));
+	}
+	function crossfade() {   // fade the current track out and the next one in
+		var ending = currentMusic();
+		ending.fade(ending.volume(), 0, CROSSFADE_MS);
+		ending.once('fade', function () { ending.stop(); });   // reset it once faded out
 		musicIndex = (musicIndex + 1) % musicTracks.length;
-		if (!musicMuted) currentMusic().play();
+		currentMusic().volume(0);
+		currentMusic().play();
+		currentMusic().fade(0, MUSIC_VOL, CROSSFADE_MS);
+		scheduleCrossfade();
 	}
 	// vacuum + stingers: Web Audio (default) for tight, in-sync start/stop
 	var vroomSfx = new Howl({ src: ['assets/sounds/vacuum_on.mp3'], loop: true, volume: VROOM_VOL });   // recorded by Alex
@@ -112,12 +127,12 @@
 	function startAudio() {   // first user gesture unlocks (Howler auto-unlocks) + starts music
 		if (audioStarted) return;
 		audioStarted = true;
-		if (!musicMuted && !currentMusic().playing()) currentMusic().play();
+		if (!musicMuted && !currentMusic().playing()) { currentMusic().volume(MUSIC_VOL); currentMusic().play(); scheduleCrossfade(); }
 	}
 	function setMusicMuted(m) {
 		musicMuted = m;
-		if (m) currentMusic().pause();
-		else if (audioStarted && !currentMusic().playing()) currentMusic().play();
+		if (m) { clearTimeout(musicTimer); currentMusic().pause(); }
+		else if (audioStarted && !currentMusic().playing()) { currentMusic().play(); scheduleCrossfade(); }
 	}
 	function toggleMusic() {   // shared by the M key and the Music button
 		setMusicMuted(!musicMuted);

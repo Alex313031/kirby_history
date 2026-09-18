@@ -18,12 +18,23 @@
 	Website: https://collectingdust.com/
 	From: Los Angeles, US
 
+	Kevin MacLeod
+	Role: Musician
+	Website: incompetech.com
+	From: Green Bay, Wisconsin
+
+	Midzer Rohner
+	Role: Friend and maintainer of Tobii
+	Website: https://midzer.de/
+	From: Bavaria, Germany
+
 	Casee Baldwin
 	Role: Tester
+	From: Tulsa, OK
 
 /* SITE */
 
-	Last update: 2026/09/08
+	Last update: 2026/09/18
 	Language: English
 	Doctype: HTML5, CSS
 	IDE: Geany
