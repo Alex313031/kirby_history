@@ -88,10 +88,21 @@
 	var MUSIC_VOL = 0.40, VROOM_VOL = 0.15, STINGER_VOL = 0.30;
 	var DUCK_VOL = MUSIC_VOL * 0.25;              // music dips to here under a stinger (not silent)
 	var DUCK_DOWN_MS = 250, DUCK_UP_MS = 1600;    // fast dip, slow recovery
-	// music: Web Audio (like the SFX) -- seamless loop, no HTML5 <audio> pool to
-	// exhaust (that "pool exhausted / locked" warning), unlocks cleanly on iOS.
-	// Trade-off: the track is decoded fully into memory -- fine for one bg loop.
-	var music = new Howl({ src: ['assets/sounds/TerrySnyder&JackCooper_CestSiBon.mp3'], loop: true, volume: MUSIC_VOL });
+	// music: a 2-track playlist (Web Audio) -- plays each track in turn, then
+	// loops back around. loop=false on each so onend fires and hands to the next.
+	var MUSIC_SRCS = [
+		'assets/sounds/TerrySnyder&JackCooper_CestSiBon.mp3',
+		'assets/sounds/Sweeter Vermouth.mp3',
+	];
+	var musicIndex = 0;
+	var musicTracks = MUSIC_SRCS.map(function (src) {
+		return new Howl({ src: [src], volume: MUSIC_VOL, onend: nextMusicTrack });
+	});
+	function currentMusic() { return musicTracks[musicIndex]; }
+	function nextMusicTrack() {   // advance to the next track (wraps) and play it
+		musicIndex = (musicIndex + 1) % musicTracks.length;
+		if (!musicMuted) currentMusic().play();
+	}
 	// vacuum + stingers: Web Audio (default) for tight, in-sync start/stop
 	var vroomSfx = new Howl({ src: ['assets/sounds/vacuum_on.mp3'], loop: true, volume: VROOM_VOL });   // recorded by Alex
 	var winSfx  = new Howl({ src: ['assets/sounds/win.mp3'],  volume: STINGER_VOL, onend: unduck, onstop: unduck });
@@ -101,12 +112,12 @@
 	function startAudio() {   // first user gesture unlocks (Howler auto-unlocks) + starts music
 		if (audioStarted) return;
 		audioStarted = true;
-		if (!musicMuted && !music.playing()) music.play();
+		if (!musicMuted && !currentMusic().playing()) currentMusic().play();
 	}
 	function setMusicMuted(m) {
 		musicMuted = m;
-		if (m) music.pause();
-		else if (audioStarted && !music.playing()) music.play();
+		if (m) currentMusic().pause();
+		else if (audioStarted && !currentMusic().playing()) currentMusic().play();
 	}
 	function toggleMusic() {   // shared by the M key and the Music button
 		setMusicMuted(!musicMuted);
@@ -127,12 +138,12 @@
 	}
 	// --- mixing: duck the music under a stinger, then ramp it back up ---
 	function duck() {
-		if (musicMuted || !music.playing()) return;
-		music.fade(music.volume(), DUCK_VOL, DUCK_DOWN_MS);
+		if (musicMuted || !currentMusic().playing()) return;
+		currentMusic().fade(currentMusic().volume(), DUCK_VOL, DUCK_DOWN_MS);
 	}
 	function unduck() {
-		if (musicMuted || !music.playing()) return;
-		music.fade(music.volume(), MUSIC_VOL, DUCK_UP_MS);
+		if (musicMuted || !currentMusic().playing()) return;
+		currentMusic().fade(currentMusic().volume(), MUSIC_VOL, DUCK_UP_MS);
 	}
 	function playOneShot(a) {   // win/fail stingers; follow the SFX (vacuum) mute; duck the music
 		if (!audioStarted || sfxMuted) return;
