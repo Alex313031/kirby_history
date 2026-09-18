@@ -4,6 +4,8 @@ Models from 1915-1934 such as The Vacuette were marketed under Scott & Fetzer Co
 
 James B. Kirby designed machines until the Dual Sanitronic 50. He died in 1971.
 
+See also [Kirby Patents](./Kirby_Patents.md) for a list of his patents relating to vacuums.
+
 |   Year    |   Model    |   Image                         |   Notes                                               |
 |-----------|-------------------|---------------------------------|-----------------------------------------------------------|
 | 1934-1935 |  C/R                | [Model C](./imgs/models/original/Model_C.jpg)   | Model R was sold at retail with a handle switch           |
@@ -50,6 +52,20 @@ James B. Kirby designed machines until the Dual Sanitronic 50. He died in 1971.
 | 2018-2024 |  Avalir 2           | [Avalir2](./imgs/models/original/Avalir2.jpg)   | Blue and black color scheme.                              |
 | 2024-2026 |  Avalir Platinum    | [Platinum](./imgs/models/original/Platinum.jpg) | Return to black/chrome scheme of 505                      |
 ---------------------------------------------------------------------------------------------------------------------------------
+
+## Serial Numbers
+|  Model  |  Serial Info  |
+|---------|---------------|
+| 5xx     | Unknown serial number scheme |
+| DS50    | A = Apr. 1965 - May. 1966, B = Jun. 1966 - Dec. 1966, D = Jan. 1967 - Aug. 1967 |
+| DS80    | A = Sep. 1967 - May. 1968, Jun. 1968 - Dec. 1969 no letter used |
+| 1CR     | R = Jan. 1970 - Jun. 1970, S = Jul. 1970 - Dec. 1970, T = Jan. 1971 - Dec. 1971, A = Jan. 1972 - Aug. 1972, B = Sep. 1972 - Jun. 1973 |
+| 1CB     | M = Jul. 1973 - Dec. 1973 (Gold Bag), N = Jan. 1974 - Sep. 1974 (Pinstriped Bag), P = Oct. 1974 - Sep. 1975 (Diamondback Bag), R = Sep. 1975 - Jun. 1976 (Diamondback Bag) |
+| 2CB     | A = Jul. 1976 - Dec. 1976, B = Jan. - Jul. 1977, C = Jul. - Dec. 1977, D = Jan. 1978 - Aug. 1978, E = Sep. 1978 - Jun. 1979 |
+| 3CB     | F = Jul. 1979 - Feb. 1980, G = Mar. 1980 - Feb. 1981, H = Mar. - Aug. 1981 |
+| 1HD/2HD | 1st number represents factory location, 2nd/3rd numbers indicate year of manufacture, 4th/5th numbers signify the month, remaining numbers show the unit number in production. |
+| G3+     | Unknown serial number scheme |
+
 
 ## Comparison of vacuum filter types
 
