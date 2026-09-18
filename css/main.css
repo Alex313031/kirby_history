@@ -145,15 +145,12 @@ button:active {
 }
 table.wikitable {
   background-color: var(--table-bg);
-  display: block;
-  overflow-x: auto;
-  overflow-y: hidden;
   color: var(--table-fg);
   border: 1px solid var(--table-border);
   border-collapse: collapse;
   margin: 0 auto;
   font-size: 0.95rem;
-  line-height: 1.5;
+  line-height: 1.25;
   width: 90%;
 }
 table.box {
@@ -260,6 +257,28 @@ div.logo-row {
   color: var(--footer-text);
   display: flex;
   justify-content: space-between;
+}
+
+.totop {
+  display: block;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin-right: 0.5em;
+}
+
+.totop img {
+  filter: drop-shadow(4px 2px 1px var(--imgshadow));
+  width: 2.5em;
+}
+.totop img:hover {
+  filter: drop-shadow(-1px -1px 1px var(--imgshadow))
+    drop-shadow(-1px 1px 1px var(--imgshadow))
+    drop-shadow(2px 2px 1px var(--imgshadow))
+    drop-shadow(1px -1px 1px var(--imgshadow));
+}
+.totop img:active {
+  filter: drop-shadow(0 -4px 1px var(--imgshadow));
 }
 
 /* Mobile layout */

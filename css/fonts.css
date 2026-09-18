@@ -17,6 +17,10 @@ body {
   text-decoration: underline;
 }
 
+.small {
+  font-size: small;
+}
+
 /* roboto-regular - latin */
 @font-face {
   font-family: "Roboto";
