@@ -9,11 +9,12 @@
      light-OS visitor would otherwise keep colors.css's light token values
      (black text) on the dark canvas. Pin the dark values so the HUD and
      header stay readable regardless of OS theme. */
+  --bgcolor: #13181e;
   --fontcolor: #ffffff;
   --footer-text: #dddddd;
-  --border: #ffffff;
-  --buttonborder: #dcdcdc;
-  --imgshadow: #ffffff;
+  --border: #cccccc;
+  --buttonborder: #cccccc;
+  --imgshadow: #dddddd;
 }
 
 * {
@@ -47,20 +48,26 @@ body {
 
 /* source-code link: top-right, out of the lower touch-steering zone */
 .header {
-  position: fixed;
+  font-size: 16px;
+  position: absolute;
   top: 10px;
   right: 10px;
-  font-size: 16px;
   color: var(--footer-text);
   z-index: 10;
 }
 
 .navbar {
-  border-left: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 0 5px 5px 5px;
-  border-radius: 0 0 0 6px;
-  box-shadow: -1px 1px 1px var(--imgshadow);
+  /* opaque page-color fill so the tiled logo wallpaper (body::before) doesn't
+     show through behind the links and clutter them */
+  background-color: var(--bgcolor);
+  border-left: 1px solid var(--footer-text);
+  border-right: 1px solid var(--footer-text);
+  border-bottom: 1px solid var(--footer-text);
+  padding: 6px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 0 4px 1px var(--footer-text);
 }
 
 /* <main> fills exactly the viewport -- dvh accounts for the mobile URL bar
@@ -77,7 +84,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding-top: 44px; /* clear the fixed source-code link row above the controls */
+  padding-top: 22px; /* clear the fixed source-code link row above the controls */
 }
 
 /* controls (mode + reset) + HUD sit directly above the field, NOT captured
@@ -104,7 +111,7 @@ button,
 .game-controls select {
   font-family: inherit;
   box-shadow: 1px 1px 1px 0 var(--buttonborder);
-  border: 1px solid var(--border);
+  border: 1px solid var(--buttonborder);
   border-radius: 5px;
   background-color: #292929;
   color: #ffffff;
@@ -135,7 +142,7 @@ button:active {
   text-align: center;
   white-space: nowrap;
   text-shadow: 1px 1px 0 #000; /* 1px black shadow, no blur */
-  border: 1px solid #222222; /* outline box around the status area */
+  border: 1px solid var(--footer-text); /* outline box around the status area */
   border-radius: 5px; /* match the controls */
   padding: 4px 10px;
   margin: 4px 0; /* 4px breathing room from the buttons above + game below */
@@ -159,8 +166,19 @@ button:active {
   max-width: 100%;
   max-height: 100%; /* fit the zone vertically too (aspect preserved, no overflow) */
   background-color: #232323;
-  border: 2px solid #000; /* fixed dark outline: stays visible even on the all-white title card (var(--border) would be white in dark theme) */
+  border: 2px solid var(--border); /* fixed game outline */
   image-rendering: pixelated; /* keep the 64px pixel art crisp when scaled */
+}
+
+/* The game is a full-viewport (100dvh) app, so the header must stay out of
+   flow (absolute) at every width — making it `static` would push the game
+   area down and cause overflow/clipping. Only nudge the navbar margins. */
+@media (max-width: 1100px) {
+  .navbar {
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-top: 10px;
+  }
 }
 
 /* Mobile layout */
@@ -172,13 +190,5 @@ button:active {
      floating over whatever happens to be top-right on a phone */
   .header {
     font-size: 14px;
-    position: static;
-    text-align: center;
-    padding-bottom: 4px;
-  }
-  .navbar {
-    border-right: 1px solid var(--border);
-    border-radius: 0 0 6px 6px;
-    padding: 0 0 5px 0;
   }
 }

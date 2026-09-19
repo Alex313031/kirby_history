@@ -10,23 +10,23 @@
 
   /* Caption bar under the image (text comes from each img's alt="").
      Defaults: bg #000c, color #eee */
-  --tobii-caption-background: #000000cc;
-  --tobii-caption-color: #f1f1f1;
+  --tobii-caption-background: #13181ecc;
+  --tobii-caption-color: #ffffff;
 
   /* "1 / 3" slide counter, top-left. Defaults: bg #0000, color #fff */
-  --tobii-counter-background: #00000000;
+  --tobii-counter-background: #13181eff;
   --tobii-counter-color: #ffffff;
 
   /* Prev / next / close buttons.
      Defaults: color #fff, background #0000, nav-bg #00000080 */
   --tobii-button-color: #ffffff;
-  --tobii-button-background: #00000000;
-  --tobii-button-navigation-background: #00000066;
+  --tobii-button-background: #2e3a48ff;
+  --tobii-button-navigation-background: #2e3a48ff;
 
   /* Zoom hint icon shown over the thumbnails.
      Defaults: bg #192938f0, color #fff */
-  --tobii-zoom-icon-background: #192938f0;
-  --tobii-zoom-icon-color: #ffffff;
+  --tobii-zoom-icon-background: #00000000;
+  --tobii-zoom-icon-color: #000000f2;
 
   /* Loading spinner. Default: #fff */
   --tobii-loader-color: #ffffff;
@@ -50,5 +50,12 @@
    These also win over the vendor CSS by load order (no !important needed).
    Example: soften the open photo's corners to match the site's framing. */
 .tobii-image {
-  border-radius: 3px;
+  border-radius: 4px;
+}
+
+/* Prev / next / close buttons: Tobii exposes no border variable, so outline
+   them here. rgba white adapts over whatever --tobii-button-*-background is. */
+.tobii__btn {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
 }

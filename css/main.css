@@ -96,12 +96,16 @@ h2 {
   width: 1200px;
   max-width: 100%;
   margin: 0 auto;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 8px;
   padding-bottom: 0;
   /* opaque ground so the wrap never sits under text or the table */
   background-color: var(--bgcolor);
+  border-radius: 5px;
+  /* border (not outline) so it follows border-radius on legacy browsers too */
+  border: 1px solid var(--footer-text);
+  box-shadow: 1px 1px 8px 1px var(--footer-text);
 }
 
 /* hr styles */
@@ -175,20 +179,25 @@ a#vroombutton:hover {
 /* Wikipedia-style table (matches MediaWiki .wikitable) */
 .table-wrap {
   overflow-x: auto;
+  /* overflow-x:auto makes overflow-y compute to auto too, which clips the
+     table's box-shadow; this padding gives the shadow room inside the clip box */
+  padding: 4px;
   margin: 1em 0;
 }
 table.wikitable {
   background-color: var(--table-bg);
   color: var(--table-fg);
   border: 1px solid var(--table-border);
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 4px;
   margin: 0 auto;
   font-size: 0.95rem;
   line-height: 1.25;
   width: 90%;
 }
 table.box {
-  box-shadow: 1px 1px 2px 1px var(--imgshadow);
+  box-shadow: 1px 1px 4px 1px var(--imgshadow);
 }
 table.wikitable caption {
   font-weight: bold;
@@ -196,8 +205,33 @@ table.wikitable caption {
 }
 table.wikitable th,
 table.wikitable td {
-  border: 1px solid var(--table-border);
+  /* Separate borders (not collapse) so the table can round its outer corners.
+     Each cell draws only top + left; the first row drops its top and the first
+     column drops its left, so the table's own border supplies the outer edges.
+     Basing the grid on top/left keeps it rowspan-safe (the service column spans
+     rows) and gives a clean 1px grid with no doubling. */
+  border-top: 1px solid var(--table-border);
+  border-left: 1px solid var(--table-border);
   padding: 6px 10px;
+}
+table.wikitable thead tr:first-child > * {
+  border-top: 0;
+}
+table.wikitable tr > :first-child {
+  border-left: 0;
+}
+/* round only the four outermost corners (4px) to match the table radius */
+table.wikitable thead tr:first-child th:first-child {
+  border-top-left-radius: 4px;
+}
+table.wikitable thead tr:first-child th:last-child {
+  border-top-right-radius: 4px;
+}
+table.wikitable tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 4px;
+}
+table.wikitable tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 4px;
 }
 table.wikitable th {
   background-color: var(--table-th-bg);
@@ -221,15 +255,15 @@ table.wikitable td.service.svc-hl {
   background-color: var(--table-hover);
 }
 
-/* Serial-number footnote refs: Wikipedia-style [a] with a hover/tap popup */
+/* Footnote refs (model serials + patent notes): Wikipedia-style [a] with a hover/tap popup */
 .mdl-ref {
   white-space: nowrap;
 }
-.serial-ref {
+.fn-ref {
   position: relative;
   white-space: nowrap;
 }
-.serial-ref > button {
+.fn-ref > button {
   font: inherit;
   color: var(--link);
   background: none;
@@ -238,11 +272,11 @@ table.wikitable td.service.svc-hl {
   padding: 0 1px;
   cursor: pointer;
 }
-.serial-ref > button:hover,
-.serial-ref > button:focus-visible {
+.fn-ref > button:hover,
+.fn-ref > button:focus-visible {
   text-decoration: underline;
 }
-.serial-pop {
+.fn-pop {
   display: none;
   position: absolute;
   left: 0;
@@ -262,9 +296,14 @@ table.wikitable td.service.svc-hl {
   border-radius: 4px;
   box-shadow: 2px 2px 3px var(--imgshadow);
 }
-.serial-ref:hover .serial-pop,
-.serial-ref:focus-within .serial-pop {
+.fn-ref:hover .fn-pop,
+.fn-ref:focus-within .fn-pop {
   display: block;
+}
+/* open leftward when the ref sits near the right edge (e.g. patents Notes column) */
+.fn-pop.fn-left {
+  left: auto;
+  right: 0;
 }
 
 /* Model thumbnails inside the table */
@@ -289,12 +328,19 @@ div.logo-row {
 
 /* Photo framing: 1px outline (black in light mode, white in dark)
    and a soft glow on hover */
+.banner {
+  box-shadow: 1px 1px 4px 1px var(--imgshadow);
+}
 .banner,
 .model-thumb {
   border: 1px solid var(--border);
   transition: box-shadow 0.1s ease;
 }
-.banner:hover,
+.banner:hover {
+  box-shadow:
+    1px 1px 4px 0 var(--imgshadow),
+    0 0 6px 1px var(--imgshadow);
+}
 .model-thumb:hover {
   box-shadow: 0 0 6px 1px var(--imgshadow);
 }
@@ -327,14 +373,19 @@ div.logo-row {
   top: 10px;
   right: 10px;
   color: var(--footer-text);
+  z-index: 10;
 }
 
 .navbar {
-  border-left: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 0 5px 5px 5px;
-  border-radius: 0 0 0 6px;
-  box-shadow: -1px 1px 1px var(--imgshadow);
+  /* opaque page-color fill so the tiled logo wallpaper (body::before) doesn't
+     show through behind the links and clutter them */
+  background-color: var(--bgcolor);
+  border-left: 1px solid var(--footer-text);
+  border-right: 1px solid var(--footer-text);
+  border-bottom: 1px solid var(--footer-text);
+  padding: 6px;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 0 4px 1px var(--footer-text);
 }
 
 /* Bottom of page */
@@ -376,6 +427,9 @@ div.logo-row {
     text-align: center;
     padding-bottom: 4px;
   }
+  .totop img {
+    width: 2em;
+  }
 }
 
 /* Mobile layout */
@@ -387,11 +441,6 @@ div.logo-row {
      floating over whatever happens to be top-right on a phone */
   .header {
     font-size: 14px;
-  }
-  .navbar {
-    border-right: 1px solid var(--border);
-    border-radius: 0 0 6px 6px;
-    padding: 0 0 5px 0;
   }
   .footer {
     font-size: 12px;
