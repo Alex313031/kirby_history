@@ -25,6 +25,6 @@ Site code licensed under the [BSD-3 Clause License](LICENSE.md).
 
 Images and Manuals Copyright [David Orencyr](https://collectingdust.com/).
 
-Game music by [Kevin MacLeod](incompetech.com), licensed under the [Creative Commons License](https://creativecommons.org/licenses/by/4.0/).
+Game music by [Kevin MacLeod](https://incompetech.com), licensed under the [Creative Commons License](https://creativecommons.org/licenses/by/4.0/).
 
 The site uses a lightbox library called [Tobii](https://github.com/midzer/tobii), by my good friend [Midzer](https://midzer.de/).

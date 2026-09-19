@@ -412,7 +412,8 @@
 
 	preloadDirs();
 
-	document.querySelector('#vroombutton').onclick = function (e) {
+	var vroomBtn = document.querySelector('#vroombutton');
+	if (vroomBtn) vroomBtn.onclick = function (e) {
 		this.blur(); // drop focus so the button doesn't sit looking pressed
 		if (e.detail > 0) {
 			// real mouse click: start at the click itself

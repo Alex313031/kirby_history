@@ -1,7 +1,8 @@
 // Dark mode button.
 
-document.querySelector('#darkbutton').onclick = function() {
+var darkBtn = document.querySelector('#darkbutton');
+if (darkBtn) darkBtn.onclick = function() {
 	useDark = !useDark;
 	toggleDarkMode(useDark);
 	localStorage.setItem('dark-mode', useDark);
-}
+};

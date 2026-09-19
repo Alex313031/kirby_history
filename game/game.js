@@ -115,7 +115,7 @@
 		musicIndex = (musicIndex + 1) % musicTracks.length;
 		currentMusic().volume(0);
 		currentMusic().play();
-		currentMusic().fade(0, MUSIC_VOL, CROSSFADE_MS);
+		currentMusic().fade(0, musicTarget, CROSSFADE_MS);   // fade in to the live target (respects an active duck)
 		scheduleCrossfade();
 	}
 	// vacuum + stingers: Web Audio (default) for tight, in-sync start/stop
@@ -123,6 +123,7 @@
 	var winSfx  = new Howl({ src: ['assets/sounds/win.mp3'],  volume: STINGER_VOL, onend: unduck, onstop: unduck });
 	var failSfx = new Howl({ src: ['assets/sounds/fail.mp3'], volume: STINGER_VOL, onend: unduck, onstop: unduck });
 	var audioStarted = false, musicMuted = false, sfxMuted = false, vroomPlaying = false;   // music ON by default -> starts on game start (first move)
+	var musicTarget = MUSIC_VOL;   // music's live target level (MUSIC_VOL, or DUCK_VOL while a stinger ducks it)
 
 	function startAudio() {   // first user gesture unlocks (Howler auto-unlocks) + starts music
 		if (audioStarted) return;
@@ -132,7 +133,7 @@
 	function setMusicMuted(m) {
 		musicMuted = m;
 		if (m) { clearTimeout(musicTimer); currentMusic().pause(); }
-		else if (audioStarted && !currentMusic().playing()) { currentMusic().play(); scheduleCrossfade(); }
+		else if (audioStarted && !currentMusic().playing()) { currentMusic().volume(musicTarget); currentMusic().play(); scheduleCrossfade(); }
 	}
 	function toggleMusic() {   // shared by the M key and the Music button
 		setMusicMuted(!musicMuted);
@@ -153,10 +154,12 @@
 	}
 	// --- mixing: duck the music under a stinger, then ramp it back up ---
 	function duck() {
+		musicTarget = DUCK_VOL;
 		if (musicMuted || !currentMusic().playing()) return;
 		currentMusic().fade(currentMusic().volume(), DUCK_VOL, DUCK_DOWN_MS);
 	}
 	function unduck() {
+		musicTarget = MUSIC_VOL;
 		if (musicMuted || !currentMusic().playing()) return;
 		currentMusic().fade(currentMusic().volume(), MUSIC_VOL, DUCK_UP_MS);
 	}

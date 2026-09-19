@@ -1,30 +1,51 @@
 <!DOCTYPE html>
 <!-- Kirby website custom 404 landing page. -->
-<html lang="en-US" itemscope itemtype="http://schema.org/WebPage">
+<html lang="en-US" itemscope itemtype="https://schema.org/WebPage">
 <head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="initial-scale=1, minimum-scale=1, width=device-width">
+  <link rel="stylesheet" href="css/colors.css">
+  <link rel="stylesheet" href="css/fonts.css">
   <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#dfdfdf">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#13181e">
   <link rel="author" href="humans.txt">
   <link rel="shortcut icon" type="image/x-icon" href="404_favicon.ico">
   <meta name="description" content="Kirby Site 404 Error Page">
   <title>Error! 404 (Not Found)</title>
   <style>
+  html {
+    background-color: var(--bgcolor, #dfdfdf);
+  }
+  body {
+    color: var(--fontcolor, #000);
+    font-family: 'Roboto', system-ui, sans-serif;
+  }
+  a {
+    color: var(--link, #0b57d0);
+  }
   .error-404 {
     margin: 4% auto 0;
     max-width: 512px;
     max-height: 512px;
   }
-  .error-404 img {
+  .banner img {
     width: 100%;
     height: 100%;
+  }
+  .inline-icon {
+    width: 1.5em;
+    height: 1.5em; 
   }
   </style>
 </head>
 <body class="error-404">
-  <img title="ohno!" src="404_favicon.ico" alt="Error Robot">
-  <p class="par"><b class="error">404.</b>&nbsp;<ins class="ins">That’s an error, my fine sir.</ins></p>
+  <img class="banner" title="Sad Kirby" src="imgs/sad_vac.png" alt="Sad Kirby">
+  <p class="par">
+    <img title="ohno!" class="inline-icon" src="404_favicon.ico" alt="Sad Tab">&nbsp;
+    <b class="error">404.</b>&nbsp;<ins class="ins">That’s an error, my fine sir.</ins>
+  </p>
   <p>The requested URL was not found on this server.</p>
   <p><a title="Kirby History Homepage" href="index.html">Go Back to Kirby History Home Page</a></p>
 </body>

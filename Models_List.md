@@ -14,21 +14,21 @@ See also [Kirby Patents](./Kirby_Patents.md) for a list of his patents relating 
 | 1939-1940 |  3C/3R              | [Model 3C](./imgs/models/original/Model_3C.jpg) | New 10-blade Fan                                          |
 | 1940-1941 |  4C/4R              | [Model 4R](./imgs/models/original/Model_4R.jpg) | More powerful motor, larger Emptor                        |
 | 1945-1947 |  505                | [505](./imgs/models/original/505.jpg)           | 1945 copy of 4C, 1946+ added patented "Magic Finger"      |
-| 1948-1948 |  508                | [508](./imgs/models/original/508.jpg)           | New Red/Black color scheme                                |
-| 1949-1949 |  509                | [509](./imgs/models/original/509.jpg)           | Kirby logo redesign                                       |
-| 1950-1950 |  510                | [510](./imgs/models/original/510.jpg)           | Introduced Sweet Air Dispenser                            |
-| 1951-1951 |  511                | [511](./imgs/models/original/511.jpg)           | Korean War, almost identical to 510                       |
-| 1952-1952 |  512                | [512](./imgs/models/original/512.jpg)           | Added Sanitation Kit, front wheel bracket inferior metal. |
-| 1953-1953 |  513                | [513](./imgs/models/original/513.jpg)           | Added more red to plastic parts.                          |
-| 1954-1954 |  514                | [514](./imgs/models/original/514.jpg)           | Cord improvements.                                        |
-| 1955-1955 |  515                | [515](./imgs/models/original/515.jpg)           | Bag and wheels matte gray.                                |
-| 1956-1956 |  516                | [516](./imgs/models/original/516.jpg)           | "50th Anniversary", switch integrated into motor housing. |
-| 1957-1957 |  517                | [517](./imgs/models/original/517.jpg)           | Vinyl hose and better attachment material.                |
-| 1958-1958 |  518                | [518](./imgs/models/original/518.jpg)           | Stylistic enhancements.                                   |
-| 1959-1959 |  519                | [519](./imgs/models/original/519.jpg)           | Carbon brushes no longer screw-in outside motor housing.  |
-| 1960-1960 |  560                | [560](./imgs/models/original/560.jpg)           | Handle grip painted metal, brighter red on plastic trim.  |
-| 1961-1961 |  561                | [561](./imgs/models/original/561.jpg)           | Handle grip plastic, motor vent more chevron-like.        |
-| 1962-1962 |  562 "Sanitronic"   | [Sanitronic 562](./imgs/models/original/562.jpg)| Unique brown/white style, first with "Sanitronic" name.   |
+| 1948      |  508                | [508](./imgs/models/original/508.jpg)           | New Red/Black color scheme                                |
+| 1949      |  509                | [509](./imgs/models/original/509.jpg)           | Kirby logo redesign                                       |
+| 1950      |  510                | [510](./imgs/models/original/510.jpg)           | Introduced Sweet Air Dispenser                            |
+| 1951      |  511                | [511](./imgs/models/original/511.jpg)           | Korean War, almost identical to 510                       |
+| 1952      |  512                | [512](./imgs/models/original/512.jpg)           | Added Sanitation Kit, front wheel bracket inferior metal. |
+| 1953      |  513                | [513](./imgs/models/original/513.jpg)           | Added more red to plastic parts.                          |
+| 1954      |  514                | [514](./imgs/models/original/514.jpg)           | Cord improvements.                                        |
+| 1955      |  515                | [515](./imgs/models/original/515.jpg)           | Bag and wheels matte gray.                                |
+| 1956      |  516                | [516](./imgs/models/original/516.jpg)           | "50th Anniversary", switch integrated into motor housing. |
+| 1957      |  517                | [517](./imgs/models/original/517.jpg)           | Vinyl hose and better attachment material.                |
+| 1958      |  518                | [518](./imgs/models/original/518.jpg)           | Stylistic enhancements.                                   |
+| 1959      |  519                | [519](./imgs/models/original/519.jpg)           | Carbon brushes no longer screw-in outside motor housing.  |
+| 1960      |  560                | [560](./imgs/models/original/560.jpg)           | Handle grip painted metal, brighter red on plastic trim.  |
+| 1961      |  561                | [561](./imgs/models/original/561.jpg)           | Handle grip plastic, motor vent more chevron-like.        |
+| 1962      |  562 "Sanitronic"   | [Sanitronic 562](./imgs/models/original/562.jpg)| Unique brown/white style, first with "Sanitronic" name.   |
 | 1963-1965 |  Sanitronic VII     | [Sanitronic VII](./imgs/models/original/VII.jpg)| Hose has universal blower/suction coupling.               |
 | 1965-1967 |  Dual Sanitronic 50 | [DS50](./imgs/models/original/DS50.jpg)         | Introduces dual speed motor.                              |
 | 1967-1970 |  Dual Sanitronic 80 | [DS80](./imgs/models/original/DS80.jpg)         | Has a '60s avocado-green theme.                             |

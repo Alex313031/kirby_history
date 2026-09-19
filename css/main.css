@@ -3,6 +3,13 @@
   box-sizing: border-box;
 }
 
+/* Button palette (theme-independent; darkened from #828282 so white text hits AA) */
+:root {
+  --btn-bg: #6d6d6d;
+  --btn-bg-hover: #767676;
+  --btn-bg-active: #5c5c5c;
+}
+
 /* Keyboard a11y: visible focus ring + skip-to-content link (hidden until focused) */
 :focus-visible {
   outline: 2px solid var(--fontcolor, #0a6cff);
@@ -119,27 +126,43 @@ h2 {
   vertical-align: middle;
   border: 1px solid var(--border);
   transition: box-shadow 0.1s ease;
+  border-radius: 2px;
 }
 .gallery img:hover {
   box-shadow: 0 0 6px 1px var(--imgshadow);
 }
 
-/* Buttons (style matches thorium.rocks) */
+/* Buttons (style matches thorium.rocks, darkened for AA text contrast) */
 button {
   font-family: inherit;
+  padding: 1px 6px;
   box-shadow: 1px 1px 1px 0 var(--buttonborder);
   border: 1px solid var(--border);
   border-radius: 5px;
-  background-color: #828282;
+  background-color: var(--btn-bg);
   color: #ffffff;
   cursor: pointer;
 }
 button:hover {
-  background-color: #999999;
+  background-color: var(--btn-bg-hover);
 }
 button:active {
   box-shadow: 1px 1px 1px 0 #222222 inset;
-  background-color: #888888;
+  background-color: var(--btn-bg-active);
+}
+/* Blog: the "Suck It!" control navigates, so it's an anchor styled to match */
+a#vroombutton {
+  display: inline-block;
+  padding: 1px 6px;
+  font-family: inherit;
+  box-shadow: 1px 1px 1px 0 var(--buttonborder);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background-color: var(--btn-bg);
+  text-decoration: none;
+}
+a#vroombutton:hover {
+  background-color: var(--btn-bg-hover);
 }
 #darkbutton {
   margin: 0.75em auto;
