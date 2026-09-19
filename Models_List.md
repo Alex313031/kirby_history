@@ -6,51 +6,51 @@ James B. Kirby designed machines until the Dual Sanitronic 50. He died in 1971.
 
 See also [Kirby Patents](./Kirby_Patents.md) for a list of his patents relating to vacuums.
 
-|   Year    |   Model    |   Image                         |   Notes                                               |
-|-----------|-------------------|---------------------------------|-----------------------------------------------------------|
-| 1934-1935 |  C/R                | [Model C](./imgs/models/original/Model_C.jpg)   | Model R was sold at retail with a handle switch           |
-| 1935-1937 |  1C/1R              | [Model 1C](./imgs/models/original/Model_1C.jpg) | Added Headlight                                           |
-| 1937-1939 |  2C/2R              | [Model 2C](./imgs/models/original/Model_2C.jpg) | Added 5xx style Headlight                                 |
-| 1939-1940 |  3C/3R              | [Model 3C](./imgs/models/original/Model_3C.jpg) | New 10-blade Fan                                          |
-| 1940-1941 |  4C/4R              | [Model 4R](./imgs/models/original/Model_4R.jpg) | More powerful motor, larger Emptor                        |
-| 1945-1947 |  505                | [505](./imgs/models/original/505.jpg)           | 1945 copy of 4C, 1946+ added patented "Magic Finger"      |
-| 1948      |  508                | [508](./imgs/models/original/508.jpg)           | New Red/Black color scheme                                |
-| 1949      |  509                | [509](./imgs/models/original/509.jpg)           | Kirby logo redesign                                       |
-| 1950      |  510                | [510](./imgs/models/original/510.jpg)           | Introduced Sweet Air Dispenser                            |
-| 1951      |  511                | [511](./imgs/models/original/511.jpg)           | Korean War, almost identical to 510                       |
-| 1952      |  512                | [512](./imgs/models/original/512.jpg)           | Added Sanitation Kit, front wheel bracket inferior metal. |
-| 1953      |  513                | [513](./imgs/models/original/513.jpg)           | Added more red to plastic parts.                          |
-| 1954      |  514                | [514](./imgs/models/original/514.jpg)           | Cord improvements.                                        |
-| 1955      |  515                | [515](./imgs/models/original/515.jpg)           | Bag and wheels matte gray.                                |
-| 1956      |  516                | [516](./imgs/models/original/516.jpg)           | "50th Anniversary", switch integrated into motor housing. |
-| 1957      |  517                | [517](./imgs/models/original/517.jpg)           | Vinyl hose and better attachment material.                |
-| 1958      |  518                | [518](./imgs/models/original/518.jpg)           | Stylistic enhancements.                                   |
-| 1959      |  519                | [519](./imgs/models/original/519.jpg)           | Carbon brushes no longer screw-in outside motor housing.  |
-| 1960      |  560                | [560](./imgs/models/original/560.jpg)           | Handle grip painted metal, brighter red on plastic trim.  |
-| 1961      |  561                | [561](./imgs/models/original/561.jpg)           | Handle grip plastic, motor vent more chevron-like.        |
-| 1962      |  562 "Sanitronic"   | [Sanitronic 562](./imgs/models/original/562.jpg)| Unique brown/white style, first with "Sanitronic" name.   |
-| 1963-1965 |  Sanitronic VII     | [Sanitronic VII](./imgs/models/original/VII.jpg)| Hose has universal blower/suction coupling.               |
-| 1965-1967 |  Dual Sanitronic 50 | [DS50](./imgs/models/original/DS50.jpg)         | Introduces dual speed motor.                              |
-| 1967-1970 |  Dual Sanitronic 80 | [DS80](./imgs/models/original/DS80.jpg)         | Has a '60s avocado-green theme.                             |
-| 1970-1973 |  Classic 1CR        | [Classic](./imgs/models/original/1CR.jpg)       | Redesigned motor housing that lasted until Legend II.       |
-| 1973-1976 |  Classic Omega 1-CB | [1CB](./imgs/models/original/1CB.jpg)           | Introduced double-insulated motor/plastic headlight cap.  |
-| 1976-1979 |  Classic III 2-CB   | [2CB](./imgs/models/original/2CB.jpg)           | All red color scheme, redesigned plastic belt lifter.     |
-| 1979-1981 |  Tradition 3-CB     | [3CB](./imgs/models/original/3CB.jpg)           | All blue color scheme, introduced replaceable paper bags. |
-| 1981-1983 |  Heritage 1-HD      | [1HD](./imgs/models/original/1HD.jpg)           | Added more attachments, and better Style 2 bags.          |
-| 1984-1986 |  Heritage II 2-HD   | [2HD](./imgs/models/original/2HD.jpg)           | Introduced "Mini-Emptor".                                 |
-| 1987-1989 |  Heritage II Legend (2-HD) | [Legend](./imgs/models/original/Legend.jpg)     | "Legend 1". Plastic hose ends.                            |
-| 1989-1991 |  Legend II (2-HD)          | [LegendII](./imgs/models/original/LegendII.jpg) | Maroon color scheme, last to have shake out bag option.   |
-| 1990-1993 |  G3                 | [G3](./imgs/models/original/G3.jpg)             | Introduced Micron-Magic bags + self-propel "Tech Drive".  |
-| 1993-1997 |  G4                 | [G4](./imgs/models/original/G4.jpg)             | Improvements to Tech Drive and handle tilt latch.         |
-| 1997-1999 |  G5                 | [G5](./imgs/models/original/G5.jpg)             | Multiple design tweaks, NASA-designed fan system.         |
-| 1999-2001 |  G6                 | [G6](./imgs/models/original/G6.jpg)             | Introduced HEPA bags, backwards compatible to G3.         |
-| 2002-2003 |  Ultimate G         | [G7](./imgs/models/original/G7.jpg)             | Improved brushroll and airflow.                           |
-| 2003-2006 |  Diamond Edition    | [DE](./imgs/models/original/DE.jpg)             | Final iteration of the G series, last with coin slot.     |
-| 2006-2012 |  Sentria            | [Sentria](./imgs/models/original/Sentria.jpg)   | More modern handle, lighter design.                       |
-| 2012-2014 |  Sentria II         | [SentriaII](./imgs/models/original/SentrII.jpg) | Return to brown bag/trim scheme.                          |
-| 2014-2018 |  Avalir             | [Avalir](./imgs/models/original/Avalir.jpg)     | Crappy, do not buy.                                       |
-| 2018-2024 |  Avalir 2           | [Avalir2](./imgs/models/original/Avalir2.jpg)   | Blue and black color scheme.                              |
-| 2024-2026 |  Avalir Platinum    | [Platinum](./imgs/models/original/Platinum.jpg) | Return to black/chrome scheme of 505                      |
+| Year | Model | Notes | Owners Manuals | Service Manuals |
+|------|-------|-------|----------------|-----------------|
+| 1934-1935 | C/R | Model R was sold at retail with a handle switch | [C](./manuals/owners_manuals/Model_C_Owners_Manual.pdf) · [R](./manuals/owners_manuals/Model_R_Owners_Manual.pdf) | —<br>(Use [505–562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) Service Manual) |
+| 1935-1937 | 1C/1R | Added Headlight | [1C](./manuals/owners_manuals/Model_C_Owners_Manual.pdf) · [1R](./manuals/owners_manuals/Model_R_Owners_Manual.pdf) | —<br>(Use [505–562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) Service Manual) |
+| 1937-1939 | 2C/2R | Added 5xx style Headlight | [2C](./manuals/owners_manuals/Model_2C_Owners_Manual.pdf) · [2C (alt)](./manuals/owners_manuals/Model_2C_Alt_Owners_Manual.pdf) | —<br>(Use [505–562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) Service Manual) |
+| 1939-1940 | 3C/3R | New 10-blade Fan | [3C](./manuals/owners_manuals/Model_3C_Owners_Manual.pdf) | —<br>(Use [505–562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) Service Manual) |
+| 1940-1941 | 4C/4R | More powerful motor, larger Emptor | [4C](./manuals/owners_manuals/Model_4C_Owners_Manual.pdf) · [4R](./manuals/owners_manuals/Model_4R_Owners_Manual.pdf) · [4R (alt)](./manuals/owners_manuals/Model_4R_Alt_Owners_Manual.pdf) | —<br>(Use [505–562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) Service Manual) |
+| 1945-1947 | 505 | 1945 copy of 4C, 1946+ added patented "Magic Finger" | [1945](./manuals/owners_manuals/Model_505_1945_Owners_Manual.pdf) · [1946](./manuals/owners_manuals/Model_505_1946_Owners_Manual.pdf) · [1947](./manuals/owners_manuals/Model_505_Late_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1948 | 508 | New Red/Black color scheme | [Manual](./manuals/owners_manuals/Model_508_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1949 | 509 | Kirby logo redesign | [Manual](./manuals/owners_manuals/Model_509_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1950 | 510 | Introduced Sweet Air Dispenser | [Manual](./manuals/owners_manuals/Model_510_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1951 | 511 | Korean War, almost identical to 510 | [Manual](./manuals/owners_manuals/Model_511_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1952 | 512 | Added Sanitation Kit, front wheel bracket inferior metal. | [Manual](./manuals/owners_manuals/Model_512_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1953 | 513 | Added more red to plastic parts. | [Manual](./manuals/owners_manuals/Model_513_Owners_Manual.pdf) | [513](./manuals/service_manuals/Kirby_513_Service_Manual.pdf) |
+| 1954 | 514 | Cord improvements. | [Manual](./manuals/owners_manuals/Model_514_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1955 | 515 | Bag and wheels matte gray. | [Manual](./manuals/owners_manuals/Model_515_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1956 | 516 | "50th Anniversary", switch integrated into motor housing. | [Manual](./manuals/owners_manuals/Model_516_Owners_Manual.pdf) | [516](./manuals/service_manuals/Kirby_516_Service_Manual.pdf) |
+| 1957 | 517 | Vinyl hose and better attachment material. | [Manual](./manuals/owners_manuals/Model_517_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1958 | 518 | Stylistic enhancements. | [Manual](./manuals/owners_manuals/Model_518_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1959 | 519 | Carbon brushes no longer screw-in outside motor housing. | [Manual](./manuals/owners_manuals/Model_519_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1960 | 560 | Handle grip painted metal, brighter red on plastic trim. | [Manual](./manuals/owners_manuals/Model_560_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1961 | 561 | Handle grip plastic, motor vent more chevron-like. | [Manual](./manuals/owners_manuals/Model_561_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1962 | 562 "Sanitronic" | Unique brown/white style, first with "Sanitronic" name. | [Manual](./manuals/owners_manuals/Sanitronic_562_Owners_Manual.pdf) | [505 – 562](./manuals/service_manuals/Kirby_Models_505-562_Service_Manual.pdf) |
+| 1963-1965 | Sanitronic VII | Hose has universal blower/suction coupling. | [Manual](./manuals/owners_manuals/Sanitronic_VII_Owners_Manual.pdf) | [VII – 1-CB](./manuals/service_manuals/Kirby_VII-1CB_Service_Manual.pdf) |
+| 1965-1967 | Dual Sanitronic 50 | Introduces dual speed motor. | [Manual](./manuals/owners_manuals/Dual_Sanitronic_50_Owners_Manual.pdf) | [VII – 1-CB](./manuals/service_manuals/Kirby_VII-1CB_Service_Manual.pdf) |
+| 1967-1970 | Dual Sanitronic 80 | Has a '60s avocado-green theme. | [Manual](./manuals/owners_manuals/Dual_Sanitronic_80_Owners_Manual.pdf) | [VII – 1-CB](./manuals/service_manuals/Kirby_VII-1CB_Service_Manual.pdf) |
+| 1970-1973 | Classic 1CR | Redesigned motor housing that lasted until Legend II. | [1971](./manuals/owners_manuals/Classic_1971_Owners_Manual.pdf) · [1972](./manuals/owners_manuals/Classic_1972_Owners_Manual.pdf) | [VII – 1-CB](./manuals/service_manuals/Kirby_VII-1CB_Service_Manual.pdf) |
+| 1973-1976 | Classic Omega 1-CB | Introduced double-insulated motor/plastic headlight cap. | [Early](./manuals/owners_manuals/Classic_Omega_Early_Owners_Manual.pdf) · [Late](./manuals/owners_manuals/Classic_Omega_Late_Owners_Manual.pdf) | [VII – 1-CB](./manuals/service_manuals/Kirby_VII-1CB_Service_Manual.pdf) |
+| 1976-1979 | Classic III 2-CB | All red color scheme, redesigned plastic belt lifter. | [Apr 1978](./manuals/owners_manuals/Classic_III_April_1978_Owners_Manual.pdf) · [Oct 1978](./manuals/owners_manuals/Classic_III_October_1978_Owners_Manual.pdf) · [Alt](./manuals/owners_manuals/Classic_III_Warranty_Underline_Owners_Manual.pdf) | [Parts List](./manuals/service_manuals/Kirby_Classic_III_2-CB_Parts_List.pdf)<br>(Use [VII–1-CB Service Manual](./manuals/service_manuals/Kirby_VII-1CB_Service_Manual.pdf)) |
+| 1979-1981 | Tradition 3-CB | All blue color scheme, introduced replaceable paper bags. | [1979](./manuals/owners_manuals/Tradition_1979_Owners_Manual.pdf) · [1981](./manuals/owners_manuals/Tradition_1981_Owners_Manual.pdf) | [Parts List](./manuals/service_manuals/Kirby_Tradition_3-CB_Parts_List.pdf)<br>(Use [VII–1-CB Service Manual](./manuals/service_manuals/Kirby_VII-1CB_Service_Manual.pdf)) |
+| 1981-1983 | Heritage 1-HD | Added more attachments, and better Style 2 bags. | [1981](./manuals/owners_manuals/Heritage_1981_Owners_Manual.pdf) · [1982](./manuals/owners_manuals/Heritage_1982_Owners_Manual.pdf) · [1983](./manuals/owners_manuals/Heritage_1983_Owners_Manual.pdf) · [Super Renovation](./manuals/owners_manuals/Heritage_Super_Renovation_Group_Owners_Manual.pdf) · [Home Turbo](./manuals/owners_manuals/Heritage_Home_Turbo_Group_Owners_Manual.pdf) · [Handi Butler](./manuals/owners_manuals/Heritage_Handi_Butler_Group_Owners_Manual.pdf) | [Heritage & Heritage II](./manuals/service_manuals/Kirby_Heritage-Heritage_II_Service_Manual.pdf) |
+| 1984-1986 | Heritage II 2-HD | Introduced "Mini-Emptor". | [1984](./manuals/owners_manuals/Heritage_II_1984_Owners_Manual.pdf) · [1986](./manuals/owners_manuals/Heritage_II_1986_Owners_Manual.pdf) · [Split Second](./manuals/owners_manuals/Split_Second_Owners_Manual.pdf) | [Heritage & Heritage II](./manuals/service_manuals/Kirby_Heritage-Heritage_II_Service_Manual.pdf) |
+| 1987-1989 | Heritage II Legend (2-HD) | "Legend 1". Plastic hose ends. | [Manual](./manuals/owners_manuals/Legend_Owners_Manual.pdf) | [Parts List](./manuals/service_manuals/Kirby_Legend-Legend_II_2-HD_Parts_List.pdf)<br>(Use [Heritage II](./manuals/service_manuals/Kirby_Heritage-Heritage_II_Service_Manual.pdf) Service Manual) |
+| 1989-1991 | Legend II (2-HD) | Maroon color scheme, last to have shake out bag option. | [Manual](./manuals/owners_manuals/Legend_II_Owners_Manual.pdf) · [Vacuette](./manuals/owners_manuals/Vacuette_Handheld_Owners_Manual.pdf) | [Parts List](./manuals/service_manuals/Kirby_Legend-Legend_II_2-HD_Parts_List.pdf)<br>(Use [Heritage II](./manuals/service_manuals/Kirby_Heritage-Heritage_II_Service_Manual.pdf) Service Manual) |
+| 1990-1993 | G3 | Introduced Micron-Magic bags + self-propel "Tech Drive". | [Manual](./manuals/owners_manuals/G3_Owners_Manual.pdf) | [G3 – Sentria Parts List](./manuals/service_manuals/Kirby_G3-Sentria_Parts_List.pdf) |
+| 1993-1997 | G4 | Improvements to Tech Drive and handle tilt latch. | [Manual](./manuals/owners_manuals/G4_Owners_Manual.pdf) | [G3 – Sentria Parts List](./manuals/service_manuals/Kirby_G3-Sentria_Parts_List.pdf) |
+| 1997-1999 | G5 | Multiple design tweaks, NASA-designed fan system. | [Manual](./manuals/owners_manuals/G5_Owners_Manual.pdf) | [G3 – Sentria Parts List](./manuals/service_manuals/Kirby_G3-Sentria_Parts_List.pdf) |
+| 1999-2001 | G6 | Introduced HEPA bags, backwards compatible to G3. | [Manual](./manuals/owners_manuals/G6_Owners_Manual.pdf) | [G3 – Sentria Parts List](./manuals/service_manuals/Kirby_G3-Sentria_Parts_List.pdf) |
+| 2002-2003 | Ultimate G | Improved brushroll and airflow. | [Manual](./manuals/owners_manuals/UltimateG_Owners_Manual.pdf) | [G3 – Sentria Parts List](./manuals/service_manuals/Kirby_G3-Sentria_Parts_List.pdf) |
+| 2003-2006 | Diamond Edition | Final iteration of the G series, last with coin slot. | [Manual](./manuals/owners_manuals/UltimateG_Owners_Manual.pdf) | [G3 – Sentria Parts List](./manuals/service_manuals/Kirby_G3-Sentria_Parts_List.pdf) |
+| 2006-2012 | Sentria | More modern handle, lighter design. | [Manual](./manuals/owners_manuals/Sentria_Owners_Manual.pdf) | [G3 – Sentria Parts List](./manuals/service_manuals/Kirby_G3-Sentria_Parts_List.pdf) |
+| 2012-2014 | Sentria II | Return to brown bag/trim scheme. | [Manual](./manuals/owners_manuals/Sentria_II_Owners_Manual.pdf) | —<br>(Dump needed) |
+| 2014-2018 | Avalir | Crappy, do not buy. | [kirby.com Link](https://kirby.com/pages/avalir-owner-manual) | —<br>(Unavailable) |
+| 2018-2024 | Avalir 2 | Blue and black color scheme. | [kirby.com Link](https://kirby.com/pages/avalir-2-owner-manual) | —<br>(Unavailable) |
+| 2024-2026 | Avalir Platinum | Return to black/chrome scheme of 505 | [kirby.com Link](https://kirby.com/pages/avalir-platinum-owner-manual) | —<br>(Unavailable) |
 ---------------------------------------------------------------------------------------------------------------------------------
 
 ## Serial Numbers
@@ -74,7 +74,7 @@ Legend: ✅ caught well · ⚠️ partial · ❌ mostly passes
 | Filter type | Pollen (15–100 µm) | Mite pellets (10–40 µm) | Mite fragments (1–10 µm) | Mold spores (2–20 µm) | Dander flakes (5–10 µm) | Fine dander / Fel d 1 (1–5 µm) | Smoke/ultrafines (<1 µm) | Notes |
 |-------------|--------------------|--------------------------|---------------------------|------------------------|--------------------------|----------------------------------|---------------------------|-------|
 | Shakeout cloth bag* | ✅ | ⚠️ | ❌ | ❌ | ❌ | ❌ | ❌ | Standard up to Classic III, optional up to Legend II |
-| Disposable paper | ✅ | ✅ | ⚠️ | ⚠️ | ⚠️ | ❌ | ❌ | Style 1 on Tradition, Style 2 on Heritage through Legend II |
+| Disposable paper | ✅ | ✅ | ⚠️ | ⚠️ | ⚠️ | ❌ | ❌ | Style 1 on Tradition, Style 2 on Heritage, Style 3 on Heritage II through Legend II |
 | Synthetic non-HEPA (Micron Magic) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ⚠️ | Introduced on G3, standard G3–G5 |
 | HEPA cloth | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | Introduced on G6, standard since; fits back to G3 |
 
