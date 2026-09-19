@@ -23,7 +23,7 @@
     <meta itemprop="image" content="./thumb.png">
     <!-- Open Graph (Slack, Facebook, Discord, etc.) + Twitter card -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://thorium.rocks/kirby_history/game">
+    <meta property="og:url" content="https://thorium.rocks/kirby_history/game/">
     <meta property="og:title" content="Suck It! Vacuum Game">
     <meta property="og:description" content="Retro Arcade Vacuum Cleaner Game">
     <meta property="og:site_name" content="Suck It! Vacuum Game">
@@ -35,7 +35,7 @@
 </head>
 <body>
   <header class="header">
-    <div class="navbar">
+    <nav class="navbar" aria-label="Site">
       <a href="../index.html">Home</a>
       &middot;
       <a href="../blog/">Blog</a>
@@ -43,9 +43,10 @@
       <a href="../patents/">Patents</a>
       &middot;
       <a href="https://github.com/Alex313031/kirby_history" rel="noopener" target="_blank" title="GitHub Repo">Source Code</a>
-    </div>
+    </nav>
   </header>
   <main class="game">
+    <h1 class="sr-only">Suck It! Vacuum Game</h1>
     <div id="gamefield">
     </div>
   </main>

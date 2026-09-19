@@ -25,6 +25,17 @@
   top: 8px;
 }
 
+/* Links use the tuned --link token (previously fell back to UA blue/purple) */
+a {
+  color: var(--link);
+}
+a:visited {
+  color: var(--link);
+}
+a:hover {
+  text-decoration: underline;
+}
+
 /* General body settings */
 html {
   background-color: var(--bgcolor);
@@ -215,7 +226,7 @@ table.wikitable td.service.svc-hl {
   top: 1.6em;
   z-index: 30;
   width: max-content;
-  max-width: 22em;
+  max-width: min(22em, 90vw);
   padding: 7px 10px;
   font-size: 0.8rem;
   font-weight: normal;
@@ -284,7 +295,6 @@ div.logo-row {
   text-align: center;
   font-size: 13px;
   font-weight: normal;
-  font-style: italic;
 }
 
 /* Top of page */
@@ -335,6 +345,16 @@ div.logo-row {
   filter: drop-shadow(0 -4px 1px var(--imgshadow));
 }
 
+/* The absolute top-right navbar (~290px wide at 16px) would clip the banner
+   on mid-width screens; reflow it to a centered static line before that. */
+@media (max-width: 1100px) {
+  .header {
+    position: static;
+    text-align: center;
+    padding-bottom: 4px;
+  }
+}
+
 /* Mobile layout */
 @media (max-width: 800px) {
   body {
@@ -344,9 +364,6 @@ div.logo-row {
      floating over whatever happens to be top-right on a phone */
   .header {
     font-size: 14px;
-    position: static;
-    text-align: center;
-    padding-bottom: 4px;
   }
   .navbar {
     border-right: 1px solid var(--border);

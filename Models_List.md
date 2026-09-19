@@ -1,6 +1,6 @@
 # List of Kirby Models, in order.
 
-Models from 1915-1934 such as The Vacuette were marketed under Scott & Fetzer Co.
+Models from 1915-1934, such as The Vacuette, were marketed under Scott & Fetzer Co.
 
 James B. Kirby designed machines until the Dual Sanitronic 50. He died in 1971.
 
@@ -31,18 +31,18 @@ See also [Kirby Patents](./Kirby_Patents.md) for a list of his patents relating 
 | 1962-1962 |  562 "Sanitronic"   | [Sanitronic 562](./imgs/models/original/562.jpg)| Unique brown/white style, first with "Sanitronic" name.   |
 | 1963-1965 |  Sanitronic VII     | [Sanitronic VII](./imgs/models/original/VII.jpg)| Hose has universal blower/suction coupling.               |
 | 1965-1967 |  Dual Sanitronic 50 | [DS50](./imgs/models/original/DS50.jpg)         | Introduces dual speed motor.                              |
-| 1967-1970 |  Dual Sanitronic 80 | [DS80](./imgs/models/original/DS80.jpg)         | Has 60's avocado green theme.                             |
+| 1967-1970 |  Dual Sanitronic 80 | [DS80](./imgs/models/original/DS80.jpg)         | Has a '60s avocado-green theme.                             |
 | 1970-1973 |  Classic 1CR        | [Classic](./imgs/models/original/1CR.jpg)       | Redesigned motor housing that lasted until Legend II.       |
-| 1973-1976 |  Classic Omega 1-CB | [1CB](./imgs/models/original/1CB.jpg)           | Introduced Double insulated motor/plastic headlight cap.  |
+| 1973-1976 |  Classic Omega 1-CB | [1CB](./imgs/models/original/1CB.jpg)           | Introduced double-insulated motor/plastic headlight cap.  |
 | 1976-1979 |  Classic III 2-CB   | [2CB](./imgs/models/original/2CB.jpg)           | All red color scheme, redesigned plastic belt lifter.     |
 | 1979-1981 |  Tradition 3-CB     | [3CB](./imgs/models/original/3CB.jpg)           | All blue color scheme, introduced replaceable paper bags. |
-| 1981-1983 |  Heritage 1-HD      | [1HD](./imgs/models/original/1HD.jpg)           | Added more attachments, and better style 2 bags.          |
+| 1981-1983 |  Heritage 1-HD      | [1HD](./imgs/models/original/1HD.jpg)           | Added more attachments, and better Style 2 bags.          |
 | 1984-1986 |  Heritage II 2-HD   | [2HD](./imgs/models/original/2HD.jpg)           | Introduced "Mini-Emptor".                                 |
 | 1987-1989 |  Heritage II Legend (2-HD) | [Legend](./imgs/models/original/Legend.jpg)     | "Legend 1". Plastic hose ends.                            |
 | 1989-1991 |  Legend II (2-HD)          | [LegendII](./imgs/models/original/LegendII.jpg) | Maroon color scheme, last to have shake out bag option.   |
 | 1990-1993 |  G3                 | [G3](./imgs/models/original/G3.jpg)             | Introduced Micron-Magic bags + self-propel "Tech Drive".  |
 | 1993-1997 |  G4                 | [G4](./imgs/models/original/G4.jpg)             | Improvements to Tech Drive and handle tilt latch.         |
-| 1997-1999 |  G5                 | [G5](./imgs/models/original/G5.jpg)             | Multiple design tweaks, NASA designed fan system.         |
+| 1997-1999 |  G5                 | [G5](./imgs/models/original/G5.jpg)             | Multiple design tweaks, NASA-designed fan system.         |
 | 1999-2001 |  G6                 | [G6](./imgs/models/original/G6.jpg)             | Introduced HEPA bags, backwards compatible to G3.         |
 | 2002-2003 |  Ultimate G         | [G7](./imgs/models/original/G7.jpg)             | Improved brushroll and airflow.                           |
 | 2003-2006 |  Diamond Edition    | [DE](./imgs/models/original/DE.jpg)             | Final iteration of the G series, last with coin slot.     |
