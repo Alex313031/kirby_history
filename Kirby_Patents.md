@@ -11,11 +11,6 @@ himself; *Barnett* = Harley B. Barnett (his early backer); *EVC Co* = Electric
 Vacuum Cleaner Co; *III* = Industrial Improvements Inc — all his inventions,
 just assigned.
 
-**PDFs:** the patent PDFs live in `patents/assets/US<PATENT>.pdf`. To (re)fetch
-them use [`tools/patents-from-json.py`](tools/patents-from-json.py) (browser-saved
-JSON method — Google bot-blocks curl) or [`tools/fetch-patents.sh`](tools/fetch-patents.sh)
-where curl works; both write to `patents/assets/` and skip files already there.
-
 ## Patents (60), by filing date
 
 | Filed | Patent | Title | Granted | Assignee |
@@ -97,7 +92,3 @@ where curl works; both write to `patents/assets/` and skip files already there.
   Google files it under **B61F15/14** (railway axle-box bearings), so both a
   keyword search and the CPC A47L filter miss it — only the spec text catches it.
   (A reminder that other dual-use Kirby patents may hide under non-cleaning classes.)
-- **[US2648396](https://patents.google.com/patent/US2648396A)** ("Vacuum
-  cleaner," granted 1953-08-11) is the 1953 patent worth framing for the wall.
-- This file can become the site's **Patents page** (sortable table + local PDF
-  links), alongside the models list and manuals.

@@ -7,10 +7,10 @@
 
 #### Website showcasing Kirby vacuum cleaner history.
 
-Currently located at http://thorium.rocks/kirby_history/
+Currently located at https://thorium.rocks/kirby_history/
 
-It also has a personal Kirby restoration blog at http://thorium.rocks/kirby_history/blog
-and a mid-2000s Adobe Flash-style game at http://thorium.rocks/kirby_history/game
+It also has a personal Kirby restoration blog [Here](https://thorium.rocks/kirby_history/blog/)
+and a mid-2000s Adobe Flash-style game [Here](https://thorium.rocks/kirby_history/game/).
 
  - For a GitHub-friendly list of Kirby Models, see [Models_List.md](./Models_List.md).
 
