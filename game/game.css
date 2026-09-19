@@ -20,7 +20,7 @@
 html,
 body {
   margin: 0; /* game page doesn't load main.css; kill default body margin (was causing overflow scrollbar) */
-  background: #656565;
+  background: #13181e;
 }
 
 /* source-code link: top-right, out of the lower touch-steering zone */
@@ -28,7 +28,7 @@ body {
   position: fixed;
   top: 10px;
   right: 10px;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--footer-text);
   z-index: 10;
 }

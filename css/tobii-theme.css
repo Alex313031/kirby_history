@@ -1,0 +1,54 @@
+/* Tobii lightbox theme overrides.
+   Loaded AFTER vendor/tobii.min.css, so these win by source order and the
+   vendor file stays untouched. Every --tobii-* knob is listed with its
+   stock default in the comment; change a value to restyle, or delete a
+   line to fall back to Tobii's default. */
+:root {
+  /* Backdrop behind the image. Tied to the site's dark palette
+     (#13181e, the dark theme-color) at ~95% opacity. Default: #000000d9 */
+  --tobii-lightbox-background: #13181ef2;
+
+  /* Caption bar under the image (text comes from each img's alt="").
+     Defaults: bg #000c, color #eee */
+  --tobii-caption-background: #000000cc;
+  --tobii-caption-color: #f1f1f1;
+
+  /* "1 / 3" slide counter, top-left. Defaults: bg #0000, color #fff */
+  --tobii-counter-background: #00000000;
+  --tobii-counter-color: #ffffff;
+
+  /* Prev / next / close buttons.
+     Defaults: color #fff, background #0000, nav-bg #00000080 */
+  --tobii-button-color: #ffffff;
+  --tobii-button-background: #00000000;
+  --tobii-button-navigation-background: #00000066;
+
+  /* Zoom hint icon shown over the thumbnails.
+     Defaults: bg #192938f0, color #fff */
+  --tobii-zoom-icon-background: #192938f0;
+  --tobii-zoom-icon-color: #ffffff;
+
+  /* Loading spinner. Default: #fff */
+  --tobii-loader-color: #ffffff;
+
+  /* Open/close + slide motion.
+     Defaults: 0.3s, cubic-bezier(0.19, 1, 0.22, 1) */
+  --tobii-transition-duration: 0.3s;
+  --tobii-transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+
+  /* How big an image may get inside the viewport.
+     Defaults: calc(100vh - 3.125em), 100vw */
+  --tobii-slide-max-height: calc(100vh - 3.125em);
+  --tobii-slide-max-width: 100vw;
+
+  /* Base size + stacking. Defaults: 1rem, 1337 */
+  --tobii-base-font-size: 1rem;
+  --tobii-lightbox-z-index: 1337;
+}
+
+/* Class-level tweaks, for anything the variables above don't cover.
+   These also win over the vendor CSS by load order (no !important needed).
+   Example: soften the open photo's corners to match the site's framing. */
+.tobii-image {
+  border-radius: 3px;
+}

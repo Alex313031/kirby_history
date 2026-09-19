@@ -187,6 +187,52 @@ table.wikitable td.service.svc-hl {
   background-color: var(--table-hover);
 }
 
+/* Serial-number footnote refs: Wikipedia-style [a] with a hover/tap popup */
+.mdl-ref {
+  white-space: nowrap;
+}
+.serial-ref {
+  position: relative;
+  white-space: nowrap;
+}
+.serial-ref > button {
+  font: inherit;
+  color: var(--link);
+  background: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0 1px;
+  cursor: pointer;
+}
+.serial-ref > button:hover,
+.serial-ref > button:focus-visible {
+  text-decoration: underline;
+}
+.serial-pop {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 1.6em;
+  z-index: 30;
+  width: max-content;
+  max-width: 22em;
+  padding: 7px 10px;
+  font-size: 0.8rem;
+  font-weight: normal;
+  line-height: 1.35;
+  text-align: left;
+  white-space: normal;
+  color: var(--table-fg);
+  background: var(--table-th-bg);
+  border: 1px solid var(--table-border);
+  border-radius: 4px;
+  box-shadow: 2px 2px 3px var(--imgshadow);
+}
+.serial-ref:hover .serial-pop,
+.serial-ref:focus-within .serial-pop {
+  display: block;
+}
+
 /* Model thumbnails inside the table */
 .model-thumb {
   height: 96px;
@@ -243,7 +289,7 @@ div.logo-row {
 
 /* Top of page */
 .header {
-  font-size: 14px;
+  font-size: 16px;
   position: absolute;
   top: 10px;
   right: 10px;
@@ -289,7 +335,7 @@ div.logo-row {
   /* source-code link flows as a normal centered line instead of
      floating over whatever happens to be top-right on a phone */
   .header {
-    font-size: 12px;
+    font-size: 14px;
     position: static;
     text-align: center;
     padding-bottom: 4px;

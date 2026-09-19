@@ -38,8 +38,8 @@ See also [Kirby Patents](./Kirby_Patents.md) for a list of his patents relating 
 | 1976-1979 |  Tradition 3-CB     | [3CB](./imgs/models/original/3CB.jpg)           | All blue color scheme, introduced replaceable paper bags. |
 | 1981-1983 |  Heritage 1-HD      | [1HD](./imgs/models/original/1HD.jpg)           | Added more attachments, and better style 2 bags.          |
 | 1984-1986 |  Heritage II 2-HD   | [2HD](./imgs/models/original/2HD.jpg)           | Introduced "Mini-Emptor".                                 |
-| 1987-1989 |  Heritage II Legend | [Legend](./imgs/models/original/Legend.jpg)     | "Legend 1". Plastic hose ends.                            |
-| 1989-1991 |  Legend II          | [LegendII](./imgs/models/original/LegendII.jpg) | Maroon color scheme, last to have shake out bag option.   |
+| 1987-1989 |  Heritage II Legend (2-HD) | [Legend](./imgs/models/original/Legend.jpg)     | "Legend 1". Plastic hose ends.                            |
+| 1989-1991 |  Legend II (2-HD)          | [LegendII](./imgs/models/original/LegendII.jpg) | Maroon color scheme, last to have shake out bag option.   |
 | 1990-1993 |  G3                 | [G3](./imgs/models/original/G3.jpg)             | Introduced Micron-Magic bags + self-propel "Tech Drive".  |
 | 1993-1997 |  G4                 | [G4](./imgs/models/original/G4.jpg)             | Improvements to Tech Drive and handle tilt latch.         |
 | 1997-1999 |  G5                 | [G5](./imgs/models/original/G5.jpg)             | Multiple design tweaks, NASA designed fan system.         |
@@ -63,7 +63,7 @@ See also [Kirby Patents](./Kirby_Patents.md) for a list of his patents relating 
 | 1CB     | M = Jul. 1973 - Dec. 1973 (Gold Bag), N = Jan. 1974 - Sep. 1974 (Pinstriped Bag), P = Oct. 1974 - Sep. 1975 (Diamondback Bag), R = Sep. 1975 - Jun. 1976 (Diamondback Bag) |
 | 2CB     | A = Jul. 1976 - Dec. 1976, B = Jan. - Jul. 1977, C = Jul. - Dec. 1977, D = Jan. 1978 - Aug. 1978, E = Sep. 1978 - Jun. 1979 |
 | 3CB     | F = Jul. 1979 - Feb. 1980, G = Mar. 1980 - Feb. 1981, H = Mar. - Aug. 1981 |
-| 1HD/2HD | 1st number represents factory location, 2nd/3rd numbers indicate year of manufacture, 4th/5th numbers signify the month, remaining numbers show the unit number in production. |
+| 1HD/2HD (incl. Legend & Legend II) | 1st number represents factory location, 2nd/3rd numbers indicate year of manufacture, 4th/5th numbers signify the month, remaining numbers show the unit number in production. |
 | G3+     | Unknown serial number scheme |
 
 
