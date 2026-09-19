@@ -296,6 +296,14 @@ div.logo-row {
   color: var(--footer-text);
 }
 
+.navbar {
+  border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0 5px 5px 5px;
+  border-radius: 0 0 0 6px;
+  box-shadow: -1px 1px 1px var(--imgshadow);
+}
+
 /* Bottom of page */
 .footer {
   font-size: 13px;
@@ -339,6 +347,11 @@ div.logo-row {
     position: static;
     text-align: center;
     padding-bottom: 4px;
+  }
+  .navbar {
+    border-right: 1px solid var(--border);
+    border-radius: 0 0 6px 6px;
+    padding: 0 0 5px 0;
   }
   .footer {
     font-size: 12px;

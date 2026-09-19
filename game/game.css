@@ -5,6 +5,15 @@
 :root.light,
 :root.dark {
   color-scheme: dark;
+  /* The game is always dark, but this page has no dark-mode toggle, so a
+     light-OS visitor would otherwise keep colors.css's light token values
+     (black text) on the dark canvas. Pin the dark values so the HUD and
+     header stay readable regardless of OS theme. */
+  --fontcolor: #ffffff;
+  --footer-text: #dddddd;
+  --border: #ffffff;
+  --buttonborder: #dcdcdc;
+  --imgshadow: #ffffff;
 }
 
 * {
@@ -31,6 +40,14 @@ body {
   font-size: 16px;
   color: var(--footer-text);
   z-index: 10;
+}
+
+.navbar {
+  border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0 5px 5px 5px;
+  border-radius: 0 0 0 6px;
+  box-shadow: -1px 1px 1px var(--imgshadow);
 }
 
 /* <main> fills exactly the viewport -- dvh accounts for the mobile URL bar
@@ -131,4 +148,24 @@ button:active {
   background-color: #232323;
   border: 2px solid #000; /* fixed dark outline: stays visible even on the all-white title card (var(--border) would be white in dark theme) */
   image-rendering: pixelated; /* keep the 64px pixel art crisp when scaled */
+}
+
+/* Mobile layout */
+@media (max-width: 800px) {
+  body {
+    overflow-x: hidden; /* belt-and-suspenders against stray page widening */
+  }
+  /* source-code link flows as a normal centered line instead of
+     floating over whatever happens to be top-right on a phone */
+  .header {
+    font-size: 14px;
+    position: static;
+    text-align: center;
+    padding-bottom: 4px;
+  }
+  .navbar {
+    border-right: 1px solid var(--border);
+    border-radius: 0 0 6px 6px;
+    padding: 0 0 5px 0;
+  }
 }
