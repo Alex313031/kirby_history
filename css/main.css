@@ -403,17 +403,15 @@ div.logo-row {
 }
 
 .totop img {
-  filter: drop-shadow(4px 2px 1px var(--imgshadow));
+  filter: drop-shadow(3px 2px 1px var(--imgshadow));
   width: 2.5em;
 }
 .totop img:hover {
-  filter: drop-shadow(-1px -1px 1px var(--imgshadow))
-    drop-shadow(-1px 1px 1px var(--imgshadow))
-    drop-shadow(2px 2px 1px var(--imgshadow))
-    drop-shadow(1px -1px 1px var(--imgshadow));
+  filter: drop-shadow(3px 2px 1px var(--imgshadow))
+          drop-shadow(0 0 2px var(--imgshadow));
 }
 .totop img:active {
-  filter: drop-shadow(0 -4px 1px var(--imgshadow));
+  filter: drop-shadow(1px -2px 1px var(--imgshadow));
 }
 
 /* The absolute top-right navbar (~290px wide at 16px) would clip the banner

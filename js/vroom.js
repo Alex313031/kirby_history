@@ -29,12 +29,19 @@
 		ArrowRight: [1, 0]
 	};
 
+	// Resolve sprite paths relative to the site root regardless of page depth.
+	// (Loaded with defer, so document.currentScript is null -- find our own
+	// <script> by src.) base = '' on the home page, '../' under /patents/, etc.
+	var VROOM_SCRIPT = document.querySelector('script[src$="js/vroom.js"]');
+	var VROOM_BASE = VROOM_SCRIPT
+		? VROOM_SCRIPT.getAttribute('src').replace(/js\/vroom\.js$/, '')
+		: '';
 	var DIR_IMGS = {
-		up:    'imgs/vroom/up.png',
-		down:  'imgs/vroom/down.png',
-		left:  'imgs/vroom/left.png',
-		right: 'imgs/vroom/right.png',
-		idle:  'imgs/vroom/vroom.png'
+		up:    VROOM_BASE + 'imgs/vroom/up.png',
+		down:  VROOM_BASE + 'imgs/vroom/down.png',
+		left:  VROOM_BASE + 'imgs/vroom/left.png',
+		right: VROOM_BASE + 'imgs/vroom/right.png',
+		idle:  VROOM_BASE + 'imgs/vroom/vroom.png'
 	};
 
 	// where the vacuum head sits in each sprite, as an offset from the

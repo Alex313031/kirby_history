@@ -45,6 +45,15 @@ body {
   margin: 0; /* game page doesn't load main.css; kill default body margin (was causing overflow scrollbar) */
   background: #13181e;
 }
+/* column layout so an in-flow header (the mobile top bar) and the game share
+   the viewport height cleanly; on desktop the header is absolute, so .game
+   still gets the whole height. */
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+}
 
 /* source-code link: top-right, out of the lower touch-steering zone */
 .header {
@@ -73,8 +82,8 @@ body {
 /* <main> fills exactly the viewport -- dvh accounts for the mobile URL bar
    so nothing spills past the bottom into a scrollbar */
 .game {
-  height: 100vh;
-  height: 100dvh;
+  flex: 1 1 auto;
+  min-height: 0; /* fill the height the header leaves; shrink so the canvas fits */
   overflow: hidden;
 }
 #gamefield {
@@ -171,13 +180,26 @@ button:active {
 }
 
 /* The game is a full-viewport (100dvh) app, so the header must stay out of
-   flow (absolute) at every width — making it `static` would push the game
-   area down and cause overflow/clipping. Only nudge the navbar margins. */
+   flow (absolute) at every width — going `static` would push the game area
+   down and clip it. So instead of reflowing, center it horizontally while
+   keeping it absolute (left:50% + translateX). */
 @media (max-width: 1100px) {
+  /* a real centered top bar (in flow) rather than a floating tab — so it no
+     longer sits over the game controls, and the navbar has the full width to
+     stay on one line. body flex + .game flex:1 absorb the bar's height. */
+  .header {
+    position: static;
+    display: flex;
+    justify-content: center;
+    top: auto;
+    right: auto;
+    transform: none;
+  }
   .navbar {
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-top: 10px;
+    margin: 0;
+  }
+  #gamefield {
+    padding-top: 16px;
   }
 }
 
@@ -186,8 +208,7 @@ button:active {
   body {
     overflow-x: hidden; /* belt-and-suspenders against stray page widening */
   }
-  /* source-code link flows as a normal centered line instead of
-     floating over whatever happens to be top-right on a phone */
+  /* smaller nav font on phones (horizontal centering handled above) */
   .header {
     font-size: 14px;
   }
