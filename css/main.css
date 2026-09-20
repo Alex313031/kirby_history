@@ -103,9 +103,7 @@ h2 {
   /* opaque ground so the wrap never sits under text or the table */
   background-color: var(--bgcolor);
   border-radius: 5px;
-  /* border (not outline) so it follows border-radius on legacy browsers too */
-  border: 1px solid var(--footer-text);
-  box-shadow: 1px 1px 8px 1px var(--footer-text);
+  box-shadow: 1px 1px 6px 1px var(--footer-text);
 }
 
 /* hr styles */
@@ -182,7 +180,6 @@ a#vroombutton:hover {
   /* overflow-x:auto makes overflow-y compute to auto too, which clips the
      table's box-shadow; this padding gives the shadow room inside the clip box */
   padding: 4px;
-  margin: 1em 0;
 }
 table.wikitable {
   background-color: var(--table-bg);
@@ -197,7 +194,7 @@ table.wikitable {
   width: 90%;
 }
 table.box {
-  box-shadow: 1px 1px 4px 1px var(--imgshadow);
+  box-shadow: 1px 1px 4px 1px var(--footer-text);
 }
 table.wikitable caption {
   font-weight: bold;
@@ -362,8 +359,8 @@ div.logo-row {
 }
 .table-caption {
   text-align: center;
-  font-size: 13px;
-  font-weight: normal;
+  font-size: 12px;
+  font-weight: normal !important;
 }
 
 /* Top of page */
@@ -446,7 +443,7 @@ div.logo-row {
     font-size: 12px;
   }
   .table-caption {
-    font-size: 12px;
+    font-size: 10px;
     text-align: left;
   }
   .banner {
