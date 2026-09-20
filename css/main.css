@@ -411,7 +411,9 @@ div.logo-row {
           drop-shadow(0 0 2px var(--imgshadow));
 }
 .totop img:active {
-  filter: drop-shadow(1px -2px 1px var(--imgshadow));
+  filter: drop-shadow(3px 2px 1px var(--imgshadow))
+          drop-shadow(0 0 2px var(--imgshadow))
+          drop-shadow(1px -2px 1px var(--imgshadow));
 }
 
 /* The absolute top-right navbar (~290px wide at 16px) would clip the banner
