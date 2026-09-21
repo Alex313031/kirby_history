@@ -15,6 +15,10 @@
   --border: #cccccc;
   --buttonborder: #cccccc;
   --imgshadow: #dddddd;
+  --font-shadow: #000000;
+  --btn-bg: #292929;
+  --btn-bg-hover: #494949;
+  --btn-bg-active: #393939;
 }
 
 * {
@@ -23,7 +27,7 @@
 
 /* Keyboard a11y: visible focus ring for the game's controls */
 :focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid var(--fontcolor);
   outline-offset: 2px;
 }
 
@@ -73,14 +77,17 @@ body {
   border-right: 1px solid var(--footer-text);
   border-bottom: 1px solid var(--footer-text);
   padding: 6px;
-  margin-left: 10px;
-  margin-right: 10px;
   border-radius: 0 0 6px 6px;
   box-shadow: 0 0 4px 1px var(--footer-text);
 }
 
 .navbar a {
+  font-weight: bold;
   text-shadow: 1px 1px 0 var(--font-shadow);
+}
+.navbar a[aria-current="page"] {
+  color: var(--fontcolor);
+  text-shadow: 0 0 1px var(--footer-text);
 }
 
 /* <main> fills exactly the viewport -- dvh accounts for the mobile URL bar
@@ -119,24 +126,24 @@ button {
   font-size: 14px;
 }
 
-/* buttons + dropdown: same styling as the main site (main.css) */
+/* buttons + dropdown: same token structure as main.css, using the game's darker --btn-bg values (pinned above) */
 button,
 .game-controls select {
   font-family: inherit;
   box-shadow: 1px 1px 1px 0 var(--buttonborder);
-  border: 1px solid var(--buttonborder);
+  border: 1px solid var(--border);
   border-radius: 5px;
-  background-color: #292929;
+  background-color: var(--btn-bg);
   color: #ffffff;
   cursor: pointer;
 }
 button:hover,
 .game-controls select:hover {
-  background-color: #494949;
+  background-color: var(--btn-bg-hover);
 }
 button:active {
   box-shadow: 1px 1px 1px 0 #222222 inset;
-  background-color: #393939;
+  background-color: var(--btn-bg-active);
 }
 /* uniform control sizing: buttons and dropdown same height */
 .game-controls button,
@@ -195,9 +202,6 @@ button:active {
     top: auto;
     right: auto;
     transform: none;
-  }
-  .navbar {
-    margin: 0;
   }
   #gamefield {
     padding-top: 16px;

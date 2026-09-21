@@ -20,8 +20,8 @@
   /* Prev / next / close buttons.
      Defaults: color #fff, background #0000, nav-bg #00000080 */
   --tobii-button-color: #ffffff;
-  --tobii-button-background: #2e3a48ff;
-  --tobii-button-navigation-background: #2e3a48ff;
+  --tobii-button-background: #2e3a48fc;
+  --tobii-button-navigation-background: #2e3a48fc;
 
   /* Zoom hint icon shown over the thumbnails.
      Defaults: bg #192938f0, color #fff */
