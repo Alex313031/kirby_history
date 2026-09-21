@@ -71,8 +71,8 @@ See also [Kirby Patents](./Kirby_Patents.md) for a list of his patents relating 
 
 Legend: ✅ caught well · ⚠️ partial · ❌ mostly passes
 
-| Filter type | Pollen (15–100 µm) | Mite pellets (10–40 µm) | Mite fragments (1–10 µm) | Mold spores (2–20 µm) | Dander flakes (5–10 µm) | Fine dander / Fel d 1 (1–5 µm) | Smoke/ultrafines (<1 µm) | Notes |
-|-------------|--------------------|--------------------------|---------------------------|------------------------|--------------------------|----------------------------------|---------------------------|-------|
+| Filter type | Pollen/Dust (15–100 µm) | Dust mite pellets/Skin flakes (10–40 µm) | Mold spores (2–20 µm) | Dander flakes (5–10 µm) | Dust mite fragments (1–10 µm) | Fine dander / Fel d 1 (1–5 µm) | Smoke/Ultrafines (<1 µm) | Notes |
+|-------------|--------------------|--------------------------|------------------------|--------------------------|---------------------------|----------------------------------|---------------------------|-------|
 | Shakeout cloth bag* | ✅ | ⚠️ | ❌ | ❌ | ❌ | ❌ | ❌ | Standard up to Classic III, optional up to Legend II |
 | Disposable paper | ✅ | ✅ | ⚠️ | ⚠️ | ⚠️ | ❌ | ❌ | Style 1 on Tradition, Style 2 on Heritage, Style 3 on Heritage II through Legend II |
 | Synthetic non-HEPA (Micron Magic) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ⚠️ | Introduced on G3, standard G3–G5 |
@@ -104,11 +104,11 @@ Emptying also re-exposes you to everything captured, so shake outdoors.
 | DS50     | K-190065   | K-1525    | K-159056 | 87500           | 87007          | K-118067      | K-1650        |
 | DS80     | K-190067   | K-1525    | K-159056 | 87500           | 87007          | K-118067      | K-1650        |
 | 1CR      | K-190073   | K-152575  | K-159056 | 87500           | 87007          | K-118076      | K-1650        |
-| 1CB      | K-190073   | K-152575  | K-159056 | 6200 (K-116073) | 608 (K-115573) | K-118076      | K-109273      |
-| 2CB      | K-190077   | K-152575  | K-159056 | 6200            | 608            | K-118076      | K-109273      |
-| 3CB      | K-19067903 | K-152575  | K-159056 | 6200            | 608            | K-118076      | K-109273      |
-| 1HD      | K-19068103 | K-152581  | K-159056 | 6200            | 608            | K-118076      | K-109273      |
-| 2HD      | K-197289   | K-151584  | K-159056 | 6200            | 608            | K-118076      | K-109273      |
+| 1-CB     | K-190073   | K-152575  | K-159056 | 6200 (K-116073) | 608 (K-115573) | K-118076      | K-109273      |
+| 2-CB     | K-190077   | K-152575  | K-159056 | 6200            | 608            | K-118076      | K-109273      |
+| 3-CB     | K-19067903 | K-152575  | K-159056 | 6200            | 608            | K-118076      | K-109273      |
+| 1-HD     | K-19068103 | K-152581  | K-159056 | 6200            | 608            | K-118076      | K-109273      |
+| 2-HD     | K-197289   | K-151584  | K-159056 | 6200            | 608            | K-118076      | K-109273      |
 | G3       | K-197294   | K-156293  | K-301291 | 6200            | 608            | K-107189      | K-109289      |
 | G4       | K-197294   | K-156293  | K-301291 | 6200            | 608            | K-107189      | K-109289      |
 | G5       | K-197294   | K-152502  | K-301291 | 6200            | 608            | K-107189      | K-109289      |

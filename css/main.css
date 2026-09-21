@@ -79,6 +79,10 @@ h1 {
   text-shadow: 1px 1px 0 var(--font-shadow);
 }
 h2 {
+  font-size: 1.25em;
+  text-shadow: 1px 1px 0 var(--font-shadow);
+}
+h3 {
   font-size: 1.15em;
   text-shadow: 1px 1px 0 var(--font-shadow);
 }
@@ -252,6 +256,11 @@ table.wikitable td.service.svc-hl {
   background-color: var(--table-hover);
 }
 
+/* Quick Parts Lookup: bold model names */
+table.parts td:first-child {
+  font-weight: bold;
+}
+
 /* Footnote refs (model serials + patent notes): Wikipedia-style [a] with a hover/tap popup */
 .mdl-ref {
   white-space: nowrap;
@@ -362,6 +371,18 @@ div.logo-row {
   font-size: 12px;
   font-weight: normal !important;
 }
+/* left-aligned explanatory notes under a table (e.g. blog Extras) */
+.table-notes {
+  max-width: 60em;
+  margin: 0.5em auto 1.5em;
+  text-align: left;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.table-notes ul {
+  margin: 0.3em 0 0;
+  padding-left: 1.3em;
+}
 
 /* Top of page */
 .header {
@@ -383,6 +404,10 @@ div.logo-row {
   padding: 6px;
   border-radius: 0 0 6px 6px;
   box-shadow: 0 0 4px 1px var(--footer-text);
+}
+
+.navbar a {
+  text-shadow: 1px 1px 0 var(--font-shadow);
 }
 
 /* Bottom of page */
@@ -408,12 +433,12 @@ div.logo-row {
 }
 .totop img:hover {
   filter: drop-shadow(3px 2px 1px var(--imgshadow))
-          drop-shadow(0 0 2px var(--imgshadow));
+    drop-shadow(0 0 2px var(--imgshadow));
 }
 .totop img:active {
   filter: drop-shadow(3px 2px 1px var(--imgshadow))
-          drop-shadow(0 0 2px var(--imgshadow))
-          drop-shadow(1px -2px 1px var(--imgshadow));
+    drop-shadow(0 0 2px var(--imgshadow))
+    drop-shadow(1px -2px 1px var(--imgshadow));
 }
 
 /* The absolute top-right navbar (~290px wide at 16px) would clip the banner
