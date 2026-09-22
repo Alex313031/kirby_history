@@ -1,6 +1,11 @@
-/* Prefer border-box */
-* {
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
   box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
 /* Button palette (theme-independent; darkened from #828282 so white text hits AA) */
@@ -33,9 +38,7 @@
 }
 
 /* Links use the tuned --link token (previously fell back to UA blue/purple) */
-a {
-  color: var(--link);
-}
+a,
 a:visited {
   color: var(--link);
 }
@@ -54,6 +57,7 @@ html {
 }
 body {
   color: var(--fontcolor);
+  margin: 0;
   background: transparent; /* the wrap layer below shows through */
 }
 /* Christmas-wrap background: the 1953-1969 logo tiled on an oversized
@@ -74,17 +78,19 @@ body::before {
   transform: rotate(-45deg);
   opacity: 0.25;
 }
+h1,
+h2,
+h3 {
+  text-shadow: 1px 1px 0 var(--font-shadow);
+}
 h1 {
   font-size: 1.5em;
-  text-shadow: 1px 1px 0 var(--font-shadow);
 }
 h2 {
   font-size: 1.25em;
-  text-shadow: 1px 1px 0 var(--font-shadow);
 }
 h3 {
   font-size: 1.15em;
-  text-shadow: 1px 1px 0 var(--font-shadow);
 }
 
 /* center something */
@@ -99,11 +105,8 @@ h3 {
 .content {
   width: 1200px;
   max-width: 100%;
-  margin: 0 auto;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 8px;
-  padding-bottom: 0;
+  margin: 8px auto;
+  padding: 8px 10px;
   /* opaque ground so the wrap never sits under text or the table */
   background-color: var(--bgcolor);
   border-radius: 5px;
@@ -128,7 +131,7 @@ h3 {
 .gallery img {
   width: 25%;
   height: auto;
-  margin: 0.5em 0.5em;
+  margin: 0.5em;
   vertical-align: middle;
   border: 1px solid var(--border);
   transition: box-shadow 0.1s ease;
@@ -170,11 +173,11 @@ a#vroombutton {
 a#vroombutton:hover {
   background-color: var(--btn-bg-hover);
 }
-#darkbutton {
+#darkbutton,
+#vroombutton {
   margin: 0.75em auto;
 }
 #vroombutton {
-  margin: 0.75em auto;
   color: #00ffff;
 }
 
@@ -214,6 +217,7 @@ table.wikitable td {
   border-top: 1px solid var(--table-border);
   border-left: 1px solid var(--table-border);
   padding: 6px 10px;
+  text-align: center;
 }
 table.wikitable thead tr:first-child > * {
   border-top: 0;
@@ -236,10 +240,6 @@ table.wikitable tbody tr:last-child td:last-child {
 }
 table.wikitable th {
   background-color: var(--table-th-bg);
-  text-align: center;
-}
-table.wikitable td {
-  text-align: center;
 }
 table.wikitable td.notes {
   text-align: left;
@@ -328,7 +328,7 @@ div.logo-row {
 .logo-row img {
   height: 64px;
   width: auto;
-  margin: 0.5em 0.5em;
+  margin: 0.5em;
   vertical-align: middle;
 }
 
@@ -388,7 +388,7 @@ div.logo-row {
 .header {
   font-size: 16px;
   position: absolute;
-  top: 10px;
+  top: 1px;
   right: 10px;
   color: var(--footer-text);
   z-index: 10;
@@ -409,10 +409,17 @@ div.logo-row {
 .navbar a {
   font-weight: bold;
   text-shadow: 1px 1px 0 var(--font-shadow);
+  padding: 2px 7px; /* every link reserves the pill's footprint so the active
+                       one doesn't grow / shift the row when you switch pages */
+}
+.dot {
+  width: 8px;
+  color: var(--footer-text);
 }
 .navbar a[aria-current="page"] {
   color: var(--fontcolor);
-  text-shadow: 0 0 1px var(--footer-text);
+  background-color: var(--nav-pill);
+  border-radius: 5px;
 }
 
 /* Bottom of page */
@@ -437,7 +444,7 @@ div.logo-row {
   position: fixed;
   bottom: 0;
   right: 0;
-  margin-right: 0.5em;
+  margin-right: 10px;
 }
 
 .totop img {
@@ -454,6 +461,14 @@ div.logo-row {
     drop-shadow(1px -2px 1px var(--imgshadow));
 }
 
+/* For when viewport is too small for content area */
+@media (max-width: 1234px) {
+  body {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
 /* The absolute top-right navbar (~290px wide at 16px) would clip the banner
    on mid-width screens; reflow it to a centered static line before that. */
 @media (max-width: 1100px) {
@@ -461,7 +476,6 @@ div.logo-row {
     position: static;
     display: flex;
     justify-content: center;
-    padding-bottom: 4px;
   }
   .totop img {
     width: 2em;
@@ -494,25 +508,23 @@ div.logo-row {
   .banner {
     height: auto;
     max-height: 200px;
-    max-width: 96vw;
+    /* container-relative, not 96vw: vw ignores .content's 10px side padding,
+       so a wide (2:1) banner would spill ~4px past the content and scroll */
+    max-width: 100%;
   }
   .logo-row img {
     height: 40px;
     margin: 0.25em 0.33em;
   }
   .content {
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 6px;
-    padding-bottom: 0;
+    padding: 6px 8px;
     /* dynamic-toolbar clearance: mobile browsers park their bottom URL bar
      over the last ~50px of a page (no scroll left to retract it at the
      very bottom), hiding the footer links. Pad past it. */
     margin-bottom: calc(50px + env(safe-area-inset-bottom, 0px));
   }
-  /* smaller gift-wrap tiles so a phone-width margin still shows a motif */
   body::before {
-    background-size: 64px auto;
+    background-size: 64px auto; /* smaller gift-wrap tiles so a phone-width margin still shows a motif */
   }
   table.wikitable {
     width: 99%;

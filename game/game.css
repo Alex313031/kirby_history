@@ -12,17 +12,25 @@
   --bgcolor: #13181e;
   --fontcolor: #ffffff;
   --footer-text: #dddddd;
+  --link: #9e9eff;
   --border: #cccccc;
   --buttonborder: #cccccc;
   --imgshadow: #dddddd;
   --font-shadow: #000000;
+  --nav-pill: #2a2f37;
   --btn-bg: #292929;
   --btn-bg-hover: #494949;
   --btn-bg-active: #393939;
 }
 
-* {
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
   box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
 /* Keyboard a11y: visible focus ring for the game's controls */
@@ -59,12 +67,30 @@ body {
   height: 100dvh;
 }
 
-/* source-code link: top-right, out of the lower touch-steering zone */
+/* Base links: this page doesn't load main.css, so restate the tuned --link
+   color + hover underline here. --link is pinned to the dark value above (no
+   dark-mode toggle on this page); without these rules the non-active navbar
+   links fall back to the UA blue / visited-purple on the dark canvas. */
+a,
+a:visited {
+  color: var(--link);
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Top navbar: top-right, out of the lower touch-steering zone.
+   right:26px (not 10px like the content pages) = 10px + ~16px scrollbar width.
+   This is a fixed-viewport canvas with no vertical scrollbar, whereas the
+   content pages are always tall enough to scroll and so reserve ~16px on the
+   right; the extra offset lands the navbar at the same visual spot on all
+   pages. Classic-scrollbar assumption; harmless below 1100px where the bar
+   reflows to a centered static line. */
 .header {
   font-size: 16px;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 1px;
+  right: 26px;
   color: var(--footer-text);
   z-index: 10;
 }
@@ -84,10 +110,17 @@ body {
 .navbar a {
   font-weight: bold;
   text-shadow: 1px 1px 0 var(--font-shadow);
+  padding: 2px 7px; /* every link reserves the pill's footprint so the active
+                       one doesn't grow / shift the row when you switch pages */
+}
+.dot {
+  width: 8px;
+  color: var(--footer-text);
 }
 .navbar a[aria-current="page"] {
   color: var(--fontcolor);
-  text-shadow: 0 0 1px var(--footer-text);
+  background-color: var(--nav-pill);
+  border-radius: 5px;
 }
 
 /* <main> fills exactly the viewport -- dvh accounts for the mobile URL bar
@@ -99,12 +132,11 @@ body {
 }
 #gamefield {
   height: 100%;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding-top: 22px; /* clear the fixed source-code link row above the controls */
+  padding-top: 22px; /* clear the fixed navbar row above the controls */
 }
 
 /* controls (mode + reset) + HUD sit directly above the field, NOT captured
@@ -149,7 +181,6 @@ button:active {
 .game-controls button,
 .game-controls select {
   height: 30px;
-  box-sizing: border-box;
   font-size: 14px;
   padding: 0 8px;
   margin: 0;
@@ -201,7 +232,7 @@ button:active {
     justify-content: center;
     top: auto;
     right: auto;
-    transform: none;
+    padding-bottom: 4px;
   }
   #gamefield {
     padding-top: 16px;

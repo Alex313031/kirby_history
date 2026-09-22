@@ -17,6 +17,7 @@
   --footer-text: #333333;
   --link: #0000ee;
   --font-shadow: #ffffff;
+  --nav-pill: #cbcbcb;
   --scroll-track: #c0c0c0;
   --scroll-button: #808080;
 }
@@ -37,6 +38,7 @@
     --footer-text: #dddddd;
     --link: #9e9eff;
     --font-shadow: #000000;
+    --nav-pill: #2a2f37;
     --scroll-track: #c0c0c0;
     --scroll-button: #808080;
   }
@@ -57,6 +59,7 @@
   --footer-text: #dddddd;
   --link: #9e9eff;
   --font-shadow: #000000;
+  --nav-pill: #2a2f37;
   --scroll-track: #c0c0c0;
   --scroll-button: #808080;
 }
