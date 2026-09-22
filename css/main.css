@@ -51,6 +51,11 @@ a:visited {
 a:hover {
   text-decoration: underline;
 }
+/* deep-link targets: leave a little breathing room above a section when it's
+   jumped to via #anchor (harmless no-op on engines without scroll-margin) */
+:target {
+  scroll-margin-top: 1em;
+}
 
 /* General body settings */
 html {
@@ -160,6 +165,9 @@ a#vroombutton {
   display: inline-block;
   padding: 1px 6px;
   font-family: inherit;
+  /* match the native <button> size (~13.3px): as an <a> it would otherwise
+     inherit the body's 16px and render oversized next to the toggle button */
+  font-size: smaller;
   box-shadow: 1px 1px 1px 0 var(--buttonborder);
   border: 1px solid var(--border);
   border-radius: 5px;
@@ -175,6 +183,21 @@ a#vroombutton:hover {
 }
 #vroombutton {
   color: #ffffff;
+}
+/* Vertically center the label AND height-match the two buttons: the vroom
+   button's 16px icon and this invisible 16px strut are both middle-aligned, so
+   each inflates its line box symmetrically about the text -- centering the label
+   and making the text-only toggle stand equal to the icon button (the button
+   text is only the ~13px UA default, shorter than the 16px icon). */
+#vroombutton img {
+  vertical-align: middle;
+}
+#darkbutton::before {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 16px;
+  vertical-align: middle;
 }
 
 /* Wikipedia-style table (matches MediaWiki .wikitable) */
