@@ -1,6 +1,6 @@
 // "Suck It!" Vacuum Game -- core loop (see DESIGN.md).
-// Grid-based: clean every reachable floor cell. Arrow keys (desktop) or
-// cardinal touch-drag (mobile). Cell = sprite = 64px; cleaning/collision
+// Grid-based: clean every reachable floor cell. Arrow keys or WASD (desktop)
+// or cardinal touch-drag (mobile). Cell = sprite = 64px; cleaning/collision
 // are per-cell; the sprite glides between cells for smooth motion.
 (function () {
 	'use strict';
@@ -68,6 +68,13 @@
 	var DIRS = {
 		ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0]
 	};
+	// WASD aliases share the arrow vectors (same array instance, so keyup's
+	// identity check clears arrows and WASD interchangeably); both cases cover
+	// caps lock / shift.
+	DIRS.w = DIRS.W = DIRS.ArrowUp;
+	DIRS.a = DIRS.A = DIRS.ArrowLeft;
+	DIRS.s = DIRS.S = DIRS.ArrowDown;
+	DIRS.d = DIRS.D = DIRS.ArrowRight;
 	var START = { col: 1, row: 1 };           // current spawn cell (level 1 corner; later = mirrored from the exit door)
 	var entryPx = CELL, entryPy = CELL, entryFacing = 'idle';   // glide-in start px/py + facing on level entry
 
@@ -706,7 +713,8 @@
 		if ((e.key === 'v' || e.key === 'V') && !e.ctrlKey && !e.metaKey && !e.altKey) { toggleSfx(); e.preventDefault(); return; }
 		if (e.key === ' ' || e.key === 'Spacebar') { if (over) replay(); else startGame(); e.preventDefault(); return; }  // space starts / plays again
 		if (!(e.key in DIRS)) return;
-		e.preventDefault();               // arrows must not scroll the page
+		if (e.ctrlKey || e.metaKey || e.altKey) return;   // don't hijack Ctrl+W and friends
+		e.preventDefault();               // arrows/WASD must not scroll the page
 		startGame();                      // first arrow dismisses the title
 		heldDir = DIRS[e.key];
 	}
