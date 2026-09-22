@@ -1,3 +1,5 @@
+/* ===== 1. RESET & LOCAL TOKENS ===== */
+
 /* apply a natural box layout model to all elements, but allowing components to change */
 html {
   box-sizing: border-box;
@@ -14,6 +16,8 @@ html {
   --btn-bg-hover: #767676;
   --btn-bg-active: #5c5c5c;
 }
+
+/* ===== 2. ACCESSIBILITY ===== */
 
 /* Keyboard a11y: visible focus ring + skip-to-content link (hidden until focused) */
 :focus-visible {
@@ -36,6 +40,8 @@ html {
 .skip-link:focus {
   top: 8px;
 }
+
+/* ===== 3. BASE ELEMENTS ===== */
 
 /* Links use the tuned --link token (previously fell back to UA blue/purple) */
 a,
@@ -93,13 +99,7 @@ h3 {
   font-size: 1.15em;
 }
 
-/* center something */
-.center {
-  max-width: 100%;
-  height: auto;
-  align-content: center;
-  text-align: center;
-}
+/* ===== 4. LAYOUT — DOCUMENT CONTAINER ===== */
 
 /* Page content column */
 .content {
@@ -122,11 +122,7 @@ h3 {
   margin: 1em auto;
 }
 
-.note {
-  max-width: 50%;
-  margin-left: auto;
-  margin-right: auto;
-}
+/* ===== 5. COMPONENTS ===== */
 
 .gallery img {
   width: 25%;
@@ -178,7 +174,7 @@ a#vroombutton:hover {
   margin: 0.75em auto;
 }
 #vroombutton {
-  color: #00ffff;
+  color: #ffffff;
 }
 
 /* Wikipedia-style table (matches MediaWiki .wikitable) */
@@ -351,15 +347,7 @@ div.logo-row {
   box-shadow: 0 0 6px 1px var(--imgshadow);
 }
 
-.no-margin {
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-.small-margin {
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-
+/* Captions & table notes */
 .caption {
   text-align: center;
   font-size: 14px;
@@ -383,6 +371,8 @@ div.logo-row {
   margin: 0.3em 0 0;
   padding-left: 1.3em;
 }
+
+/* ===== 6. PAGE CHROME ===== */
 
 /* Top of page */
 .header {
@@ -461,6 +451,35 @@ div.logo-row {
     drop-shadow(1px -2px 1px var(--imgshadow));
 }
 
+/* ===== 7. UTILITIES ===== */
+/* Single-class helpers. Kept last so that, at equal specificity (0,1,0) with
+   the component rules, they win when combined on the same element. */
+
+/* center something */
+.center {
+  max-width: 100%;
+  height: auto;
+  align-content: center;
+  text-align: center;
+}
+
+.note {
+  max-width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.no-margin {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.small-margin {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+/* ===== 8. MEDIA QUERIES (descending) ===== */
+
 /* For when viewport is too small for content area */
 @media (max-width: 1234px) {
   body {
@@ -495,7 +514,6 @@ div.logo-row {
   .footer {
     font-size: 12px;
     grid-template-columns: 1fr;
-    gap: 0.2em;
   }
   .footer > :first-child,
   .footer > :last-child {
