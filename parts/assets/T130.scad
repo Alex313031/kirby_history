@@ -2,8 +2,18 @@
 //  T130 - Kirby armature lock (flat sheet-steel strip)
 //  1mm flat strip, 7.5mm wide. One end folds up 90 deg (the
 //  bent tab); partway along, an in-plane crank steps the strip
-//  sideways (the "commutator side"). BASIC SHAPE.
+//  sideways (the "commutator side" - a MISNOMER; see the CORRECTION). BASIC SHAPE.
 //  Units: millimeters.
+//
+//  CORRECTION (2026-10-02, field-tested on a real armature): the "commutator"
+//  labels throughout this file are WRONG - the tool never touches the commutator.
+//  Confirmed function: the FLAT BLADE end (the "commutator" end below) slides into
+//  a slot machined across the ARMATURE CORE LAMINATIONS (between the field
+//  windings; Kirby etched that slot into the lamination stack on purpose). The
+//  90-deg BENT TAB at the other end braces against the MOTOR HOUSING, so armature
+//  torque locks against the case. A trapezoid notch positions it; the handle
+//  sticks out the back of the motor. The geometry below is measured-correct; the
+//  'commutator*' names still read wrong (full rename TODO -> "blade" / "slot end").
 // ============================================================
 
 // "3D"   -> colored folded tool  (export STL / 3MF)

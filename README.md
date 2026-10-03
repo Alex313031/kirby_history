@@ -20,7 +20,7 @@ and a mid-2000s Adobe Flash-style game [Here](https://thorium.rocks/kirby_histor
 
 <img src="./imgs/Gary_Larson_Appliance_Healers_1986.jpg" width="33%">
 
-### License
+### Licenses
 Site code licensed under the [BSD-3 Clause License](LICENSE.md).
 
 Images and Manuals copyright [David Orencyr](https://collectingdust.com/).
@@ -28,3 +28,5 @@ Images and Manuals copyright [David Orencyr](https://collectingdust.com/).
 Game music by [Kevin MacLeod](https://incompetech.com), licensed under the [Creative Commons License](https://creativecommons.org/licenses/by/4.0/).
 
 The site uses a lightbox library called [Tobii](https://github.com/midzer/tobii), by my good friend [Midzer](https://midzer.de/).
+
+The site uses [my fork](https://github.com/Alex313031/3mfViewer) of [3mfViewer](https://github.com/3MFConsortium/3mfViewer) for CAD models, it is licensed under the [BSD-2 Clause License](https://opensource.org/license/bsd-2-clause).

@@ -216,8 +216,13 @@ table.wikitable {
   border-radius: 4px;
   margin: 0 auto;
   font-size: 0.95rem;
-  line-height: 1.25;
   width: 90%;
+}
+table.wikitable thead {
+  line-height: 1.1;
+}
+table.wikitable tbody {
+  line-height: 1.02;
 }
 table.box {
   box-shadow: 1px 1px 4px 1px var(--footer-text);

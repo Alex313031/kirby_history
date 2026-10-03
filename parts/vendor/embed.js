@@ -51,6 +51,7 @@
     url.searchParams.set("embed", "quick");
     url.searchParams.set("origin", options.origin || window.location.origin);
     if (options.transparent) url.searchParams.set("transparent", "1");
+    if (options.theme) url.searchParams.set("theme", options.theme);
     const hash = new URLSearchParams(url.hash.replace(/^#/, ""));
     hash.set("viewerToken", token);
     url.hash = hash.toString();

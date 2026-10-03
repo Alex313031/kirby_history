@@ -1,1 +1,0 @@
-var e=``+new URL(`lib3mf-DNbbCys8.wasm`,import.meta.url).href;export{e as default};

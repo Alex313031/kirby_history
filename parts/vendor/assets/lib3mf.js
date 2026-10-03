@@ -1,0 +1,1 @@
+var e=``+new URL(`lib3mf.wasm`,import.meta.url).href;export{e as default};
