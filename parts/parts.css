@@ -9,10 +9,14 @@
   max-width: 72ch;
   margin: 0.5em auto 1.5em;
 }
+.tool-toc {
+  margin: 0 auto 1.25em;
+  font-size: smaller;
+}
 
 .tool {
   max-width: 1040px;
-  margin: 0 auto 2.5em;
+  margin: 0 auto 1.5em;
 }
 .tool:not(:first-of-type) {
   border-top: 1px solid var(--table-border);
@@ -118,7 +122,7 @@
   border-radius: 999px;
   background: var(--btn-bg);
   color: #ffffff;
-  font-size: smaller;
+  font-size: 90%;
   white-space: nowrap;
 }
 .view3d:hover .view3d-badge {
@@ -150,7 +154,7 @@
 
 /* CAD download links row */
 .cad-downloads {
-  margin: 1em 0 0;
+  margin: 4px 0 0;
   text-align: center;
 }
 .cad-label {
@@ -169,4 +173,8 @@
 .cad-downloads a:hover {
   text-decoration: none;
   background: var(--table-hover);
+}
+/* 3D pushdown on press, matching the site's native <button>:active */
+.cad-downloads a:active {
+  box-shadow: 1px 1px 1px 0 #222222 inset;
 }

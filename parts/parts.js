@@ -39,4 +39,10 @@
   document.querySelectorAll('.view3d').forEach(function (btn) {
     btn.addEventListener('click', function () { loadViewer(btn); }, { once: true });
   });
+
+  // "Full Size" links open the viewer full-tab (?embed=quick&src=...); tack on the
+  // current site theme so the full view opens matching, same as the inline previews.
+  document.querySelectorAll('a.view3d-full').forEach(function (a) {
+    if (a.href.indexOf('theme=') < 0) a.href += '&theme=' + siteTheme();
+  });
 })();
