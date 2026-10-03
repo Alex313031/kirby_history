@@ -125,6 +125,18 @@
   background: var(--btn-bg-hover);
 }
 
+/* photo hover glow, matching the site's .banner / .model-thumb / .gallery */
+.view3d,
+.tool-usage img {
+  transition: box-shadow 0.1s ease;
+}
+.view3d:hover,
+.tool-usage img:hover {
+  box-shadow:
+    1px 1px 4px 0 var(--imgshadow),
+    0 0 6px 1px var(--imgshadow);
+}
+
 /* the live viewer swapped in on click — SAME box as the static preview
    (same aspect-ratio, not a fixed px height) so the layout doesn't jump */
 .viewer-live {
