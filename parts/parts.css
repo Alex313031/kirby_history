@@ -49,9 +49,9 @@
 }
 .tool-usage,
 .tool-preview {
-  flex: 1 1 360px;
-  max-width: 480px;
-  margin: 0;
+  flex: 1 1 400px;
+  max-width: 492px;
+  margin: 0 auto;
 }
 .tool-usage figcaption,
 .tool-preview figcaption {
@@ -74,6 +74,8 @@
   font-style: italic;
   text-align: center;
   padding: 1em;
+  max-height: 400px;
+  margin: 0 auto;
 }
 
 /* a real usage photo (portrait phone shots) - capped so it doesn't tower over
@@ -84,7 +86,7 @@
 .tool-usage img {
   display: block;
   max-width: 100%;
-  max-height: 420px;
+  max-height: 400px;
   width: auto;
   height: auto;
   margin: 0 auto;
