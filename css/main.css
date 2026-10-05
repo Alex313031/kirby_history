@@ -544,6 +544,7 @@ div.logo-row {
     grid-template-columns: 1fr;
   }
   .footer > :first-child,
+  .footer > :nth-child(2),
   .footer > :last-child {
     justify-self: center;
   }
