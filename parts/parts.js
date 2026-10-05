@@ -41,10 +41,24 @@
     btn.addEventListener('click', function () { loadViewer(btn); }, { once: true });
   });
 
-  // EXPERIMENT: lazy-load - auto-instantiate each preview's viewer when it scrolls
-  // into view (rootMargin starts it a bit early). Click still works for an instant
-  // load; loadViewer()'s isConnected guard stops the two paths double-loading.
-  if ('IntersectionObserver' in window) {
+  // Desktop only: lazy-load each viewer as it scrolls into view (rootMargin starts it
+  // a bit early) so previews are ready without a click. Mobile/touch stays click-to-load
+  // on purpose - it saves cellular data and, on iOS Safari, dodges its low ceiling on
+  // simultaneous WebGL contexts (four auto-loaded viewers overflow it and silently fail).
+  // Gate = a real mouse (hover + fine pointer) AND not a mobile/iOS UA. The UA check is
+  // what catches iPadOS 13+, which reports itself as "MacIntel" with touch points, so it
+  // would otherwise sneak through the pointer test as a "desktop".
+  function desktopLazyLoadOK() {
+    var ua = navigator.userAgent || '';
+    var isIOS = /iP(hone|od|ad)/.test(ua) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    var isMobileUA = /Android|Mobi|iP(hone|od|ad)/.test(ua);
+    var hasMouse = !!(window.matchMedia &&
+                      window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+    return hasMouse && !isIOS && !isMobileUA;
+  }
+
+  if (desktopLazyLoadOK() && 'IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries, obs) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;

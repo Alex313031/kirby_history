@@ -181,3 +181,10 @@
 .cad-downloads a:active {
   box-shadow: 1px 1px 1px 0 #222222 inset;
 }
+
+/* Mobile layout */
+@media (max-width: 800px) {
+  .tool-note {
+    max-width: 40ch;
+  }
+}
