@@ -23,6 +23,7 @@
   }
 
   function loadViewer(btn) {
+    if (!btn.isConnected) return;  // already loaded (observer + click can both fire)
     if (typeof window.ThreeMFViewerEmbed === 'undefined') return;  // embed.js missing
     var holder = document.createElement('div');
     holder.className = 'viewer-live';
@@ -39,6 +40,20 @@
   document.querySelectorAll('.view3d').forEach(function (btn) {
     btn.addEventListener('click', function () { loadViewer(btn); }, { once: true });
   });
+
+  // EXPERIMENT: lazy-load - auto-instantiate each preview's viewer when it scrolls
+  // into view (rootMargin starts it a bit early). Click still works for an instant
+  // load; loadViewer()'s isConnected guard stops the two paths double-loading.
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        obs.unobserve(e.target);
+        loadViewer(e.target);
+      });
+    }, { rootMargin: '300px 0px' });
+    document.querySelectorAll('.view3d').forEach(function (btn) { io.observe(btn); });
+  }
 
   // "Full Size" links open the viewer full-tab (?embed=quick&src=...); tack on the
   // current site theme so the full view opens matching, same as the inline previews.

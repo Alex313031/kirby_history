@@ -25,17 +25,18 @@
 .tool-desc {
   max-width: 72ch;
   margin: 0.5em auto 1.25em;
+  font-size: 90%;
 }
 
 /* a service tip/technique callout inside a tool block */
 .tool-note {
   max-width: 72ch;
   margin: 0 auto 1.25em;
-  padding: 0.6em 0.9em;
-  border-left: 3px solid var(--table-border);
-  background: var(--table-bg);
+  padding: 0.6em 1.25em;
+  border-left: 2px solid var(--table-border);
   border-radius: 0 4px 4px 0;
   text-align: left;
+  font-size: smaller;
 }
 
 /* the [usage photo | 3D preview] row - wraps to one column when narrow */
