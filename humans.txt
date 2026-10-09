@@ -34,7 +34,7 @@
 
 /* SITE */
 
-	Last update: 2026/10/05
+	Last update: 2026/10/08
 	Language: English
 	Doctype: HTML5, CSS
 	IDE: Geany

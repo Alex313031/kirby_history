@@ -142,6 +142,12 @@ h3 {
   box-shadow: 0 0 6px 1px var(--imgshadow);
 }
 
+/* Any image that opens in the lightbox gets the zoom cursor so it reads as
+   "click to enlarge" rather than decorative. */
+.lightbox img {
+  cursor: zoom-in;
+}
+
 /* Buttons (style matches thorium.rocks, darkened for AA text contrast) */
 button {
   font-family: inherit;
@@ -506,6 +512,10 @@ div.logo-row {
   margin-bottom: 8px;
 }
 
+.intro {
+  margin: 0 5em;
+}
+
 /* ===== 8. MEDIA QUERIES (descending) ===== */
 
 /* For when viewport is too small for content area */
@@ -526,6 +536,9 @@ div.logo-row {
   }
   .totop img {
     width: 2em;
+  }
+  .intro {
+    margin: 0 1em;
   }
 }
 
@@ -575,6 +588,17 @@ div.logo-row {
   }
   table.wikitable {
     width: 99%;
+  }
+  /* footnote markers: bigger tap target (negative margin keeps the superscript
+     baseline from shifting), and a narrower popup so it's less likely to clip
+     off the edge of the horizontally-scrolling table wrapper */
+  .fn-ref > button {
+    display: inline-block;
+    padding: 4px 6px;
+    margin: -4px 0;
+  }
+  .fn-pop {
+    max-width: min(16em, 80vw);
   }
   .note {
     max-width: 92%;

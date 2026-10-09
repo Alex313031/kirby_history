@@ -87,6 +87,8 @@
   var joyDY = 0;
   var touchTimer = null;
   var exitBtn = null;
+  var exitHint = null;
+  var hintTimer = null;
 
   // warm the cache so the cursor and direction swaps never fall back
   // to the crosshair (runs at page load, well before first activation)
@@ -184,6 +186,30 @@
       canvas.addEventListener('touchend', onTouchEnd);
       canvas.addEventListener('touchcancel', onTouchEnd);
       touchTimer = setInterval(touchStep, CRUISE_MS);
+    } else {
+      // Desktop: the only exits are Esc or a mouse click, which until now were
+      // stated only in the button's title tooltip -- gone the instant you click.
+      // Show a brief on-screen hint so the cursor hijack never reads as a broken
+      // page. It fades after a few seconds and is cleared on exit.
+      exitHint = document.createElement('div');
+      exitHint.className = 'vroom-hint';
+      exitHint.textContent = 'Press Esc or click to stop vacuuming';
+      exitHint.style.position = 'fixed';
+      exitHint.style.top = '10px';
+      exitHint.style.left = '50%';
+      exitHint.style.transform = 'translateX(-50%)';
+      exitHint.style.zIndex = '10001';
+      exitHint.style.padding = '6px 12px';
+      exitHint.style.borderRadius = '6px';
+      exitHint.style.background = 'rgba(0, 0, 0, 0.85)';
+      exitHint.style.color = '#fff';
+      exitHint.style.font = '20px system-ui, sans-serif';
+      exitHint.style.pointerEvents = 'none';
+      exitHint.style.transition = 'opacity 0.75s ease';
+      document.body.appendChild(exitHint);
+      hintTimer = setTimeout(function () {
+        if (exitHint) exitHint.style.opacity = '0';
+      }, 3000);
     }
     document.addEventListener('mousemove', onMove);
     // the button's own activating click ended before these attach,
@@ -398,13 +424,18 @@
     clearInterval(cruiseTimer);
     clearInterval(edgeTimer);
     clearInterval(touchTimer);
-    holdTimer = cruiseTimer = edgeTimer = touchTimer = null;
+    clearTimeout(hintTimer);
+    holdTimer = cruiseTimer = edgeTimer = touchTimer = hintTimer = null;
     lastClientX = lastClientY = null;
     touchId = null;
     joyDX = joyDY = 0;
     if (exitBtn) {
       exitBtn.remove();
       exitBtn = null;
+    }
+    if (exitHint) {
+      exitHint.remove();
+      exitHint = null;
     }
     heldKeys = {};
     heldCount = 0;

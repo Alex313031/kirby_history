@@ -147,12 +147,37 @@
 /* the live viewer swapped in on click — SAME box as the static preview
    (same aspect-ratio, not a fixed px height) so the layout doesn't jump */
 .viewer-live {
+  position: relative;            /* anchors the loading overlay */
   width: 100%;
   aspect-ratio: 640 / 520;
   border: 1px solid var(--border);
   border-radius: 2px;
   overflow: hidden;
+  background: var(--table-bg);   /* themed panel instead of a bare bordered void */
   box-shadow: 1px 1px 4px 1px var(--imgshadow);
+}
+.viewer-live iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+/* opaque themed "Loading..." overlay shown over the iframe while the viewer
+   (~4 MB of wasm/JS) downloads and boots - no blank box, no dark-mode white
+   flash. parts.js removes it once the iframe paints. */
+.viewer-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--table-bg);
+  color: var(--footer-text);
+  font-style: italic;
+  font-size: 1.5em;
+  text-align: center;
+  padding: 1em;
+  transition: opacity 0.2s ease;
 }
 
 /* CAD download links row */

@@ -35,6 +35,25 @@
       theme: siteTheme(),                  // 'light' | 'dark' | 'auto', matches the site
       height: '100%',
     });
+    // Cover the booting iframe with a themed "Loading..." overlay (appended AFTER
+    // create() so it sits on top regardless of how the embed fills the holder).
+    // Removed once the iframe fires 'load'; the timeout is a safety net so a
+    // missed event can never strand the overlay over a working viewer.
+    var loading = document.createElement('div');
+    loading.className = 'viewer-loading';
+    loading.textContent = 'Loading 3D viewer…';
+    holder.appendChild(loading);
+    var removeOverlay = function () {
+      loading.style.opacity = '0';
+      setTimeout(function () {
+        if (loading.parentNode) loading.parentNode.removeChild(loading);
+      }, 200);
+    };
+    var iframe = holder.querySelector('iframe');
+    if (iframe) {
+      iframe.addEventListener('load', removeOverlay, { once: true });
+    }
+    setTimeout(removeOverlay, 8000);
   }
 
   document.querySelectorAll('.view3d').forEach(function (btn) {

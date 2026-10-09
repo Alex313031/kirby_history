@@ -1,4 +1,4 @@
-ErrorDocument 404 /404.html
+ErrorDocument 404 /kirby_history/404.html
 Options +Indexes
 IndexOptions +FancyIndexing
 IndexIgnore *.bak
