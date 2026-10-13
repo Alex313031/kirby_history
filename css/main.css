@@ -40,6 +40,30 @@ html {
 .skip-link:focus {
   top: 8px;
 }
+/* <main id="main"> carries tabindex="-1" so the skip link can move keyboard
+   focus to it (a plain <main> isn't focusable). It's a focus target, not a
+   control, so don't ring the whole content column when focus lands there. */
+#main:focus {
+  outline: none;
+}
+
+/* Respect the OS "reduce motion" setting: make every transition/animation
+   near-instant (0.01ms, not fully off, so any transitionend-driven JS still
+   fires) and still the tobii lightbox's zoom/slide. The game's canvas motion is
+   user-initiated, so it's intentionally left alone. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --tobii-transition-duration: 0.01ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
 /* ===== 3. BASE ELEMENTS ===== */
 
@@ -50,6 +74,12 @@ a:visited {
 }
 a:hover {
   text-decoration: underline;
+}
+/* deliberate, subtle tap flash on touch (replaces the UA default blue/grey);
+   theme-neutral grey reads on both light and dark */
+a,
+button {
+  -webkit-tap-highlight-color: rgba(127, 127, 127, 0.25);
 }
 /* deep-link targets: leave a little breathing room above a section when it's
    jumped to via #anchor (harmless no-op on engines without scroll-margin) */
@@ -138,8 +168,10 @@ h3 {
   transition: box-shadow 0.1s ease;
   border-radius: 2px;
 }
-.gallery img:hover {
-  box-shadow: 0 0 6px 1px var(--imgshadow);
+@media (hover: hover) {
+  .gallery img:hover {
+    box-shadow: 0 0 6px 1px var(--imgshadow);
+  }
 }
 
 /* Any image that opens in the lightbox gets the zoom cursor so it reads as
@@ -212,6 +244,41 @@ a#vroombutton:hover {
   /* overflow-x:auto makes overflow-y compute to auto too, which clips the
      table's box-shadow; this padding gives the shadow room inside the clip box */
   padding: 4px;
+}
+/* Horizontal-scroll shadows (wired by js/table-hover.js, which wraps each
+   .table-wrap in a non-scrolling .table-scroll host). Because the host doesn't
+   scroll, these absolute pseudo-elements stay pinned to the visible edges and
+   overlay the opaque table (a background on the wrapper would paint behind it).
+   Each shows only when the script flags more table hidden that way, and fades
+   out at that end. --imgshadow keeps it theme-correct in light and dark. */
+.table-scroll {
+  position: relative;
+}
+.table-scroll::before,
+.table-scroll::after {
+  content: "";
+  position: absolute;
+  top: 4px;    /* inset by .table-wrap's 4px padding so the shadow meets the table edge */
+  bottom: 4px;
+  width: 44px;
+  pointer-events: none; /* never block scrolling or clicks on the table */
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 2;
+}
+.table-scroll::before {
+  left: 1px;
+  background: linear-gradient(to right, var(--imgshadow), transparent);
+}
+.table-scroll::after {
+  right: 1px;
+  background: linear-gradient(to left, var(--imgshadow), transparent);
+}
+.table-scroll[data-scroll-left]::before {
+  opacity: 1;
+}
+.table-scroll[data-scroll-right]::after {
+  opacity: 1;
 }
 table.wikitable {
   background-color: var(--table-bg);
@@ -317,7 +384,7 @@ table.parts td:first-child {
   position: absolute;
   left: 0;
   top: 1.6em;
-  z-index: 30;
+  z-index: 25;
   width: max-content;
   max-width: min(22em, 90vw);
   padding: 7px 10px;
@@ -340,6 +407,17 @@ table.parts td:first-child {
 .fn-pop.fn-left {
   left: auto;
   right: 0;
+}
+/* open upward when the popup would otherwise clip off the bottom of the viewport
+   (set by js/table-hover.js for bottom-row markers on short screens) */
+.fn-pop.fn-up {
+  top: auto;
+  bottom: 1.6em;
+}
+/* Escape dismisses an open popup without moving the pointer (WCAG 1.4.13);
+   force it hidden until the pointer/focus leaves (see js/table-hover.js) */
+.fn-ref.fn-dismissed .fn-pop {
+  display: none !important;
 }
 
 /* Model thumbnails inside the table */
@@ -372,13 +450,17 @@ div.logo-row {
   border: 1px solid var(--border);
   transition: box-shadow 0.1s ease;
 }
-.banner:hover {
-  box-shadow:
-    1px 1px 4px 0 var(--imgshadow),
-    0 0 6px 1px var(--imgshadow);
-}
-.model-thumb:hover {
-  box-shadow: 0 0 6px 1px var(--imgshadow);
+/* image hover glows only where a real pointer exists, so they don't latch on
+   after a tap on touch screens */
+@media (hover: hover) {
+  .banner:hover {
+    box-shadow:
+      1px 1px 4px 0 var(--imgshadow),
+      0 0 6px 1px var(--imgshadow);
+  }
+  .model-thumb:hover {
+    box-shadow: 0 0 6px 1px var(--imgshadow);
+  }
 }
 
 /* Captions & table notes */
@@ -468,7 +550,8 @@ div.logo-row {
   position: fixed;
   bottom: 0;
   right: 0;
-  margin-right: 10px;
+  margin-right: 8px;
+  z-index: 100;
 }
 
 .totop img {
@@ -534,9 +617,6 @@ div.logo-row {
     display: flex;
     justify-content: center;
   }
-  .totop img {
-    width: 2em;
-  }
   .intro {
     margin: 0 1em;
   }
@@ -579,9 +659,9 @@ div.logo-row {
   .content {
     padding: 6px 8px;
     /* dynamic-toolbar clearance: mobile browsers park their bottom URL bar
-     over the last ~50px of a page (no scroll left to retract it at the
+     over the last ~48px of a page (no scroll left to retract it at the
      very bottom), hiding the footer links. Pad past it. */
-    margin-bottom: calc(50px + env(safe-area-inset-bottom, 0px));
+    margin-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
   }
   body::before {
     background-size: 64px auto; /* smaller gift-wrap tiles so a phone-width margin still shows a motif */
@@ -602,5 +682,28 @@ div.logo-row {
   }
   .note {
     max-width: 92%;
+  }
+  /* Touch targets: enlarge the primary controls toward ~44px so they're not
+     fiddly to tap on a phone. */
+  .navbar a {
+    display: inline-block;
+    padding: 4px 8px;
+  }
+  button {
+    padding: 6px 8px;
+  }
+  a#vroombutton {
+    padding: 6px 8px;
+    font-size: inherit; /* drop the desktop size-match shrink; be tappable */
+  }
+  table.wikitable td a {
+    display: inline-block;
+    padding: 4px 2px; /* taller hit area for the part-number / store links */
+  }
+  .totop {
+    bottom: calc(8px + env(safe-area-inset-bottom, 0px)); /* clear the phone URL bar */
+  }
+  .totop img {
+    width: 2.25em;
   }
 }

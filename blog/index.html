@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/scrollbars.css">
     <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../vendor/tobii.min.css">
-    <link rel="stylesheet" href="../css/tobii-theme.css">
+    <link rel="stylesheet" href="../vendor/tobii.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/tobii-theme.css" media="print" onload="this.media='all'">
     <title>Kirby Restoration Blog</title>
     <meta name="description" content="Blog showing vintage Kirby vacuum restoration procedures.">
     <meta name="keywords" content="kirby, vacuum, blog, service, vintage">
@@ -47,7 +47,7 @@
     <!-- Open Graph (Slack, Facebook, Discord, etc.) + Twitter card -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://thorium.rocks/kirby_history/blog/">
-    <meta property="og:title" content="Kirby Vacuum Restoration Blog">
+    <meta property="og:title" content="Kirby Restoration Blog">
     <meta property="og:description" content="Blog showcasing servicing/restoration of vintage Kirby vacuums.">
     <meta property="og:site_name" content="Kirby Restoration Blog">
     <meta property="og:image" content="https://thorium.rocks/kirby_history/thumb.png">
@@ -61,19 +61,19 @@
   <header class="header">
     <nav class="navbar" aria-label="Site">
       <a href="../index.html">Home</a>
-      <svg class="dot" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
+      <svg class="dot" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
       <a href="../blog/" aria-current="page">Blog</a>
-      <svg class="dot" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
+      <svg class="dot" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
       <a href="../patents/">Patents</a>
-      <svg class="dot" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
+      <svg class="dot" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
       <a href="../parts/">Parts</a>
-      <svg class="dot" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
+      <svg class="dot" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
       <a href="../game/">Game</a>
     </nav>
   </header>
-  <main class="content" id="main">
+  <main class="content" id="main" tabindex="-1">
     <div class="center">
-      <a class="lightbox" data-group="banner" href="vacuum_repair_man.png" target="_blank"><img class="banner" fetchpriority="high" src="vacuum_repair_man.png" height="192" alt="Repair Man" title="Fix 'er up!"></a>
+      <a class="lightbox" data-group="banner" href="vacuum_repair_man.png" target="_blank"><img class="banner" fetchpriority="high" src="vacuum_repair_man.png" width="154" height="192" alt="Repair Man" title="Fix 'er up!"></a>
       <h1 class="underline">Kirby Restoration Blog</h1>
 
       <div class="intro">
@@ -104,7 +104,7 @@
       </div>
 
       <hr class="separator">
-      <h2 class="underline" id="reference">Extras</h2>
+      <h2 class="underline" id="reference">Reference</h2>
       <h3 class="underline no-margin" id="filtration">Vacuum Filter Types</h3>
       <p class="table-caption"><b><em>Legend:</em></b> ✅ <em>caught well</em> · ⚠️ <em>partial</em> · ❌ <em>mostly passes</em></p>
       <div class="table-wrap">

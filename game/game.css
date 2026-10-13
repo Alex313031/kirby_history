@@ -154,9 +154,6 @@ a:hover {
   align-items: center;
   justify-content: center; /* keep buttons centered if the row is stretched to match */
 }
-button {
-  font-size: 14px;
-}
 
 /* buttons + dropdown: same token structure as main.css, using the game's darker --btn-bg values (pinned above) */
 button,
@@ -168,6 +165,7 @@ button,
   background-color: var(--btn-bg);
   color: #ffffff;
   cursor: pointer;
+  font-size: 14px;
 }
 button:hover,
 .game-controls select:hover {
@@ -247,5 +245,17 @@ button:active {
   /* smaller nav font on phones (horizontal centering handled above) */
   .header {
     font-size: 14px;
+  }
+  /* Touch targets: enlarge nav links + HUD controls toward ~44px. The header is
+     in-flow at this width (see <=1100px), so the flex layout absorbs the taller
+     navbar without pushing the game area off-screen. */
+  .navbar a {
+    display: inline-block;
+    padding: 4px 8px;
+  }
+  .game-controls button,
+  .game-controls select {
+    padding: 6px 8px;
+    height: 30px;
   }
 }

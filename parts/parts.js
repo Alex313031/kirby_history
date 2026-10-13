@@ -51,6 +51,9 @@
     };
     var iframe = holder.querySelector('iframe');
     if (iframe) {
+      // Name the embedded viewer for assistive tech (otherwise announced "iframe").
+      var modelName = (btn.getAttribute('data-src') || '').replace(/^.*\//, '').replace(/\.3mf$/i, '');
+      iframe.title = modelName ? 'Interactive 3D model of ' + modelName : 'Interactive 3D model';
       iframe.addEventListener('load', removeOverlay, { once: true });
     }
     setTimeout(removeOverlay, 8000);

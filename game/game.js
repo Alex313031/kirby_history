@@ -105,12 +105,21 @@
   ];
   var musicIndex = 0, musicTimer = null;
   var musicTracks = MUSIC_SRCS.map(function (src) {
-    return new Howl({ src: [src], volume: MUSIC_VOL });   // loop=false so it ends -> crossfade
+    // preload:false so the multi-MB tracks aren't fetched on page load; they load
+    // on first play()/load() once the game starts. loop=false so it ends -> crossfade.
+    return new Howl({ src: [src], volume: MUSIC_VOL, preload: false });
   });
   function currentMusic() { return musicTracks[musicIndex]; }
+  // preload:false means a track must be .load()ed before play() will fire
+  // (play() alone just queues until a load happens). Call before any music play().
+  function ensureLoaded(h) { if (h.state() === 'unloaded') { h.load(); } }
   // (re)arm the crossfade to fire ~CROSSFADE_MS before the current track ends
   function scheduleCrossfade() {
     clearTimeout(musicTimer);
+    // give the *next* track a head start so its crossfade-in isn't silent while it
+    // loads; only if preload:false has left it unfetched.
+    var next = musicTracks[(musicIndex + 1) % musicTracks.length];
+    if (next.state() === 'unloaded') { next.load(); }
     var m = currentMusic(), dur = m.duration();
     if (!dur) { musicTimer = setTimeout(scheduleCrossfade, 200); return; }   // not decoded yet
     musicTimer = setTimeout(crossfade, Math.max(0, (dur - m.seek()) * 1000 - CROSSFADE_MS));
@@ -121,26 +130,30 @@
     ending.once('fade', function () { ending.stop(); });   // reset it once faded out
     musicIndex = (musicIndex + 1) % musicTracks.length;
     currentMusic().volume(0);
+    ensureLoaded(currentMusic());
     currentMusic().play();
     currentMusic().fade(0, musicTarget, CROSSFADE_MS);   // fade in to the live target (respects an active duck)
     scheduleCrossfade();
   }
   // vacuum + stingers: Web Audio (default) for tight, in-sync start/stop
-  var vroomSfx = new Howl({ src: ['assets/sounds/vacuum_on.mp3'], loop: true, volume: VROOM_VOL });   // recorded by Alex
-  var winSfx  = new Howl({ src: ['assets/sounds/win.mp3'],  volume: STINGER_VOL, onend: unduck, onstop: unduck });
-  var failSfx = new Howl({ src: ['assets/sounds/fail.mp3'], volume: STINGER_VOL, onend: unduck, onstop: unduck });
+  var vroomSfx = new Howl({ src: ['assets/sounds/vacuum_on.mp3'], loop: true, volume: VROOM_VOL, preload: false });   // recorded by Alex
+  var winSfx  = new Howl({ src: ['assets/sounds/win.mp3'],  volume: STINGER_VOL, preload: false, onend: unduck, onstop: unduck });
+  var failSfx = new Howl({ src: ['assets/sounds/fail.mp3'], volume: STINGER_VOL, preload: false, onend: unduck, onstop: unduck });
   var audioStarted = false, musicMuted = false, sfxMuted = false, vroomPlaying = false;   // music ON by default -> starts on game start (first move)
   var musicTarget = MUSIC_VOL;   // music's live target level (MUSIC_VOL, or DUCK_VOL while a stinger ducks it)
 
   function startAudio() {   // first user gesture unlocks (Howler auto-unlocks) + starts music
     if (audioStarted) return;
     audioStarted = true;
-    if (!musicMuted && !currentMusic().playing()) { currentMusic().volume(MUSIC_VOL); currentMusic().play(); scheduleCrossfade(); }
+    // Game is actually starting now: fetch the small SFX so in-game feedback is tight
+    // (the big music tracks still load lazily via play()/crossfade).
+    vroomSfx.load(); winSfx.load(); failSfx.load();
+    if (!musicMuted && !currentMusic().playing()) { ensureLoaded(currentMusic()); currentMusic().volume(MUSIC_VOL); currentMusic().play(); scheduleCrossfade(); }
   }
   function setMusicMuted(m) {
     musicMuted = m;
     if (m) { clearTimeout(musicTimer); currentMusic().pause(); }
-    else if (audioStarted && !currentMusic().playing()) { currentMusic().volume(musicTarget); currentMusic().play(); scheduleCrossfade(); }
+    else if (audioStarted && !currentMusic().playing()) { ensureLoaded(currentMusic()); currentMusic().volume(musicTarget); currentMusic().play(); scheduleCrossfade(); }
   }
   function toggleMusic() {   // shared by the M key and the Music button
     setMusicMuted(!musicMuted);

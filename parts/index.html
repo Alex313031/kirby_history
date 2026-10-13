@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/scrollbars.css">
     <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../vendor/tobii.min.css">
-    <link rel="stylesheet" href="../css/tobii-theme.css">
+    <link rel="stylesheet" href="../vendor/tobii.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/tobii-theme.css" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="parts.css">
-    <title>Parts &amp; Tools</title>
+    <title>Kirby Parts &amp; Tools</title>
     <meta name="description" content="Links and downloads to parts and tool 3D models for Kirby vacuums.">
     <meta name="keywords" content="kirby, vacuum, repair, tool, 3D, cad, tools">
     <link rel="canonical" href="https://thorium.rocks/kirby_history/parts/">
@@ -46,9 +46,9 @@
     <!-- Open Graph (Slack, Facebook, Discord, etc.) + Twitter card -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://thorium.rocks/kirby_history/parts/">
-    <meta property="og:title" content="Kirby Parts and Tools">
+    <meta property="og:title" content="Kirby Parts &amp; Tools">
     <meta property="og:description" content="Links and downloads to parts and tool 3D models for Kirby vacuums.">
-    <meta property="og:site_name" content="Kirby Parts and Tools">
+    <meta property="og:site_name" content="Kirby Parts &amp; Tools">
     <meta property="og:image" content="https://thorium.rocks/kirby_history/parts/thumb.png">
     <meta property="og:image:width" content="1280">
     <meta property="og:image:height" content="1280">
@@ -60,19 +60,19 @@
   <header class="header">
     <nav class="navbar" aria-label="Site">
       <a href="../index.html">Home</a>
-      <svg class="dot" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
+      <svg class="dot" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
       <a href="../blog/">Blog</a>
-      <svg class="dot" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
+      <svg class="dot" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
       <a href="../patents/">Patents</a>
-      <svg class="dot" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
+      <svg class="dot" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
       <a href="../parts/" aria-current="page">Parts</a>
-      <svg class="dot" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
+      <svg class="dot" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="16" fill="currentColor" /></svg>
       <a href="../game/">Game</a>
     </nav>
   </header>
-  <main class="content" id="main">
+  <main class="content" id="main" tabindex="-1">
     <div class="center">
-      <a class="lightbox" data-group="banner" href="../thumb.png" target="_blank"><img class="banner" fetchpriority="high" src="../thumb.png" height="192" alt="Parts Banner"></a>
+      <a class="lightbox" data-group="banner" href="../thumb.png" target="_blank"><img class="banner" fetchpriority="high" src="../thumb.png" width="384" height="192" alt="Parts Banner"></a>
       <h1 class="underline">Kirby Parts &amp; Tools</h1>
 
       <div class="intro">
@@ -107,7 +107,7 @@
               <img src="assets/imgs/T127_preview.png" width="640" height="520" loading="lazy" decoding="async" alt="T127 armature bearing press, 3D render">
               <span class="view3d-badge">&#9658;&nbsp;View in 3D</span>
             </button>
-            <figcaption>Interactive 3D preview (<a class="view3d-full" href="vendor/?embed=quick&amp;src=../assets/T127.3mf" target="_blank" rel="noopener">open full view &#8599;</a>)</figcaption>
+            <figcaption>Interactive 3D preview (<a class="view3d-full" href="vendor/?embed=quick&amp;src=../assets/T127.3mf" target="_blank" rel="noopener" aria-label="Open the T127 3D model full-screen">open full view &#8599;</a>)</figcaption>
           </figure>
         </div>
         <p class="cad-downloads"><span class="cad-label"><em>Download CAD:</em></span>
@@ -130,7 +130,7 @@
               <img src="assets/imgs/T104_preview.png" width="640" height="520" loading="lazy" decoding="async" alt="T104 armature lock pin, 3D render">
               <span class="view3d-badge">&#9658;&nbsp;View in 3D</span>
             </button>
-            <figcaption>Interactive 3D preview (<a class="view3d-full" href="vendor/?embed=quick&amp;src=../assets/T104.3mf" target="_blank" rel="noopener">open full view &#8599;</a>)</figcaption>
+            <figcaption>Interactive 3D preview (<a class="view3d-full" href="vendor/?embed=quick&amp;src=../assets/T104.3mf" target="_blank" rel="noopener" aria-label="Open the T104 3D model full-screen">open full view &#8599;</a>)</figcaption>
           </figure>
         </div>
         <p class="cad-downloads"><span class="cad-label"><em>Download CAD:</em></span>
@@ -153,7 +153,7 @@
               <img src="assets/imgs/T130_preview.png" width="640" height="520" loading="lazy" decoding="async" alt="T130 sheet-steel armature lock, 3D render">
               <span class="view3d-badge">&#9658;&nbsp;View in 3D</span>
             </button>
-            <figcaption>Interactive 3D preview (<a class="view3d-full" href="vendor/?embed=quick&amp;src=../assets/T130.3mf" target="_blank" rel="noopener">open full view &#8599;</a>)</figcaption>
+            <figcaption>Interactive 3D preview (<a class="view3d-full" href="vendor/?embed=quick&amp;src=../assets/T130.3mf" target="_blank" rel="noopener" aria-label="Open the T130 3D model full-screen">open full view &#8599;</a>)</figcaption>
           </figure>
         </div>
         <p class="cad-downloads"><span class="cad-label"><em>Download CAD:</em></span>
@@ -187,7 +187,7 @@
               <img src="assets/imgs/T123_preview.png" width="640" height="520" loading="lazy" decoding="async" alt="T123 handle-spring winder, 3D render">
               <span class="view3d-badge">&#9658;&nbsp;View in 3D</span>
             </button>
-            <figcaption>Interactive 3D preview (<a class="view3d-full" href="vendor/?embed=quick&amp;src=../assets/T123.3mf" target="_blank" rel="noopener">open full view &#8599;</a>)</figcaption>
+            <figcaption>Interactive 3D preview (<a class="view3d-full" href="vendor/?embed=quick&amp;src=../assets/T123.3mf" target="_blank" rel="noopener" aria-label="Open the T123 3D model full-screen">open full view &#8599;</a>)</figcaption>
           </figure>
         </div>
         <p class="cad-downloads"><span class="cad-label"><em>Download CAD:</em></span>
