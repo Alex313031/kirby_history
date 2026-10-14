@@ -258,7 +258,7 @@ a#vroombutton:hover {
 .table-scroll::after {
   content: "";
   position: absolute;
-  top: 4px;    /* inset by .table-wrap's 4px padding so the shadow meets the table edge */
+  top: 4px; /* inset by .table-wrap's 4px padding so the shadow meets the table edge */
   bottom: 4px;
   width: 44px;
   pointer-events: none; /* never block scrolling or clicks on the table */
@@ -705,7 +705,9 @@ div.logo-row {
     padding: 6px 2px; /* satisfy mobile touch target spacing */
   }
   .totop {
-    bottom: calc(8px + env(safe-area-inset-bottom, 0px)); /* clear the phone URL bar */
+    bottom: calc(
+      8px + env(safe-area-inset-bottom, 0px)
+    ); /* clear the phone URL bar */
   }
   .totop img {
     width: 2.25em;
