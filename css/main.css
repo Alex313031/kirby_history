@@ -568,6 +568,7 @@ div.logo-row {
 .totop img {
   filter: drop-shadow(3px 2px 1px var(--imgshadow));
   width: 2.5em;
+  height: auto; /* let the width/height attrs set the ratio, not a fixed height */
 }
 .totop img:hover {
   filter: drop-shadow(3px 2px 1px var(--imgshadow))
@@ -716,7 +717,9 @@ div.logo-row {
     padding: 6px 2px; /* satisfy mobile touch target spacing */
   }
   .totop {
-    bottom: calc(4px + env(safe-area-inset-bottom, 0px)); /* clear the phone URL bar */
+    bottom: calc(
+      4px + env(safe-area-inset-bottom, 0px)
+    ); /* clear the phone URL bar */
   }
   .totop img {
     width: 2.25em;

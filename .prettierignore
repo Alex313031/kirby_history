@@ -1,5 +1,6 @@
 # Prettier only formats source CSS here; keep it off generated + vendored files.
+# A bare "vendor" (no leading slash) matches a vendor/ dir at any depth, so
+# nested ones like parts/vendor/ are covered too -- same as tools/_files.mjs.
 node_modules
 dist
-game/vendor
-/vendor
+vendor
