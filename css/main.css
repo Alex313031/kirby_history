@@ -353,6 +353,17 @@ table.wikitable td.service.svc-hl {
   background-color: var(--table-hover);
 }
 
+/* Touch target (WCAG 2.5.8 / Lighthouse target-size): the standalone service
+   links are one text line tall (~18px). Where a "Parts List" link sits right
+   above a "(Use ... Service Manual)" note they fall under the 24px minimum and
+   are too close to each other. Vertical-only padding lifts each to >=24px with
+   no left-edge shift. Only direct-child anchors match; the in-sentence links
+   inside <small> stay inline and keep their 2.5.8 sentence exemption. */
+table.wikitable td.service > a {
+  display: inline-block;
+  padding: 5px 0;
+}
+
 /* Quick Parts Lookup: bold model names */
 table.parts td:first-child {
   font-weight: bold;
