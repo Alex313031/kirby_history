@@ -15,7 +15,10 @@ for (let i = 0; i < files.length; i++) {
 	const f = files[i];
 	const css = readFileSync(f, 'utf8');
 	try {
-		const res = await w3c.validateText(css, { timeout: 20000 });
+		// Use the CSS3 + SVG profile so SVG-origin properties that are valid in
+		// HTML/CSS (e.g. pointer-events) aren't flagged as unknown. The default
+		// 'css3' profile omits them.
+		const res = await w3c.validateText(css, { timeout: 20000, profile: 'css3svg' });
 		const nErr = res.errors?.length || 0, nWarn = res.warnings?.length || 0;
 		totalErrors += nErr;
 		console.log(`\n${f}: ${res.valid ? 'VALID' : nErr + ' error(s)'}${nWarn ? `, ${nWarn} warning(s)` : ''}`);
