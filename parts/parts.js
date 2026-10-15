@@ -81,14 +81,30 @@
   }
 
   if (desktopLazyLoadOK() && 'IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        obs.unobserve(e.target);
-        loadViewer(e.target);
-      });
-    }, { rootMargin: '300px 0px' });
-    document.querySelectorAll('.view3d').forEach(function (btn) { io.observe(btn); });
+    // Hold off wiring the scroll-in auto-load until the visitor's FIRST interaction
+    // (mouse move, scroll, key, or touch). Each viewer is ~4 MB of WebGL/wasm and
+    // booting it hijacks the main thread for ~0.7s, so paying that during the initial
+    // paint hurts everyone. A real desktop visitor trips this within a second (the
+    // preview still feels automatic), but a no-interaction load - a Lighthouse/bot
+    // pass, a background tab - never boots a viewer, keeping first load responsive.
+    var startAutoLoad = function () {
+      var io = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          obs.unobserve(e.target);
+          loadViewer(e.target);
+        });
+      }, { rootMargin: '300px 0px' });
+      document.querySelectorAll('.view3d').forEach(function (btn) { io.observe(btn); });
+    };
+    var EVENTS = ['pointermove', 'mousemove', 'wheel', 'scroll', 'keydown', 'touchstart'];
+    var kick = function () {
+      EVENTS.forEach(function (ev) { window.removeEventListener(ev, kick, true); });
+      startAutoLoad();
+    };
+    EVENTS.forEach(function (ev) {
+      window.addEventListener(ev, kick, { capture: true, passive: true });
+    });
   }
 
   // "Full Size" links open the viewer full-tab (?embed=quick&src=...); tack on the

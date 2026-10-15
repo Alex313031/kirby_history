@@ -104,14 +104,22 @@ body {
 /* Christmas-wrap background: the 1953-1969 logo tiled on an oversized
    fixed layer, rotated 45 degrees left so the grid becomes diagonal
    strips. Sits above the html background, below all content. Knobs:
-   background-size = tile density, opacity, rotate() angle. */
+   background-size = tile density, opacity, rotate() angle.
+   Sized/placed in FIXED px (not viewport %) on purpose: a percentage-sized
+   fixed layer resizes and moves whenever the viewport changes mid-session (a
+   mobile URL bar collapsing, or a devtools viewport change during a Lighthouse
+   run), which registers as layout shift (CLS) even though it's purely
+   decorative. A fixed 6000px square anchored off-screen is large enough to
+   cover any realistic viewport after the 45deg rotation (~5700px reach from the
+   top-left) yet never moves or resizes -> it can't contribute to CLS. The tile
+   is a seamless repeat, so the off-centre anchor is invisible. */
 body::before {
   content: "";
   position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
+  top: -1500px;
+  left: -1500px;
+  width: 6000px;
+  height: 6000px;
   z-index: -1;
   background-image: url("../imgs/logos/Kirby_Logo_1953-1969.svg");
   background-repeat: repeat;
@@ -153,7 +161,7 @@ h3 {
   border: none;
   border-top: 1px solid var(--footer-text);
   border-bottom: 1px solid var(--font-shadow);
-  width: 100%;
+  width: 96%;
   margin: 1em auto;
 }
 
@@ -260,7 +268,7 @@ a#vroombutton:hover {
   position: absolute;
   top: 4px; /* inset by .table-wrap's 4px padding so the shadow meets the table edge */
   bottom: 4px;
-  width: 44px;
+  width: 32px;
   pointer-events: none; /* never block scrolling or clicks on the table */
   opacity: 0;
   transition: opacity 0.15s ease;
@@ -378,12 +386,22 @@ table.parts td:first-child {
   white-space: nowrap;
 }
 .fn-ref > button {
+  display: inline-block;
+  min-width: 24px;
+  text-align: center;
   font: inherit;
   color: var(--link);
   background: none;
   border: 0;
   box-shadow: none;
-  padding: 0 1px;
+  /* WCAG 2.5.8 tap target: size the tiny marker to >=24x24 -- min-width for the
+     narrow glyphs ([i], [l]) that padding alone left under 24, vertical padding
+     for height. It only grows rightward/down into empty space (never a negative
+     left margin that would overlap the preceding part-number link and trip axe's
+     overlap reduction). Negative vertical margin keeps the superscript baseline
+     and row height from shifting. */
+  padding: 6px 2px;
+  margin: -6px 0;
   cursor: pointer;
 }
 .fn-ref > button:hover,
@@ -619,6 +637,9 @@ div.logo-row {
     margin-left: 10px;
     margin-right: 10px;
   }
+  .separator {
+    width: 100%;
+  }
 }
 
 /* The absolute top-right navbar (~290px wide at 16px) would clip the banner
@@ -681,14 +702,8 @@ div.logo-row {
   table.wikitable {
     width: 99%;
   }
-  /* footnote markers: bigger tap target (negative margin keeps the superscript
-     baseline from shifting), and a narrower popup so it's less likely to clip
-     off the edge of the horizontally-scrolling table wrapper */
-  .fn-ref > button {
-    display: inline-block;
-    padding: 4px 6px;
-    margin: -4px 0;
-  }
+  /* narrower popup on mobile so it's less likely to clip off the edge of the
+     horizontally-scrolling table wrapper (tap-target sizing is in the base rule) */
   .fn-pop {
     max-width: min(16em, 80vw);
   }
